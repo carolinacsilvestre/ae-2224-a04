@@ -1,7 +1,7 @@
 '''Sample script for reading in data and visualizing the
 Lagrangian air parcel trajectories along with the net radiative fluxes
 arising from a short-term increase in ozone.'''  
-
+Test
 #Import libraries
 import glob #Dynamic file name loading
 import numpy as np #Array processing
@@ -16,12 +16,12 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string = 'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
+f_string = 'D:/Data/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
 o3tracer_switch = True
-rad_fluxes_switch = False
+rad_fluxes_switch = True
 
 #Read in file names based on f_string variable
 filenames_all = sorted(glob.glob(f_string)) #Get all file names in f_string
