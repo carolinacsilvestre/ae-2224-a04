@@ -16,7 +16,7 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string = 'C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Python scripts/data_250/*' #Insert file path to input data, do not forget wildcard
+f_string = 'C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Python scripts/data_250/*' #Insert file path to folder containing all input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -26,10 +26,8 @@ parcel_id = 0
 
 #Read in file names based on f_string variable
 filenames_all = sorted(glob.glob(f_string)) #Get all file names in f_string
-print('/n') #Move to next line, improve readability
 print('Files in input folder: ')
 print(filenames_all)
-print('/n') #Check that all files present in folder are being printed
 
 
 #Variables declaration
