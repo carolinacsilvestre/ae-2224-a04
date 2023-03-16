@@ -20,9 +20,10 @@ from matplotlib.animation import FuncAnimation
 # =============================================================================
 
 #USER INPUT - File path
-f_string = 'C:?Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
+# f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 #f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS*'
 #f_string = 'C:?Users/Carolina Silvestre\Desktop\dataproject*'
+f_string = 'D:/Python safe/all test data/*'
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -318,6 +319,9 @@ if attila_switch == True and Horizontal == True:
 # =============================================================================
 
 #Requires ATTILA air parcel trajectory locatio and O3 data
+
+
+    
 
 
 Vertical = True         ##activation of vertical location plot with colorbar##
