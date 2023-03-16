@@ -115,9 +115,9 @@ if rad_fluxes_switch == True:
         if file.find('fluxes_tp') != -1 and file.find('EP02') != -1:
             #fluxes_tp_NAmerica_July2014_EP02
             data = Dataset(file,'r')
-            print('\n')
-            print('File loaded: ')
-            print(file)
+            # print('\n')
+            # print('File loaded: ')
+            # print(file)
             
             #Radiative fluxes
             rad_flx_SW_02 = data.variables['flxs_tp'][:]
@@ -128,9 +128,9 @@ if rad_fluxes_switch == True:
             #If there is no match, output is -1.
             if file.find('fluxes_tp') != -1 and file.find('EP'+str(ep).zfill(2)) != -1:
                 data = Dataset(file,'r')
-                print('\n')
-                print('File loaded: ')
-                print(file)
+                # print('\n')
+                # print('File loaded: ')
+                # print(file)
                 
                 #Radiative fluxes
                 rad_flx_SW = data.variables['flxs_tp'][:]
@@ -197,10 +197,10 @@ if rad_fluxes_switch == True:
 
 #Requires ATTILA air parcel trajectory location data
 
-Vertical = True         ##Activation of vertical position plot##
+vertical_1 = False         ##Activation of vertical position plot##
 
 
-if attila_switch == True and Vertical == True:
+if attila_switch == True and vertical_1 == True:
 
     #Set up axis object for plotting the map
     fig, ax = plt.subplots()
@@ -313,6 +313,12 @@ if attila_switch == True and Horizontal == True:
     plt.show()
     plt.close()
 
+
+
+
+
+
+
 # =============================================================================
 # PLOT TYPE 3 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS W/ COLORBAR
 # =============================================================================
@@ -320,12 +326,43 @@ if attila_switch == True and Horizontal == True:
 #Requires ATTILA air parcel trajectory locatio and O3 data
 
 
+time_window = 45  ##time window for calculating the RoD##
+time_window_arr = np.arange(0,45,0.25)     ##Time window splitted into an array, for future plotting and finding elements##
+number_of_t = int(time_window / 0.25)
+emission_point = 1
+RoD_arr = np.array([])         ##An array representing the rate of descent of the 50 parcels in location x(input)####
+
+
+for i in range((emission_point-1) * 50,(emission_point)*50):
+    ppress_temp = ppress[:,i]
+    # print(type(ppress_temp))
+    # print(np.shape(ppress_temp))
+    ppress_temp = ppress_temp[0:number_of_t]
+
+    min = int(np.where(ppress_temp == np.min(ppress_temp))[0])
+
+    time_at_minimum = time_window_arr[min]
+    # print(time_at_minimum)
+    RoD = (-ppress_temp[0] + ppress_temp[min]) / time_at_minimum
+    RoD_arr = np.append(RoD_arr, RoD)
     
+print('len RoD', len(RoD_arr))
+
+print(RoD_arr)
 
 
-Vertical = True         ##activation of vertical location plot with colorbar##
 
-if attila_switch == True and o3tracer_switch == True and Vertical == True:
+
+
+# print(ppress[15])
+# print(len(ppress[15]))
+# # print(time)
+# print(len(time))
+# print(np.shape(ppress))
+
+vertical = True         ##activation of vertical location plot with colorbar##
+
+if attila_switch == True and o3tracer_switch == True and vertical == True:
 
     #Set up axis object for plotting the map
     fig, ax = plt.subplots()
@@ -384,6 +421,11 @@ if attila_switch == True and o3tracer_switch == True and Vertical == True:
                 format="png",dpi=300)
     plt.show()
     plt.close()
+
+
+
+
+
 
 # =================================================================================
 # PLOT TYPE 4 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP) W/ COLORBAR
