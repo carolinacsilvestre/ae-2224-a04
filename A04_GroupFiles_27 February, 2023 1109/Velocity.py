@@ -195,7 +195,7 @@ if rad_fluxes_switch == True:
 
 #Requires ATTILA air parcel trajectory location data
 
-Vertical = True         ##activation of vertical position plot##
+Vertical = True         ##Activation of vertical position plot##
 
 
 if attila_switch == True and Vertical == True:
@@ -345,6 +345,9 @@ if attila_switch == True and o3tracer_switch == True and Vertical == True:
     sc = ax.scatter(time, ppress[:,parcel3], s=30, marker='o', 
                     c=airO3_001[:,parcel3]*1E09,
                     cmap=cmap,norm=norm ,linewidth=1)
+
+    # print('lennnnnnn', len(airO3_001[:,parcel3]))
+    
     
     #Pressure altitude increases towards the surface, reading convention
     ax.invert_yaxis()
