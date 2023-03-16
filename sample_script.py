@@ -485,7 +485,7 @@ if attila_switch == True and o3tracer_switch == True:
     plt.savefig("air_parcel_ID"+str(parcel4)+"_map_colorbar.png",format="png",dpi=300)
     plt.show()
     plt.close()
-    
+ """   
 # =============================================================================
 # PLOT TYPE 5 - Net radiative fluxes from short-term ozone increase (Single EP)
 # =============================================================================
@@ -510,7 +510,7 @@ if attila_switch == True and rad_fluxes_switch == True:
                          resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
     
     #Shift the fluxes from [0,360] to [-180,180]
-    net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[1], 
+    net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[5], 
                                            lons_0to36,start=False)
     
     #Format the lat and lon arrays for map graphing, 
@@ -562,7 +562,7 @@ if attila_switch == True and rad_fluxes_switch == True:
     plt.savefig("rad_fluxes_map_example.png",format="png",dpi=300)
     plt.show()
     plt.close()
-
+"""
 # =============================================================================
 # PLOT TYPE 7 - Net radiative fluxes from short-term ozone increase with airparcel trajectory (Single EP)
 # =============================================================================
@@ -758,18 +758,82 @@ anim = FuncAnimation(fig, animate, frames=len(plon[:,1]), interval=200)
 anim.save('earthquake_map2.gif', writer='pillow', fps=5)
 """
 
+
 #plot of RF result
 flux_list = []
 for n in range(28):
     flux = global_net_flx[n]
     flux_time_avg = np.mean(flux,axis=0)
     flux_list.append(np.sum(flux_time_avg))
-flux_list = np.array(flux_list).reshape(7, 4) 
+flux_list = np.array(flux_list).reshape(7, 4,order="F") 
+print(flux_list)
+lat = np.linspace(85,25,7)  # define x as an array with 4 elements
+lon = np.linspace(-115,-55,4)  # define y as an array with 7 elements
+#plt.pcolormesh(lon,lat,flux_list, cmap='RdYlGn_r')
+#plt.colorbar()
+#plt.show()
 
-x = np.arange(1,5)  # define x as an array with 4 elements
-y = np.arange(1,8)  # define y as an array with 7 elements
-plt.colorbar
-plt.gca().invert_yaxis()
-plt.pcolormesh(x,y,flux_list, cmap='Reds')
+
+
+#Set up axis object for plotting the map
+fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+    
+#Adjust dimensions of map plot
+fig.set_figheight(8)
+fig.set_figwidth(14)
+    
+#Define map projection and settings
+#For more info: https://matplotlib.org/basemap/users/cyl.html
+mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                         llcrnrlon = -135,
+                         llcrnrlat = 10,
+                         urcrnrlon = -35,
+                         urcrnrlat = 90,
+                         resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+    
+#Shift the fluxes from [0,360] to [-180,180]
+#net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[1], lons_0to36,start=False)
+    
+#Format the lat and lon arrays for map graphing, 
+#makes lat array a lat x lon array and same for lon array
+#lon, lat = np.meshgrid(lons_shft, lats)
+x, y = mp(lon, lat)
+    
+#Choose the settings for the coastlines, countries, meridians...
+mp.drawcoastlines(linewidth=0.2)
+mp.drawcountries(linewidth=0.2)
+    
+meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                         labels=[False,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+    
+mp.drawparallels(np.arange(-90,110,20), 
+                         labels=[True,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+    
+#Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
+cmap= matplotlib.colors.ListedColormap(colors)
+    
+cmap.set_under("w")
+cmap.set_over("red")
+    
+   
+#Plot the flux on the map
+sc2 = mp.pcolor(x, y, flux_list,
+                    cmap='RdYlGn_r',shading='auto')
+    
+#Define colorbar features
+cb = fig.colorbar(sc2, extend='both', 
+                     orientation='horizontal',fraction=0.052, 
+                      pad=0.065)
+    
+#Adjust colorbar tickmark size
+cb.ax.tick_params(labelsize=14)
+    
+#Label the colorbar
+cb.set_label(label="Radiative Forcing due to emissions from every emission point",size=14,weight='bold')
+    
+    #Save and close the map plot
 plt.show()
-
+plt.close()
