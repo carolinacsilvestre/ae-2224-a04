@@ -1,14 +1,4 @@
-#yoooooooooooooooooooooooooooo
-print('yooo')
-<<<<<<< HEAD
-import numpy as np
 
-
-#yoyoyoyoyoyoyoyoyoy
-
-yo = ['gray','dude','is','eating','pancakes']
-print(yo)
-=======
 
 '''Sample script for reading in data and visualizing the
 Lagrangian air parcel trajectories along with the net radiative fluxes
@@ -540,4 +530,3 @@ if attila_switch == True and rad_fluxes_switch == True and Net_radiative == True
     plt.savefig("rad_fluxes_map_example.png",format="png",dpi=300)
     plt.show()
     plt.close()
->>>>>>> 358ec8687812394bfc535b63516096331a19d51f
