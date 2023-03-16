@@ -345,7 +345,8 @@ for i in range((emission_point-1) * 50,(emission_point)*50):
     # print(time_at_minimum)
     RoD = (-ppress_temp[0] + ppress_temp[min]) / time_at_minimum
     RoD_arr = np.append(RoD_arr, RoD)
-    
+
+
 print('len RoD', len(RoD_arr))
 
 print(RoD_arr)
