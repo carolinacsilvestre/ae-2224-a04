@@ -1,4 +1,5 @@
-
+'''Taking 1 emission point. For each of the 50 air parcels: define time window (first 45d), finding rate of descent,
+   average mixing ratio, plot average mixing ratio against rate of descent. Do statistical analysis'''
 
 '''Sample script for reading in data and visualizing the
 Lagrangian air parcel trajectories along with the net radiative fluxes
@@ -19,7 +20,7 @@ from matplotlib.animation import FuncAnimation
 # =============================================================================
 
 #USER INPUT - File path
-f_string = 'D:/Python safe/all test data/*' #Insert file path to input data, do not forget wildcard
+f_string = 'C:?Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
