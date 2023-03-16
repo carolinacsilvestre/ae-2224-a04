@@ -23,6 +23,7 @@ from matplotlib.animation import FuncAnimation
 f_string = 'C:?Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 #f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS*'
 #f_string = 'C:?Users/Carolina Silvestre\Desktop\dataproject*'
+
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
 o3tracer_switch = True
