@@ -197,10 +197,10 @@ if rad_fluxes_switch == True:
 
 #Requires ATTILA air parcel trajectory location data
 
-vertical_1 = False         ##Activation of vertical position plot##
+activate_plot1 = False         ##Activation of vertical position plot##
 
 
-if attila_switch == True and vertical_1 == True:
+if attila_switch == True and activate_plot1 == True:
 
     #Set up axis object for plotting the map
     fig, ax = plt.subplots()
@@ -242,10 +242,10 @@ if attila_switch == True and vertical_1 == True:
 # PLOT TYPE 2 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP)
 # =============================================================================
 
-Horizontal = False          ##Activation of trajectory plot##
+activate_plot2 = False          ## Activation of trajectory plot ##
 
 #Requires ATTILA air parcel trajectory location data
-if attila_switch == True and Horizontal == True:
+if attila_switch == True and activate_plot2 == True:
 
     parcel2 = list(range(100,140)) #Parcel ID, 0 means first.
     # print('parcel2', parcel2)
@@ -362,7 +362,7 @@ for i in range((emission_point-1) * 50,(emission_point)*50):                ## A
 # print(MR_arr)
 # print(len(MR_arr))
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots()                                                        ## Plot MR W.R.T. RoD ##
 fig.set_figheight(8)
 fig.set_figwidth(15)
 ax.grid(True)
@@ -391,9 +391,9 @@ plt.close()
 # print(len(time))
 # print(np.shape(ppress))
 
-vertical = False         ##activation of vertical location plot with colorbar##
+activate_plot3 = False         ##activation of vertical location plot with colorbar##
 
-if attila_switch == True and o3tracer_switch == True and vertical == True:
+if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     #Set up axis object for plotting the map
     fig, ax = plt.subplots()
@@ -463,9 +463,10 @@ if attila_switch == True and o3tracer_switch == True and vertical == True:
 # =================================================================================
 
 #Requires ATTILA air parcel trajectory locatio and O3 data
-Mixing_ratio = False         ## Activation mixing ratio plot ##
 
-if attila_switch == True and o3tracer_switch == True and Mixing_ratio == True:
+activate_plot4 = False         ## Activation mixing ratio plot ##
+
+if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
     parcel4 = 25 #Parcel ID, 0 means first.
     
@@ -545,9 +546,10 @@ if attila_switch == True and o3tracer_switch == True and Mixing_ratio == True:
 # =============================================================================
 
 #Requires lat,lon from ATTILA data files and fluxes
-Net_radiative = False
 
-if attila_switch == True and rad_fluxes_switch == True and Net_radiative == True:
+activate_plot5 = False
+
+if attila_switch == True and rad_fluxes_switch == True and activate_plot5 == True:
     
     #Set up axis object for plotting the map
     fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
