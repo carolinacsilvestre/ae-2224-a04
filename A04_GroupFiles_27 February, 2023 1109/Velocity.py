@@ -203,7 +203,11 @@ if rad_fluxes_switch == True:
 # =============================================================================
 
 #Requires ATTILA air parcel trajectory location data
-if attila_switch == True:
+
+Vertical = True         ##activation of vertical position plot##
+
+
+if attila_switch == True and Vertical == True:
 
     #Set up axis object for plotting the map
     fig, ax = plt.subplots()
@@ -321,7 +325,9 @@ if attila_switch == True and Horizontal == True:
 # =============================================================================
 
 #Requires ATTILA air parcel trajectory locatio and O3 data
-Vertical = True         ##activation of vertical location plot##
+
+
+Vertical = True         ##activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and Vertical == True:
 
