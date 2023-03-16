@@ -326,34 +326,64 @@ if attila_switch == True and Horizontal == True:
 #Requires ATTILA air parcel trajectory locatio and O3 data
 
 
-time_window = 45  ##time window for calculating the RoD##
-time_window_arr = np.arange(0,45,0.25)     ##Time window splitted into an array, for future plotting and finding elements##
-number_of_t = int(time_window / 0.25)
-emission_point = 1
-RoD_arr = np.array([])         ##An array representing the rate of descent of the 50 parcels in location x(input)####
+############# INPUT SECTION ############
+
+time_window = 45                                                            ## Time window (days) for calculating the RoD ##
+emission_point = 1                                                          ## The number of emission point (choose from 1 to 28) ##
+
+#########################################
+
+time_window_arr = np.arange(0,time_window,0.25)                             ## Time window splitted into an array, for future plotting and finding elements ##
+number_of_t = int(time_window / 0.25)                                       ## Total number of time increments until time window (the increament 0.25 is given in the data, cannot change) ##
+RoD_arr = np.array([])                                                      ## An array representing the rate of descent of the 50 parcels in location N(input), it should contain 50 elements##
+MR_arr = np.array([])                                                       ## An array representing the average mixing ratio of the 50 parcels ##
 
 
-for i in range((emission_point-1) * 50,(emission_point)*50):
-    ppress_temp = ppress[:,i]
+for i in range((emission_point-1) * 50,(emission_point)*50):                ## A loop covering all 50 parcels in one emission location ##
+
+    ppress_temp = ppress[:,i]                                                   ## Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
     # print(type(ppress_temp))
     # print(np.shape(ppress_temp))
-    ppress_temp = ppress_temp[0:number_of_t]
+    ppress_temp1 = ppress_temp[0:number_of_t]                                   ## Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
 
-    min = int(np.where(ppress_temp == np.min(ppress_temp))[0])
+    min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
 
-    time_at_minimum = time_window_arr[min]
+    time_at_minimum = time_window_arr[min]                                      ## Find out the time corresponding to the minimum altitude ##
     # print(time_at_minimum)
-    RoD = (-ppress_temp[0] + ppress_temp[min]) / time_at_minimum
-    RoD_arr = np.append(RoD_arr, RoD)
+    # print(time_at_minimum)
+    RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
+    RoD_arr = np.append(RoD_arr, RoD)                                           ## Append the R.O.D. of each single parcel into an array ##
 
 
-print('len RoD', len(RoD_arr))
+    mr_one_parcel = airO3_001[:,i][0:number_of_t]                               ## Mixing ratio of a single parcel, expressed as an array W.R.T. time window ##
+    average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
+    MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
 
-print(RoD_arr)
+# print(MR_arr)
+# print(len(MR_arr))
+
+fig, ax = plt.subplots()
+fig.set_figheight(8)
+fig.set_figwidth(15)
+ax.grid(True)
+# ax.set_aspect('equal')
+# ax.set_xlim([0, 30])
+# ax.set_ylim([0, 6E-8])
+ax.set_xticks(np.arange(0,30,2.5))
+ax.set_yticks(np.arange(0,6E-8,3E-9))
+ax.scatter(RoD_arr, MR_arr)
+ax.set_xlabel('Rate of descent of 50 parcels')
+ax.set_ylabel('Mixing ratio of 50 parcels')
+ax.set_title('MR with respect to RoD, emission location' + str(emission_point))
+plt.show()
+plt.close()
 
 
+# print(time_window_arr[3])
+# print(ppress[:,3])
+# print('len RoD', len(RoD_arr))
 
-
+# print(RoD_arr)
 
 # print(ppress[15])
 # print(len(ppress[15]))
@@ -361,7 +391,7 @@ print(RoD_arr)
 # print(len(time))
 # print(np.shape(ppress))
 
-vertical = True         ##activation of vertical location plot with colorbar##
+vertical = False         ##activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and vertical == True:
 
@@ -372,8 +402,8 @@ if attila_switch == True and o3tracer_switch == True and vertical == True:
     fig.set_figheight(8)
     fig.set_figwidth(14)
     
-    parcel3 = 25 #Parcel ID, 0 means first.
-    
+    parcel3 = 0 #Parcel ID, 0 means first.
+
     #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
     colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
     cmap= matplotlib.colors.ListedColormap(colors)
