@@ -190,7 +190,7 @@ if rad_fluxes_switch == True:
 # =============================================================================
 
 #Requires ATTILA air parcel trajectory location data
-def plot_air_parcel_trajectories(ID):
+def plot_air_parcel_trajectories(Air_Parcel_ID):
     if attila_switch == True:
 
         #Set up axis object for plotting the map
@@ -200,7 +200,7 @@ def plot_air_parcel_trajectories(ID):
         fig.set_figheight(8)
         fig.set_figwidth(14)
 
-        parcel = ID #Parcel ID, 0 means first.
+        parcel = Air_Parcel_ID #Parcel ID, 0 means first.
 
         #Scatter plot settings
         plot = plt.scatter(time, ppress[:,parcel], s=30, marker='o', color='green')
@@ -236,10 +236,10 @@ def plot_air_parcel_trajectories(ID):
 # =============================================================================
 
 #Requires ATTILA air parcel trajectory location data
-def plot_air_parcel_trajectories_map(ID):
+def plot_air_parcel_trajectories_map(Air_Parcel_ID):
     if attila_switch == True:
 
-        parcel2 = ID #Parcel ID, 0 means first.
+        parcel2 = Air_Parcel_ID #Parcel ID, 0 means first.
 
         #Set up axis object for plotting the map
         fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
@@ -301,7 +301,7 @@ def plot_air_parcel_trajectories_map(ID):
 # =============================================================================
 
 #Requires ATTILA air parcel trajectory location and O3 data
-def plot_air_parcel_trajectories_colorbar(ID):
+def plot_air_parcel_trajectories_colorbar(Air_Parcel_ID):
     if attila_switch == True and o3tracer_switch == True:
 
         #Set up axis object for plotting the map
@@ -311,7 +311,7 @@ def plot_air_parcel_trajectories_colorbar(ID):
         fig.set_figheight(8)
         fig.set_figwidth(14)
 
-        parcel3 = ID #Parcel ID, 0 means first.
+        parcel3 = Air_Parcel_ID #Parcel ID, 0 means first.
 
         #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
         colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
@@ -368,10 +368,10 @@ def plot_air_parcel_trajectories_colorbar(ID):
 # =================================================================================
 
 #Requires ATTILA air parcel trajectory locatio and O3 data
-def plot_air_parcel_trajectories_map_colorbar(ID):
+def plot_air_parcel_trajectories_map_colorbar(Air_Parcel_ID):
     if attila_switch == True and o3tracer_switch == True:
 
-        parcel4 = ID #Parcel ID, 0 means first.
+        parcel4 = Air_Parcel_ID #Parcel ID, 0 means first.
 
         #Set up axis object for plotting the map
         fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
@@ -450,7 +450,7 @@ def plot_air_parcel_trajectories_map_colorbar(ID):
 # =============================================================================
 
 #Requires lat,lon from ATTILA data files and fluxes
-def plot_net_radiative_fluxes_single_EP(Parcel_ID):
+def plot_net_radiative_fluxes_single_EP(Emission_point):
     if attila_switch == True and rad_fluxes_switch == True:
 
         #Set up axis object for plotting the map
@@ -470,7 +470,7 @@ def plot_net_radiative_fluxes_single_EP(Parcel_ID):
                              resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
 
         #Shift the fluxes from [0,360] to [-180,180]
-        net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[Parcel_ID],
+        net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[Emission_point],
                                                lons_0to36,start=False)
 
         #Format the lat and lon arrays for map graphing,
