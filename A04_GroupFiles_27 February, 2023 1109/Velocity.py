@@ -20,7 +20,7 @@ from matplotlib.animation import FuncAnimation
 # =============================================================================
 
 #USER INPUT - File path
-# f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
+#f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 #f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS*'
 f_string = 'D:/Python safe/all test data/*'
 
