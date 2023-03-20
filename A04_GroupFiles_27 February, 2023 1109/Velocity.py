@@ -350,28 +350,48 @@ for emission_point in range (1, 28):
     # print(np.shape(ppress_temp))
         ppress_temp1 = ppress_temp[0:number_of_t]                                   ## Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
 
+        
+
         min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
-
         time_at_minimum = time_window_arr[min]                                      ## Find out the time corresponding to the minimum altitude ##
+        # print(str(i),time_at_minimum)
+    
     # print(time_at_minimum)
     # print(time_at_minimum)
-        RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
-        RoD_arr = np.append(RoD_arr, RoD)                                           ## Append the R.O.D. of each single parcel into an array ##
-         
 
+        if ppress_temp1[min] == ppress_temp1[0]:
+            
+            min = min = int(np.where(ppress_temp1 == np.min(ppress_temp1))[0]) 
+            time_at_minimum = time_window_arr[min]  
+            RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
+            
+
+        elif ppress_temp1[min] != ppress_temp1[0]:
+
+            min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
+            time_at_minimum = time_window_arr[min]                                      ## Find out the time corresponding to the minimum altitude ##
+            # print(str(i),time_at_minimum)
+
+            RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum
+
+
+
+        RoD_arr = np.append(RoD_arr, RoD)                                           ## Append the R.O.D. of each single parcel into an array ##
         mr_one_parcel = airO3_001[:,i][0:number_of_t]                               ## Mixing ratio of a single parcel, expressed as an array W.R.T. time window ##
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
 
 
 
-    MR_average = np.average(MR_arr)                         
+    # print('shitshow', ppress[:,342])
+
+    MR_average = np.average(MR_arr)                                                 
     RoD_average = np.average(RoD_arr) 
-    # print('sabnxfgklsdhgfig', RoD_average)
+    # print('sabnxfgklsdhgfig', RoD_average)                                        
     
-    RoD_average_arr = np.append(RoD_average_arr, RoD_average)
-    MR_average_arr = np.append(MR_average_arr, MR_average)
-    print(len(MR_average_arr))                     
+    RoD_average_arr = np.append(RoD_average_arr, RoD_average)                       
+    MR_average_arr = np.append(MR_average_arr, MR_average)                          
+    # print(len(MR_average_arr))                                                    
 
 # print(MR_arr)
 # print(len(MR_arr))
@@ -405,7 +425,7 @@ if plot_emission_point == True:
     # ax.set_ylim([0, 6E-8])
     # ax.set_xticks(np.arange(0,30,2.5))
     # ax.set_yticks(np.arange(0,6E-8,3E-9))
-    ax.scatter(RoD_average_arr, MR_average_arr)
+    ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
     ax.set_xlabel('Rate of descent of all parcels of 28 emission locations')
     ax.set_ylabel('Mixing ratio of all parcels of 28 emission locations')
     ax.set_title(str(emission_point))
@@ -526,7 +546,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
     x, y = mp(lon, lat)
     
     #Choose the settings for the coastlines, countries, meridians...
-    mp.drawcoastlines(linewidth=0.2)
+    mp.drawcoastlines(linewidth=0.2) 
     mp.drawcountries(linewidth=0.2)
     
     meridians = mp.drawmeridians(np.arange(-180,200,20), 
