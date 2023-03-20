@@ -22,7 +22,7 @@ from matplotlib.animation import FuncAnimation
 #USER INPUT - File path
 #f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 #f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
-f_string = 'D:/Python safe/all test data/*'
+f_string = 'D:/Python safe/all test data/*' 
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -328,7 +328,7 @@ if attila_switch == True and activate_plot2 == True:
 
 ############# INPUT SECTION ############
 
-time_window = 40                                                            ## Time window (days) for calculating the RoD ##
+time_window = 90                                                            ## Time window (days) for calculating the RoD ##
 # emission_point = 25                                                          ## The number of emission point (choose from 1 to 28) ##
 
 #########################################
@@ -348,31 +348,29 @@ for emission_point in range (1, 28):
         ppress_temp = ppress[:,i]                                                   ## Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
     # print(type(ppress_temp))
     # print(np.shape(ppress_temp))
-        ppress_temp1 = ppress_temp[0:number_of_t]                                   ## Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
-
-        
-
+        ppress_temp1 = ppress_temp[0 : number_of_t]                                   ## Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
         min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
+        
+        if min == 0:
+
+            min = int(np.where(ppress_temp1 == np.min(ppress_temp1))[0])
+
         time_at_minimum = time_window_arr[min]                                      ## Find out the time corresponding to the minimum altitude ##
         # print(str(i),time_at_minimum)
     
     # print(time_at_minimum)
     # print(time_at_minimum)
 
-        if ppress_temp1[min] == ppress_temp1[0]:
-            
-            min = min = int(np.where(ppress_temp1 == np.min(ppress_temp1))[0]) 
-            time_at_minimum = time_window_arr[min]  
-            RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
+        RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
             
 
-        elif ppress_temp1[min] != ppress_temp1[0]:
+        # elif ppress_temp1[min] != ppress_temp1[0]:
 
-            min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
-            time_at_minimum = time_window_arr[min]                                      ## Find out the time corresponding to the minimum altitude ##
-            # print(str(i),time_at_minimum)
+        #     min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
+        #     time_at_minimum = time_window_arr[min]                                      ## Find out the time corresponding to the minimum altitude ##
+        #     # print(str(i),time_at_minimum)
 
-            RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum
+        #     RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum
 
 
 
@@ -428,7 +426,7 @@ if plot_emission_point == True:
     ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
     ax.set_xlabel('Rate of descent of all parcels of 28 emission locations')
     ax.set_ylabel('Mixing ratio of all parcels of 28 emission locations')
-    ax.set_title(str(emission_point))
+    ax.set_title(str(28))
     plt.show()
     plt.close()
 
