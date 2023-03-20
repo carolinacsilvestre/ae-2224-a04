@@ -193,36 +193,35 @@ if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_stri
 
 ###########
 
+#parcel10=0
+
+#print(plon[0,parcel10],plat[0,parcel10])
+
 def Trend(EmissionPoint):
-    Parcel2B=np.arange((EmissionPoint-1)*50, 1)
-    
+    #Parcel2B=np.arange((EmissionPoint-1)*50, 1)
+    Parcel2B=[0]
 
     TrendMapParcel=np.zeros((9,18))
-    print(TrendMapParcel)
+    #print(TrendMapParcel)
     #print(Parcel2B)
     for Parcel2Bi in Parcel2B:
-      # print("hiii")
-      # print(Parcel2Bi)
-      # print("byeee")
-       for day in range(1):
-          #print(day)
-        
-            #print(day,Parcel2Bi)   
+       for day in range(90):
+          
           for i in range(18):  
-            print('hi')   
-            if   -180+i*20 < plon[day,Parcel2Bi] and -180+(i+1)*20 > plon[day,Parcel2Bi]:
+            #print(i)   
+            if   -180+i*20 < plon[day,Parcel2Bi] and -180+(i+1)*20 >= plon[day,Parcel2Bi]:
               #print(-180+i*20 ,plon[day,Parcel2Bi],-180+(i+1)*20)
-              print('hi')
+              #print('hi')
               for Nlong in range(9):
-                 print(90-i*20,plat[day,int(Nlong)],90-(i+1)*20)
-                 if 90-i*20 >plat[day,int(Nlong)] and 90-(i+1)*20 <plat[day,int(Nlong)]:
+                 #print(90-Nlong*20,plat[day,int(Nlong)],90-(Nlong+1)*20)
+                 if 90-Nlong*20 >plat[day,int(Nlong)] and 90-(Nlong+1)*20 <=plat[day,int(Nlong)]:
                     TrendMapParcel[Nlong][i]+=1
 
 
 
 
     print(TrendMapParcel)
-           
+    print(np.sum(TrendMapParcel))     
            
 
 
@@ -344,16 +343,16 @@ if attila_switch == True:
         parcel2 = i
         ax.scatter(plon[:,parcel2], plat[:,parcel2], s=20, marker='o', c=ppress[:,parcel],
                 zorder=2)
-    
+
         
-    
+
         ax.scatter(plon[-1,parcel2], plat[-1,parcel2], s=140, marker='$F$', color='red',
-               zorder=2)
+                zorder=2)
         
         #Plot start and end points with an "S" and "F" respectively.
         ax.scatter(plon[0,parcel2], plat[0,parcel2], s=140, marker='$S$', color='red',
-               zorder=2)
-    
+                zorder=2)
+
 #original
   ##  parcel2=50
  ##   ax.scatter(plon[:,parcel2], plat[:,parcel2], s=20, marker='o', c=ppress[:,parcel],
