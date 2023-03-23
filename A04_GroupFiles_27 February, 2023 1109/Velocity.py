@@ -23,7 +23,7 @@ import scipy.stats
 #USER INPUT - File path
 #f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 #f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
-f_string = 'D:/Python safe/all test data/*' 
+f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*' 
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -329,7 +329,7 @@ if attila_switch == True and activate_plot2 == True:
 
 ############# INPUT SECTION ############
 
-time_window = 90                                                            ## Time window (days) for calculating the RoD ##
+time_window = 40                                                            ## Time window (days) for calculating the RoD ##
 # emission_point = 25                                                          ## The number of emission point (choose from 1 to 28) ##
 
 #########################################
@@ -346,7 +346,8 @@ MR_average_arr = np.array([])
 # ccs, ps = scipy.stats.spearmanr(x, y)
 # cck, pk = scipy.stats.kendalltau(x, y)
 
-
+list_average_rod = []
+list_median_rod = []
 for emission_point in range (1, 28):
 
     for i in range((emission_point-1) * 50,(emission_point)*50):                ## A loop covering all 50 parcels in one emission location ##
@@ -368,9 +369,7 @@ for emission_point in range (1, 28):
     # print(time_at_minimum)
 
         RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
-        # ccp, pp = scipy.stats.pearsonr(RoD, y) 
-        # ccs, ps = scipy.stats.spearmanr(RoD, y)
-        # cck, pk = scipy.stats.kendalltau(RoD, y)    
+          
 
         # elif ppress_temp1[min] != ppress_temp1[0]:
 
@@ -386,6 +385,10 @@ for emission_point in range (1, 28):
         mr_one_parcel = airO3_001[:,i][0:number_of_t]                               ## Mixing ratio of a single parcel, expressed as an array W.R.T. time window ##
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
+        mean_mr = np.mean(MR_arr)
+        ccp, pp = scipy.stats.pearsonr(RoD, mean_mr) 
+        ccs, ps = scipy.stats.spearmanr(RoD, mean_mr)
+        cck, pk = scipy.stats.kendalltau(RoD, mean_mr)                             
 
 
 
@@ -393,11 +396,22 @@ for emission_point in range (1, 28):
 
     MR_average = np.average(MR_arr)                                                 
     RoD_average = np.average(RoD_arr) 
+    RoD_median = np.median(RoD_arr)
+    list_average_rod.append(RoD_average)
+    list_median_rod.append(RoD_median)
+
     # print('sabnxfgklsdhgfig', RoD_average)                                        
     
     RoD_average_arr = np.append(RoD_average_arr, RoD_average)                       
     MR_average_arr = np.append(MR_average_arr, MR_average)                          
     # print(len(MR_average_arr))                                                    
+
+print(list_average_rod)
+print(list_median_rod)
+
+print(list_average_rod.sort())
+print(list_median_rod.sort())
+
 
 # print(MR_arr)
 # print(len(MR_arr))
