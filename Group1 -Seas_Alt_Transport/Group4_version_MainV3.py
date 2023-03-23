@@ -207,7 +207,7 @@ def TrendMap(EmissionPoint):
     print(np.sum(TrendMapPlot))
     return TrendMapPlot
 
-#hello
+#hello hi
 print(TrendMap(0))
 
 
@@ -594,9 +594,45 @@ if attila_switch == True and rad_fluxes_switch == True:
 import numpy as np
 import matplotlib.pyplot as plt
   
-data = TrendMap(0)
 
-plt.imshow( data , cmap = 'autumn' , interpolation = 'nearest' )
+#3
+fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+
+#Adjust dimensions of map plot
+fig.set_figheight(8)
+fig.set_figwidth(14)
+
+#Define map projection and settings
+#For more info: https://matplotlib.org/basemap/users/cyl.html
+mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                        llcrnrlon = -180,
+                        llcrnrlat = -90,
+                        urcrnrlon = 180,
+                        urcrnrlat = 90,
+                        resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+
+#Format the lat and lon arrays for map graphing, 
+#makes lat array a lat x lon array and same for lon array
+lon, lat = np.meshgrid(lons_18to18, lats)
+x, y = mp(lon, lat)
+
+#Choose the settings for the coastlines, countries, meridians...
+mp.drawcoastlines(linewidth=0.2)
+mp.drawcountries(linewidth=0.2)
+
+meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                        labels=[False,False,False,True], 
+                        linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+
+mp.drawparallels(np.arange(-90,110,20), 
+                        labels=[True,False,False,True], 
+                        linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+
+mp.fillcontinents(color='lightgray')
+#3
+data = TrendMap(0)
+# we can use differenrt cmaps (initial one =>'autumn' )
+plt.imshow( data , cmap = 'hot' , interpolation = 'nearest' )
   
 plt.title( "2-D Heat Map" )
 plt.show()

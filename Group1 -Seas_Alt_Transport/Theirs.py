@@ -20,8 +20,8 @@ import matplotlib.cm as cm
 f_string = r"C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #Insert file path to folder containing all input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
-attila_switch = True
-o3tracer_switch = True
+attila_switch = False
+o3tracer_switch = False
 rad_fluxes_switch = True
 parcel_id = 249
 #Read in file names based on f_string variable
