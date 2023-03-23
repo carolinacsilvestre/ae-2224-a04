@@ -210,6 +210,7 @@ def TrendMap(EmissionPoint):
                         if 90-(Nlat*step) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*step):
                             TrendMapPlot[Nlat][Nlong]+=1
     print(np.sum(TrendMapPlot))
+    TrendMapPlot=np.flip(TrendMapPlot,0)
     return TrendMapPlot
 
 #hello
@@ -698,7 +699,7 @@ cmap.set_over("red")
    
 #Plot the flux on the map
 sc2 = mp.pcolor(x, y, flux_list,
-                    cmap='RdYlGn_r',shading='auto')
+                    cmap='hot_r',shading='auto')
     
 #Define colorbar features
 cb = fig.colorbar(sc2, extend='both', 
@@ -709,7 +710,7 @@ cb = fig.colorbar(sc2, extend='both',
 cb.ax.tick_params(labelsize=14)
     
 #Label the colorbar
-cb.set_label(label="Radiative Forcing due to emissions from every emission point",size=14,weight='bold')
+cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold')
     
     #Save and close the map plot
 plt.show()
