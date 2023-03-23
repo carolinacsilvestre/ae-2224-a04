@@ -16,7 +16,7 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string = 'D:/Data/*' #Insert file path to input data, do not forget wildcard
+f_string = 'C:/Users/31683/Desktop/project data/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -26,7 +26,7 @@ rad_fluxes_switch = True
 #Read in file names based on f_string variable
 filenames_all = sorted(glob.glob(f_string)) #Get all file names in f_string
 print('\n') #Move to next line, improve readability
-print('Files in input folder: ')
+print('Files in input folder: ') 
 print('\n') #Check that all files present in folder are being printed
 print(filenames_all)
 
@@ -102,7 +102,7 @@ if o3tracer_switch == True:
     airO3_001 = np.concatenate(airO3_001, axis=0)
     
 #Radiative fluxes corresponding to O3 increase, specifically for 250hPa
-if rad_fluxes_switch == True and '250' in f_string:
+if rad_fluxes_switch == True: #and '250' in f_string:
     for file in filenames_all:
         
         #Get call 2 separately, which will be subtracted from calls 3-30
@@ -137,7 +137,7 @@ if rad_fluxes_switch == True and '250' in f_string:
     #Delete unnecessary variables
     del rad_flx_LW, rad_flx_SW, rad_flx_LW_02, rad_flx_SW_02
     
-#Fluxes from the VISO submodel, for 200 and 300 hPa
+'''#Fluxes from the VISO submodel, for 200 and 300 hPa
 if rad_fluxes_switch == True and not '250' in f_string:
     #Start at 3 since first two calls are not emission points
     for ep in range(3,31):
@@ -184,7 +184,7 @@ if rad_fluxes_switch == True and not '250' in f_string:
 #Delete unnecessary variables
 if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_string:
     del temp, data
-
+'''
 # =============================================================================
 # PLOT TYPE 1 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS
 # =============================================================================
