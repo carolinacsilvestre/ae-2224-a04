@@ -193,21 +193,26 @@ if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_stri
 
 #print(plon[0,parcel10],plat[0,parcel10])
 
+step = 10
+columns = 360/step
+rows = 180/step
+
 def TrendMap(EmissionPoint):
+
     parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)
-    TrendMapPlot = np.zeros((9,18))
+    TrendMapPlot = np.zeros((int(rows),int(columns)))
     
     for parcel2Ai in parcel2A:
         for point in range(len(plon[:,parcel2Ai])):
-            for Nlong in range(18):
-                if -180+(Nlong*20) <= plon[point,parcel2Ai] and plon[point,parcel2Ai] <= -180+((Nlong+1)*20):
-                    for Nlat in range(9):
-                        if 90-(Nlat*20) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*20):
+            for Nlong in range(int(columns)):
+                if -180+(Nlong*step) <= plon[point,parcel2Ai] and plon[point,parcel2Ai] <= -180+((Nlong+1)*step):
+                    for Nlat in range(int(rows)):
+                        if 90-(Nlat*step) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*step):
                             TrendMapPlot[Nlat][Nlong]+=1
     print(np.sum(TrendMapPlot))
     return TrendMapPlot
 
-#hello hi
+#hello
 print(TrendMap(0))
 
 
