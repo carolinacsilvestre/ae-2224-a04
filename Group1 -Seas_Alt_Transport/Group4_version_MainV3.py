@@ -594,11 +594,19 @@ if attila_switch == True and rad_fluxes_switch == True:
     plt.close()
 
 
-
+'''
 ##################
 import numpy as np
 import matplotlib.pyplot as plt
   
+data = TrendMap(0)
+#Adjust dimensions of map plot
+
+# we can use differenrt cmaps (initial one =>'autumn' )
+m=plt.imshow( data , cmap = 'hot' , interpolation = 'nearest',aspect="auto" )
+
+
+
 
 #3
 fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
@@ -635,12 +643,77 @@ mp.drawparallels(np.arange(-90,110,20),
 
 mp.fillcontinents(color='lightgray')
 #3
-data = TrendMap(0)
-# we can use differenrt cmaps (initial one =>'autumn' )
-plt.imshow( data , cmap = 'hot' , interpolation = 'nearest' )
+
   
 plt.title( "2-D Heat Map" )
 plt.show()
+'''
+
+flux_list=TrendMap(0)
+lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elements
+lon = np.linspace(-180,180,int(columns)+1)
+#Set up axis object for plotting the map
+fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+    
+#Adjust dimensions of map plot
+fig.set_figheight(8)
+fig.set_figwidth(14)
+    
+#Define map projection and settings
+#For more info: https://matplotlib.org/basemap/users/cyl.html
+mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                         llcrnrlon = -180,
+                         llcrnrlat = -90,
+                         urcrnrlon = 180,
+                         urcrnrlat = 90,
+                         resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+    
+#Shift the fluxes from [0,360] to [-180,180]
+#net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[1], lons_0to36,start=False)
+    
+#Format the lat and lon arrays for map graphing, 
+#makes lat array a lat x lon array and same for lon array
+#lon, lat = np.meshgrid(lons_shft, lats)
+x, y = mp(lon, lat)
+    
+#Choose the settings for the coastlines, countries, meridians...
+mp.drawcoastlines(linewidth=0.2)
+mp.drawcountries(linewidth=0.2)
+    
+meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                         labels=[False,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+    
+mp.drawparallels(np.arange(-90,110,20), 
+                         labels=[True,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+    
+#Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
+cmap= matplotlib.colors.ListedColormap(colors)
+    
+cmap.set_under("w")
+cmap.set_over("red")
+    
+   
+#Plot the flux on the map
+sc2 = mp.pcolor(x, y, flux_list,
+                    cmap='RdYlGn_r',shading='auto')
+    
+#Define colorbar features
+cb = fig.colorbar(sc2, extend='both', 
+                     orientation='horizontal',fraction=0.052, 
+                      pad=0.065)
+    
+#Adjust colorbar tickmark size
+cb.ax.tick_params(labelsize=14)
+    
+#Label the colorbar
+cb.set_label(label="Radiative Forcing due to emissions from every emission point",size=14,weight='bold')
+    
+    #Save and close the map plot
+plt.show()
+plt.close()
 
 
 

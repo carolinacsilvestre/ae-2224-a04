@@ -103,7 +103,7 @@ if o3tracer_switch == True:
     airO3_001 = np.concatenate(airO3_001, axis=0)
     
 #Radiative fluxes corresponding to O3 increase, specifically for 250hPa
-if rad_fluxes_switch == True and '250' in f_string:
+if rad_fluxes_switch == True:# and '250' in f_string:
     for file in filenames_all:
         
         #Get call 2 separately, which will be subtracted from calls 3-30
@@ -138,50 +138,50 @@ if rad_fluxes_switch == True and '250' in f_string:
     del rad_flx_LW, rad_flx_SW, rad_flx_LW_02, rad_flx_SW_02
 
 #Fluxes from the VISO submodel, for 200 and 300 hPa
-if rad_fluxes_switch == True and not '250' in f_string:
-    #Start at 3 since first two calls are not emission points
-    for ep in range(3,31):
-        for file in filenames_all:
-            if 'viso' in file:
-                data = Dataset(file,'r')
-                print('\n')
-                print('File loaded: ')
-                print(file)
+# if rad_fluxes_switch == True and not '250' in f_string:
+#     #Start at 3 since first two calls are not emission points
+#     for ep in range(3,31):
+#         for file in filenames_all:
+#             if 'viso' in file:
+#                 data = Dataset(file,'r')
+#                 print('\n')
+#                 print('File loaded: ')
+#                 print(file)
                 
-                #Store call 2 containing only background O3 fluxes
-                temp = data.variables['flxs_tp_02'][:]
-                rad_flx_SW_02.append(temp)
-                temp = data.variables['flxt_tp_02'][:]
-                rad_flx_LW_02.append(temp)
+#                 #Store call 2 containing only background O3 fluxes
+#                 temp = data.variables['flxs_tp_02'][:]
+#                 rad_flx_SW_02.append(temp)
+#                 temp = data.variables['flxt_tp_02'][:]
+#                 rad_flx_LW_02.append(temp)
                 
-                #Other emission point
-                temp = data.variables['flxs_tp_'+str(ep).zfill(2)][:]
-                rad_flx_SW.append(temp)
+#                 #Other emission point
+#                 temp = data.variables['flxs_tp_'+str(ep).zfill(2)][:]
+#                 rad_flx_SW.append(temp)
                 
-                temp = data.variables['flxt_tp_'+str(ep).zfill(2)][:]
-                rad_flx_LW.append(temp)        
-        #Concatenate the SW and LW flux data for all 3 months
-        rad_flx_SW = np.concatenate(rad_flx_SW, axis=0)
-        rad_flx_LW = np.concatenate(rad_flx_LW, axis=0) 
-        rad_flx_SW_02 = np.concatenate(rad_flx_SW_02, axis=0)
-        rad_flx_LW_02 = np.concatenate(rad_flx_LW_02, axis=0)
+#                 temp = data.variables['flxt_tp_'+str(ep).zfill(2)][:]
+#                 rad_flx_LW.append(temp)        
+#         #Concatenate the SW and LW flux data for all 3 months
+#         rad_flx_SW = np.concatenate(rad_flx_SW, axis=0)
+#         rad_flx_LW = np.concatenate(rad_flx_LW, axis=0) 
+#         rad_flx_SW_02 = np.concatenate(rad_flx_SW_02, axis=0)
+#         rad_flx_LW_02 = np.concatenate(rad_flx_LW_02, axis=0)
         
-        #Calculate and append net fluxes for each of the 28 emission points
-        global_net_flx.append((rad_flx_LW+rad_flx_SW)-(rad_flx_LW_02+rad_flx_SW_02))
+#         #Calculate and append net fluxes for each of the 28 emission points
+#         global_net_flx.append((rad_flx_LW+rad_flx_SW)-(rad_flx_LW_02+rad_flx_SW_02))
         
-        #Clear the radiative flux list holding the 3-month period data for a given call
-        rad_flx_SW = []
-        rad_flx_LW = []
-        rad_flx_SW_02 = []
-        rad_flx_LW_02 = []
+#         #Clear the radiative flux list holding the 3-month period data for a given call
+#         rad_flx_SW = []
+#         rad_flx_LW = []
+#         rad_flx_SW_02 = []
+#         rad_flx_LW_02 = []
         
-        print('Net flux for EP'+str(ep-2)+' loaded...')
+#         print('Net flux for EP'+str(ep-2)+' loaded...')
         
-    del rad_flx_LW, rad_flx_SW, rad_flx_LW_02, rad_flx_SW_02
+#     del rad_flx_LW, rad_flx_SW, rad_flx_LW_02, rad_flx_SW_02
 
-#Delete unnecessary variables
-if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_string:
-    del temp, data
+# #Delete unnecessary variables
+# if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_string:
+#     del temp, data
 """
 # =============================================================================
 # PLOT TYPE 1 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS
