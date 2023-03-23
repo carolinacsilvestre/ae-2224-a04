@@ -14,6 +14,7 @@ from mpl_toolkits.basemap import Basemap #For map plotting
 from mpl_toolkits.basemap import shiftgrid #For shifting longitudes
 import matplotlib.colors #To create new colorbar
 from matplotlib.animation import FuncAnimation
+import scipy.stats
 
 # =============================================================================
 # LOADING DATA FROM NETCDF (.NC) FILES
@@ -339,6 +340,11 @@ RoD_arr = np.array([])                                                      ## A
 MR_arr = np.array([])                                                       ## An array representing the average mixing ratio of the 50 parcels ##
 RoD_average_arr = np.array([])
 MR_average_arr = np.array([])
+
+############### CORRELATION COEFFICIENTS ############## 
+# scipy.stats.pearsonr(x, y) 
+# scipy.stats.spearmanr(x, y)
+# scipy.stats.kendalltau(x, y)
 
 
 for emission_point in range (1, 28):
