@@ -342,9 +342,9 @@ RoD_average_arr = np.array([])
 MR_average_arr = np.array([])
 
 ############### CORRELATION COEFFICIENTS ############## 
-# scipy.stats.pearsonr(x, y) 
-# scipy.stats.spearmanr(x, y)
-# scipy.stats.kendalltau(x, y)
+# ccp, pp = scipy.stats.pearsonr(x, y) 
+# ccs, ps = scipy.stats.spearmanr(x, y)
+# cck, pk = scipy.stats.kendalltau(x, y)
 
 
 for emission_point in range (1, 28):
@@ -368,7 +368,9 @@ for emission_point in range (1, 28):
     # print(time_at_minimum)
 
         RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
-            
+        # ccp, pp = scipy.stats.pearsonr(RoD, y) 
+        # ccs, ps = scipy.stats.spearmanr(RoD, y)
+        # cck, pk = scipy.stats.kendalltau(RoD, y)    
 
         # elif ppress_temp1[min] != ppress_temp1[0]:
 
