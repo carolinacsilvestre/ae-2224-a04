@@ -368,9 +368,7 @@ for emission_point in range (1, 28):
     # print(time_at_minimum)
 
         RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
-        # ccp, pp = scipy.stats.pearsonr(RoD, y) 
-        # ccs, ps = scipy.stats.spearmanr(RoD, y)
-        # cck, pk = scipy.stats.kendalltau(RoD, y)    
+          
 
         # elif ppress_temp1[min] != ppress_temp1[0]:
 
@@ -386,6 +384,10 @@ for emission_point in range (1, 28):
         mr_one_parcel = airO3_001[:,i][0:number_of_t]                               ## Mixing ratio of a single parcel, expressed as an array W.R.T. time window ##
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
+        mean_mr = np.mean(MR_arr)
+        ccp, pp = scipy.stats.pearsonr(RoD, mean_mr) 
+        ccs, ps = scipy.stats.spearmanr(RoD, mean_mr)
+        cck, pk = scipy.stats.kendalltau(RoD, mean_mr)                             
 
 
 
