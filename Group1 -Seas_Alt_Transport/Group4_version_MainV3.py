@@ -207,6 +207,7 @@ def TrendMap(EmissionPoint):
     print(np.sum(TrendMapPlot))
     return TrendMapPlot
 
+#hello
 print(TrendMap(0))
 
 

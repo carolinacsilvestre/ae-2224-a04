@@ -16,7 +16,7 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string =r"C:\Users\moheb\Desktop\Q3-Proj-Test, Analysis & Simulation/*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
+f_string =r"C:/Users/31683/Desktop/project data/*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -205,16 +205,16 @@ def Trend(EmissionPoint):
     #print(TrendMapParcel)
     #print(Parcel2B)
     for Parcel2Bi in Parcel2B:
-       for day in range(90):
+       for day in range(367):
           
           for i in range(18):  
             #print(i)   
-            if   -180+i*20 < plon[day,Parcel2Bi] and -180+(i+1)*20 >= plon[day,Parcel2Bi]:
+            if   -180+i*20 <= plon[day,Parcel2Bi] and -180+(i+1)*20 >= plon[day,Parcel2Bi]:
               #print(-180+i*20 ,plon[day,Parcel2Bi],-180+(i+1)*20)
               #print('hi')
               for Nlong in range(9):
                  #print(90-Nlong*20,plat[day,int(Nlong)],90-(Nlong+1)*20)
-                 if 90-Nlong*20 >plat[day,int(Nlong)] and 90-(Nlong+1)*20 <=plat[day,int(Nlong)]:
+                 if 90-Nlong*20 >= plat[day,int(Nlong)] and 90-(Nlong+1)*20 <=plat[day,int(Nlong)]:
                     TrendMapParcel[Nlong][i]+=1
 
 

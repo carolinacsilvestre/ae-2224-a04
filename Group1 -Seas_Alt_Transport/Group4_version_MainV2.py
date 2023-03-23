@@ -1,8 +1,4 @@
-'''Sample script for reading in data and visualizing the
-Lagrangian air parcel trajectories along with the net radiative fluxes
-arising from a short-term increase in ozone.'''  
-
-#Import libraries
+ #Import libraries
 import glob #Dynamic file name loading
 import numpy as np #Array processing
 from netCDF4 import Dataset #NETCDF file handling
@@ -16,7 +12,7 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string =r"C:\Users\moheb\Desktop\Q3-Proj-Test, Analysis & Simulation/*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
+f_string =r"C:/Users/31683/Desktop/project data/*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -197,40 +193,23 @@ if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_stri
 
 #print(plon[0,parcel10],plat[0,parcel10])
 
-def Trend(EmissionPoint):
-    #Parcel2B=np.arange((EmissionPoint-1)*50, 1)
-    Parcel2B=[0]
+def TrendMap(EmissionPoint):
+    parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)
+    TrendMapPlot = np.zeros((9,18))
+    
+    for parcel2Ai in parcel2A:
+        for point in range(len(plon[:,parcel2Ai])):
+            for Nlong in range(18):
+                if -180+(Nlong*20) <= plon[point,parcel2Ai] and plon[point,parcel2Ai] <= -180+((Nlong+1)*20):
+                    for Nlat in range(9):
+                        if 90-(Nlat*20) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*20):
+                            TrendMapPlot[Nlat][Nlong]+=1
+    print(np.sum(TrendMapPlot))
+    return TrendMapPlot
 
-    TrendMapParcel=np.zeros((9,18))
-    #print(TrendMapParcel)
-    #print(Parcel2B)
-    for Parcel2Bi in Parcel2B:
-       
-       for day in range(len(plon[:,Parcel2Bi])):
-          
-          for i in range(18):  
-            #print(i)   
-            if   -180+i*20 < plon[day,Parcel2Bi] and -180+(i+1)*20 >= plon[day,Parcel2Bi]:
-              #print(-180+i*20 ,plon[day,Parcel2Bi],-180+(i+1)*20)
-              #print('hi')
-              for NLat in range(9):
-                 #print(90-NLat*20,plat[day,int(NLat)],90-(NLat+1)*20)
-                 if 90-NLat*20 >plat[day,int(NLat)] and 90-(NLat+1)*20 <=plat[day,int(NLat)]:
-                    TrendMapParcel[NLat][i]+=1
-                    print(f"Day is={day}, Longtitude=>{i}, Lqtitude=>{NLat}")
+print(TrendMap(0))
 
 
-
-
-    print(TrendMapParcel)
-    print(np.sum(TrendMapParcel))     
-           
-
-
-
-   # print(count)
-Trend(1)
-print(plon[170,0])
 ###########
 # =============================================================================
 # PLOT TYPE 1 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS
@@ -280,7 +259,7 @@ if attila_switch == True:
     plt.savefig("air_parcel_ID"+str(parcel)+".png",format="png",dpi=300)
     
     plt.show()
-    plt.close()
+    plt.close() 
 
 # =============================================================================
 # PLOT TYPE 2 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP)
@@ -384,7 +363,7 @@ if attila_switch == True:
     #Save and close the map plot
     plt.savefig("air_parcel_ID"+str(parcel2)+"_map.png",format="png",dpi=300)
     plt.show()
-    plt.close()
+    plt.close() 
 
 
 
