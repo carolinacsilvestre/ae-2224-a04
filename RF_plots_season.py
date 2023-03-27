@@ -45,7 +45,7 @@ def path_chooser(season, altitude):
     # Return the file path as a string
     return f_string
 
-def read_files(f_string,verbose=True):
+def read_files(f_string,pbar,verbose=True):
     """
     It reads in the net fluxes for each of the 28 emission points (3 months) and returns a list of 28
     net fluxes
@@ -67,12 +67,11 @@ def read_files(f_string,verbose=True):
     rad_flx_SW_02 = [] #SW flux for call 02
     rad_flx_LW_02 = [] #LW flux for call 02
     global_net_flx = [] #Holds all net fluxes for the 28 EPs (3 months)
+    
 
-        
     #Radiative fluxes corresponding to O3 increase, specifically for 250hPa
-    if  '250' in f_string:
+    if '250' in f_string:
         for file in filenames_all:
-            
             #Get call 2 separately, which will be subtracted from calls 3-30
             if file.find('fluxes_tp') != -1 and file.find('EP02') != -1:
                 #fluxes_tp_NAmerica_July2014_EP02
@@ -81,6 +80,7 @@ def read_files(f_string,verbose=True):
                     print('\n')
                     print('File loaded: ')
                     print(file)
+                
                 
                 #Radiative fluxes
                 rad_flx_SW_02 = data.variables['flxs_tp'][:]
@@ -95,6 +95,8 @@ def read_files(f_string,verbose=True):
                         print('\n')
                         print('File loaded: ')
                         print(file)
+
+                    
                     
                     #Radiative fluxes
                     rad_flx_SW = data.variables['flxs_tp'][:]
@@ -102,9 +104,14 @@ def read_files(f_string,verbose=True):
                     #Calculate net flux and append
                     global_net_flx.append((rad_flx_LW+rad_flx_SW)- #\
                                         (rad_flx_LW_02+rad_flx_SW_02))
+                    if season == "summer":
+                        pbar.update(0.5)
+                    else:
+                        pbar.update(1)
                     
-        #Delete unnecessary variables
-        del rad_flx_LW, rad_flx_SW, rad_flx_LW_02, rad_flx_SW_02
+                    #Delete unnecessary variables
+                    del rad_flx_LW, rad_flx_SW
+                
 
     #Fluxes from the VISO submodel, for 200 and 300 hPa
     if not '250' in f_string:
@@ -117,6 +124,8 @@ def read_files(f_string,verbose=True):
                         print('\n')
                         print('File loaded: ')
                         print(file)
+
+                    
                     
                     #Store call 2 containing only background O3 fluxes
                     temp = data.variables['flxs_tp_02'][:]
@@ -138,6 +147,7 @@ def read_files(f_string,verbose=True):
             
             #Calculate and append net fluxes for each of the 28 emission points
             global_net_flx.append((rad_flx_LW+rad_flx_SW)-(rad_flx_LW_02+rad_flx_SW_02))
+            pbar.update(1)
             
             #Clear the radiative flux list holding the 3-month period data for a given call
             rad_flx_SW = []
@@ -154,6 +164,7 @@ def read_files(f_string,verbose=True):
     if not '250' in f_string:
         del temp, data
     return global_net_flx
+    
 
 def calculate_values(global_net_flx):
     """
@@ -173,7 +184,7 @@ def calculate_values(global_net_flx):
     lon = np.linspace(-115,-55,4)  # define y as an array with 7 elements
     return lat, lon, flux_list
 
-def plot_values(lat,lon,flux_list,colors="Reds",show=False,save=True,dpi=300):
+def plot_values(lat,lon,flux_list,pbar,colors="Reds",show=False,save=True,dpi=300):
     """
     This function takes in a list of latitudes, a list of longitudes, a list of fluxes, and a color
     scheme, and plots the fluxes on a map
@@ -209,6 +220,7 @@ def plot_values(lat,lon,flux_list,colors="Reds",show=False,save=True,dpi=300):
     #makes lat array a lat x lon array and same for lon array
     #lon, lat = np.meshgrid(lons_shft, lats)
     x, y = mp(lon, lat)
+    pbar.update(5)
         
     #Choose the settings for the coastlines, countries, meridians...
     mp.drawcoastlines(linewidth=0.2)
@@ -227,7 +239,7 @@ def plot_values(lat,lon,flux_list,colors="Reds",show=False,save=True,dpi=300):
     #Plot the flux on the map
     sc2 = mp.pcolor(x, y, flux_list,
                         cmap='Reds',shading='auto')
-        
+    pbar.update(5)    
     #Define colorbar features
     cb = fig.colorbar(sc2, extend='both', 
                         orientation='horizontal',fraction=0.052, 
@@ -245,7 +257,7 @@ def plot_values(lat,lon,flux_list,colors="Reds",show=False,save=True,dpi=300):
     if show:
         plt.show()
     plt.close()
-
+    pbar.update(5)
 # Changing the current working directory to the plots folder.
 os.chdir('C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/plots')
 
@@ -256,7 +268,6 @@ A_section = A_earth*frac*10**6 #m^2
 verbose = False
 show = False
 save = True
-progress_bar = True
 list = []
 
 # Looping through the seasons and altitudes and plotting the fluxes for each of them.
@@ -264,15 +275,11 @@ for season in ["summer","winter"]:
     for altitude in [200,250,300]:
         list.append([season,altitude])
 
-if progress_bar:
-    for season, altitude in tqdm.tqdm(list):       
-        path = path_chooser(season,altitude)
-        flux = read_files(path,verbose=verbose)
-        lat, lon, flux_list = calculate_values(flux)
-        plot_values(lat,lon,flux_list,show=show)
-else:
-    for season, altitude in list:       
-        path = path_chooser(season,altitude)
-        flux = read_files(path,verbose=verbose)
-        lat, lon, flux_list = calculate_values(flux)
-        plot_values(lat,lon,flux_list,show=show)
+total = 43*len(list)
+pbar = tqdm.tqdm(total=total) 
+for season, altitude in list:   
+    path = path_chooser(season,altitude)
+    flux = read_files(path,pbar, verbose=verbose)
+    lat, lon, flux_list = calculate_values(flux)
+    plot_values(lat,lon,flux_list,pbar,show=show)
+pbar.close()
