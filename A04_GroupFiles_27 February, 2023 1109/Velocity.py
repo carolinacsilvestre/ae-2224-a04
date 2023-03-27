@@ -22,8 +22,13 @@ import scipy.stats
 
 #USER INPUT - File path
 #f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
-#f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
+
+
+######################################## JUST KEEP THESE ALL UNCOMMENTED! IT WILL WORK JUST FINE ########################################################3
+f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
 f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*' 
+f_string = 'D:/Python safe/all test data/*'
+
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -348,7 +353,13 @@ MR_average_arr = np.array([])
 
 list_average_rod = []
 list_median_rod = []
-for emission_point in range (1, 28):
+fig, axs = plt.subplots(nrows=4, ncols=7)
+m = 1
+n = 1
+
+
+for emission_point in range (1, 29):
+    
 
     for i in range((emission_point-1) * 50,(emission_point)*50):                ## A loop covering all 50 parcels in one emission location ##
 
@@ -386,10 +397,12 @@ for emission_point in range (1, 28):
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
         mean_mr = np.mean(MR_arr)
-        #ccp, pp = scipy.stats.pearsonr(RoD, mean_mr) 
-        #ccs, ps = scipy.stats.spearmanr(RoD, mean_mr)
-        #cck, pk = scipy.stats.kendalltau(RoD, mean_mr)                             
- 
+
+
+        for m in range(0,4):
+            for n in range(0,7):  
+                axs[m,n].scatter(RoD_arr, MR_arr)              
+                axs[m,n].set_title('emission point' + str(emission_point))
 
 
     # print('shitshow', ppress[:,342])
@@ -398,6 +411,7 @@ for emission_point in range (1, 28):
     RoD_average = np.average(RoD_arr) 
     
     RoD_median = np.median(RoD_arr)
+
     list_average_rod.append(RoD_average)
     list_median_rod.append(RoD_median)
 
@@ -405,14 +419,20 @@ for emission_point in range (1, 28):
     
     RoD_average_arr = np.append(RoD_average_arr, RoD_average)                       
     MR_average_arr = np.append(MR_average_arr, MR_average)                          
-    # print(len(MR_average_arr))                                                    
-
-
-list_average_rod.sort()
-list_median_rod.sort()
+    # print(len(MR_average_arr))    
+                                                
+plt.show()
 print(list_average_rod)
 print(list_median_rod)
 
+print(list_average_rod.sort())
+print(list_median_rod.sort())
+ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)   
+print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr) 
+print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr) 
+print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # print(MR_arr)
 # print(len(MR_arr))
@@ -435,7 +455,7 @@ print(list_median_rod)
 #     plt.show()
 #     plt.close()
 
-plot_emission_point = True
+plot_emission_point = False
 if plot_emission_point == True:
     fig, ax = plt.subplots()                                                        ## Plot MR W.R.T. RoD ##
     fig.set_figheight(8)
@@ -447,9 +467,9 @@ if plot_emission_point == True:
     # ax.set_xticks(np.arange(0,30,2.5))
     # ax.set_yticks(np.arange(0,6E-8,3E-9))
     ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
-    ax.set_xlabel('Rate of descent of all parcels of 28 emission locations')
-    ax.set_ylabel('Mixing ratio of all parcels of 28 emission locations')
-    ax.set_title(str(28))
+    ax.set_xlabel('Emission point rate of descent [hPa/day]')
+    ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
+    ax.set_title("July 2014, 250hPa, 40 day window")
     plt.show()
     plt.close()
 
@@ -539,7 +559,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 #Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = False         ## Activation mixing ratio plot ##
+activate_plot4 = True        ## Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
@@ -589,6 +609,14 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
     cmap.set_over("crimson")
     
     norm= matplotlib.colors.Normalize(vmin=0,vmax=75)
+
+
+    ######This is where the plotting starts
+    i=0
+    for emission_point in range (1, 29):   
+
+        for i in range((emission_point-1) * 50,(emission_point)*50):
+            i = i+1
     
     #Plot a Lagrangian air parcel with parcel ID given by "parcel4"
     sc = ax.scatter(plon[:,parcel4], plat[:,parcel4], s=20, marker='o',
