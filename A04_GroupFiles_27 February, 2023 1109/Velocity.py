@@ -546,7 +546,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 #Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = False         ## Activation mixing ratio plot ##
+activate_plot4 = True        ## Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
@@ -596,6 +596,14 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
     cmap.set_over("crimson")
     
     norm= matplotlib.colors.Normalize(vmin=0,vmax=75)
+
+
+    ######This is where the plotting starts
+    i=0
+    for emission_point in range (1, 29):   
+
+        for i in range((emission_point-1) * 50,(emission_point)*50):
+            i = i+1
     
     #Plot a Lagrangian air parcel with parcel ID given by "parcel4"
     sc = ax.scatter(plon[:,parcel4], plat[:,parcel4], s=20, marker='o',
