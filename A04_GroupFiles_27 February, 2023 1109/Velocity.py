@@ -454,9 +454,9 @@ if plot_emission_point == True:
     # ax.set_xticks(np.arange(0,30,2.5))
     # ax.set_yticks(np.arange(0,6E-8,3E-9))
     ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
-    ax.set_xlabel('Rate of descent of all parcels of 28 emission locations')
-    ax.set_ylabel('Mixing ratio of all parcels of 28 emission locations')
-    ax.set_title("Relationship between O3 mixing ratio and rate of descent over a 40 day window")
+    ax.set_xlabel('Emission point rate of descent [hPa/day]')
+    ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
+    ax.set_title("July 2014, 250hPa, 40 day window")
     plt.show()
     plt.close()
 
