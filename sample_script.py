@@ -20,7 +20,7 @@ import os
 #USER INPUT - File path
  #Insert file path to folder containing all input data, do not forget wildcard
 season = "winter"
-altitude = 300
+altitude = 200
 
 
 if season == "summer":
@@ -40,14 +40,14 @@ else:
 
 
 #USER INPUT - Switches to determine which data types should be loaded
-attila_switch = True
+attila_switch = False
 o3tracer_switch = False
 rad_fluxes_switch = True
 parcel_id = 249
 #Read in file names based on f_string variable
 filenames_all = sorted(glob.glob(f_string)) #Get all file names in f_string
-print('Files in input folder: ')
-print(filenames_all)
+#print('Files in input folder: ')
+#print(filenames_all)
 
 
 #Variables declaration
@@ -68,9 +68,9 @@ if attila_switch == True:
     for file in filenames_all:
         if 'attila' in file:
             data = Dataset(file,'r')
-            print('\n')
-            print('File loaded: ')
-            print(file)
+            #print('\n')
+            #print('File loaded: ')
+            #print(file)
             
             #Latitudes and longitudes
             lats = data.variables['lat'][:]
@@ -109,9 +109,9 @@ if o3tracer_switch == True:
     for file in filenames_all:
         if 'O3lg' in file:
             data = Dataset(file,'r')
-            print('\n')
-            print('File loaded: ')
-            print(file)
+            #print('\n')
+            #print('File loaded: ')
+            #print(file)
             
             #O3 along air parcels for each emission point
             temp = data.variables['airO3_001'][:,:1400] #Only the first 1400 trajectories
@@ -130,9 +130,9 @@ if rad_fluxes_switch == True and '250' in f_string:
         if file.find('fluxes_tp') != -1 and file.find('EP02') != -1:
             #fluxes_tp_NAmerica_July2014_EP02
             data = Dataset(file,'r')
-            print('\n')
-            print('File loaded: ')
-            print(file)
+            #print('\n')
+            #print('File loaded: ')
+            #print(file)
             
             #Radiative fluxes
             rad_flx_SW_02 = data.variables['flxs_tp'][:]
@@ -143,9 +143,9 @@ if rad_fluxes_switch == True and '250' in f_string:
             #If there is no match, output is -1.
             if file.find('fluxes_tp') != -1 and file.find('EP'+str(ep).zfill(2)) != -1:
                 data = Dataset(file,'r')
-                print('\n')
-                print('File loaded: ')
-                print(file)
+                #print('\n')
+                #print('File loaded: ')
+                #print(file)
                 
                 #Radiative fluxes
                 rad_flx_SW = data.variables['flxs_tp'][:]
@@ -164,9 +164,9 @@ if rad_fluxes_switch == True and not '250' in f_string:
         for file in filenames_all:
             if 'viso' in file:
                 data = Dataset(file,'r')
-                print('\n')
-                print('File loaded: ')
-                print(file)
+                #print('\n')
+                #print('File loaded: ')
+                #print(file)
                 
                 #Store call 2 containing only background O3 fluxes
                 temp = data.variables['flxs_tp_02'][:]
@@ -195,7 +195,7 @@ if rad_fluxes_switch == True and not '250' in f_string:
         rad_flx_SW_02 = []
         rad_flx_LW_02 = []
         
-        print('Net flux for EP'+str(ep-2)+' loaded...')
+        #print('Net flux for EP'+str(ep-2)+' loaded...')
         
     del rad_flx_LW, rad_flx_SW, rad_flx_LW_02, rad_flx_SW_02
 
@@ -203,7 +203,7 @@ if rad_fluxes_switch == True and not '250' in f_string:
 if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_string:
     del temp, data
 
-os.chdir('C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Plots')
+os.chdir('C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/plots')
 """
 # =============================================================================
 # PLOT TYPE 1 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS
@@ -507,7 +507,8 @@ if attila_switch == True and o3tracer_switch == True:
     plt.savefig("air_parcel_ID"+str(parcel4)+"_map_colorbar.png",format="png",dpi=300)
     plt.show()
     plt.close()
- """   
+ """  
+"""  
 # =============================================================================
 # PLOT TYPE 5 - Net radiative fluxes from short-term ozone increase (Single EP)
 # =============================================================================
@@ -584,8 +585,8 @@ if attila_switch == True and rad_fluxes_switch == True:
     plt.savefig("rad_fluxes_map_example.png",format="png",dpi=300)
     plt.show()
     plt.close()
-"""
 
+ 
 # =============================================================================
 # PLOT TYPE 7 - Net radiative fluxes from short-term ozone increase with airparcel trajectory (Single EP)
 # =============================================================================
@@ -781,15 +782,17 @@ anim = FuncAnimation(fig, animate, frames=len(plon[:,1]), interval=200)
 anim.save('earthquake_map2.gif', writer='pillow', fps=5)
 """
 
+A_earth = 5.1e8 #km^2
+frac = 2.8**2/360**2
+A_section = A_earth*frac*10**6 #m^2
 
 #plot of RF result
 flux_list = []
 for n in range(28):
     flux = global_net_flx[n]
     flux_time_avg = np.mean(flux,axis=0)
-    flux_list.append(np.sum(flux_time_avg))
+    flux_list.append(np.sum(flux_time_avg)*10**(-3)*A_section)
 flux_list = np.array(flux_list).reshape(7, 4,order="F") 
-print(flux_list)
 lat = np.linspace(85,25,7)  # define x as an array with 4 elements
 lon = np.linspace(-115,-55,4)  # define y as an array with 7 elements
 #plt.pcolormesh(lon,lat,flux_list, cmap='RdYlGn_r')
@@ -835,9 +838,6 @@ mp.drawparallels(np.arange(-90,110,20),
                          linewidth=0.2, fontsize=10) #Draw lat lines every 20º
     
     
-cmap.set_under("w")
-cmap.set_over("red")
-    
    
 #Plot the flux on the map
 sc2 = mp.pcolor(x, y, flux_list,
@@ -852,7 +852,7 @@ cb = fig.colorbar(sc2, extend='both',
 cb.ax.tick_params(labelsize=14)
     
 #Label the colorbar
-cb.set_label(label="Radiative Forcing due to emissions from every emission point",size=14,weight='bold')
+cb.set_label(label="Average Radiative Forcing (3 months) in "+season+ " at " +str(altitude)+"hPa in [W]",size=14,weight='bold',labelpad=15)
     
     #Save and close the map plot
 plt.savefig("RFmap"+season+str(altitude)+".png")
