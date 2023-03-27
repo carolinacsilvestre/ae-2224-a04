@@ -386,16 +386,17 @@ for emission_point in range (1, 28):
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
         mean_mr = np.mean(MR_arr)
-        ccp, pp = scipy.stats.pearsonr(RoD, mean_mr) 
-        ccs, ps = scipy.stats.spearmanr(RoD, mean_mr)
-        cck, pk = scipy.stats.kendalltau(RoD, mean_mr)                             
-
+        #ccp, pp = scipy.stats.pearsonr(RoD, mean_mr) 
+        #ccs, ps = scipy.stats.spearmanr(RoD, mean_mr)
+        #cck, pk = scipy.stats.kendalltau(RoD, mean_mr)                             
+ 
 
 
     # print('shitshow', ppress[:,342])
 
     MR_average = np.average(MR_arr)                                                 
     RoD_average = np.average(RoD_arr) 
+    
     RoD_median = np.median(RoD_arr)
     list_average_rod.append(RoD_average)
     list_median_rod.append(RoD_median)
@@ -406,11 +407,11 @@ for emission_point in range (1, 28):
     MR_average_arr = np.append(MR_average_arr, MR_average)                          
     # print(len(MR_average_arr))                                                    
 
+
+list_average_rod.sort()
+list_median_rod.sort()
 print(list_average_rod)
 print(list_median_rod)
-
-print(list_average_rod.sort())
-print(list_median_rod.sort())
 
 
 # print(MR_arr)
