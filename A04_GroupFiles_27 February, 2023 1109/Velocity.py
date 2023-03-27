@@ -22,8 +22,13 @@ import scipy.stats
 
 #USER INPUT - File path
 #f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
-#f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
+
+
+######################################## JUST KEEP THESE ALL UNCOMMENTED! IT WILL WORK JUST FINE ########################################################3
+f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
 f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*' 
+f_string = 'D:/Python safe/all test data/*'
+
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -348,9 +353,17 @@ MR_average_arr = np.array([])
 
 list_average_rod = []
 list_median_rod = []
-for emission_point in range (1, 28):
+fig, axs = plt.subplots(nrows=4, ncols=7)
+emission_point = 1
+m = 1
+n = 1
 
-    for i in range((emission_point-1) * 50,(emission_point)*50):                ## A loop covering all 50 parcels in one emission location ##
+
+while emission_point <= 28 and m < 4:
+    
+    i = emission_point * 50
+
+    while i <= (emission_point+1) * 50 and n < 7:              ## A loop covering all 50 parcels in one emission location ##
 
         ppress_temp = ppress[:,i]                                                   ## Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
     # print(type(ppress_temp))
@@ -370,7 +383,6 @@ for emission_point in range (1, 28):
 
         RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
           
-
         # elif ppress_temp1[min] != ppress_temp1[0]:
 
         #     min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
@@ -379,18 +391,23 @@ for emission_point in range (1, 28):
 
         #     RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum
 
-
-
         RoD_arr = np.append(RoD_arr, RoD)                                           ## Append the R.O.D. of each single parcel into an array ##
         mr_one_parcel = airO3_001[:,i][0:number_of_t]                               ## Mixing ratio of a single parcel, expressed as an array W.R.T. time window ##
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
         mean_mr = np.mean(MR_arr)
-        #ccp, pp = scipy.stats.pearsonr(RoD, mean_mr) 
-        #ccs, ps = scipy.stats.spearmanr(RoD, mean_mr)
-        #cck, pk = scipy.stats.kendalltau(RoD, mean_mr)                             
- 
 
+   
+        axs[m,n].scatter(RoD_arr, MR_arr)              
+        axs[m,n].set_title(str(emission_point))
+
+        i = i + 1
+
+        if i == (emission_point+1) * 50:
+            n = n + 1
+
+        if n == 7 :
+            m = m + 1
 
     # print('shitshow', ppress[:,342])
 
@@ -398,6 +415,7 @@ for emission_point in range (1, 28):
     RoD_average = np.average(RoD_arr) 
     
     RoD_median = np.median(RoD_arr)
+
     list_average_rod.append(RoD_average)
     list_median_rod.append(RoD_median)
 
@@ -405,14 +423,25 @@ for emission_point in range (1, 28):
     
     RoD_average_arr = np.append(RoD_average_arr, RoD_average)                       
     MR_average_arr = np.append(MR_average_arr, MR_average)                          
-    # print(len(MR_average_arr))                                                    
+    # print(len(MR_average_arr))    
+
+    emission_point = emission_point + 1
+                                                
+plt.show()
 
 
-list_average_rod.sort()
-list_median_rod.sort()
+
 print(list_average_rod)
 print(list_median_rod)
 
+print(list_average_rod.sort())
+print(list_median_rod.sort())
+ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)   
+print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr) 
+print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr) 
+print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # print(MR_arr)
 # print(len(MR_arr))
@@ -435,7 +464,7 @@ print(list_median_rod)
 #     plt.show()
 #     plt.close()
 
-plot_emission_point = True
+plot_emission_point = False
 if plot_emission_point == True:
     fig, ax = plt.subplots()                                                        ## Plot MR W.R.T. RoD ##
     fig.set_figheight(8)
@@ -447,9 +476,9 @@ if plot_emission_point == True:
     # ax.set_xticks(np.arange(0,30,2.5))
     # ax.set_yticks(np.arange(0,6E-8,3E-9))
     ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
-    ax.set_xlabel('Rate of descent of all parcels of 28 emission locations')
-    ax.set_ylabel('Mixing ratio of all parcels of 28 emission locations')
-    ax.set_title(str(28))
+    ax.set_xlabel('Emission point rate of descent [hPa/day]')
+    ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
+    ax.set_title("July 2014, 250hPa, 40 day window")
     plt.show()
     plt.close()
 
