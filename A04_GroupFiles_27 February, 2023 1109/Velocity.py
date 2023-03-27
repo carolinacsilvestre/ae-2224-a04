@@ -22,9 +22,12 @@ import scipy.stats
 
 #USER INPUT - File path
 #f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
+
+
+######################################## JUST KEEP THESE ALL UNCOMMENTED! IT WILL WORK JUST FINE ########################################################3
 f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
-#f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*' 
-#f_string = 'D:/Python safe/all test data/*'
+f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*' 
+f_string = 'D:/Python safe/all test data/*'
 
 
 #USER INPUT - Switches to determine which data types should be loaded
@@ -350,6 +353,7 @@ MR_average_arr = np.array([])
 
 list_average_rod = []
 list_median_rod = []
+fig, axes = plt.subplots(4,7)
 for emission_point in range (1, 29):
     
 
@@ -390,7 +394,8 @@ for emission_point in range (1, 29):
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
         mean_mr = np.mean(MR_arr)
                                     
-
+    ax.scatter(RoD_arr, MR_arr)              
+    ax.set_title('emission point' + str(emission_point))
 
 
     # print('shitshow', ppress[:,342])
