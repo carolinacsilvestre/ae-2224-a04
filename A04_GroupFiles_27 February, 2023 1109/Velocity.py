@@ -388,9 +388,9 @@ for emission_point in range (1, 28):
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
         mean_mr = np.mean(MR_arr)
-        ccp, pp = scipy.stats.pearsonr(RoD, mean_mr) 
-        ccs, ps = scipy.stats.spearmanr(RoD, mean_mr)
-        cck, pk = scipy.stats.kendalltau(RoD, mean_mr)                             
+        # ccp, pp = scipy.stats.pearsonr(RoD, mean_mr) 
+        # ccs, ps = scipy.stats.spearmanr(RoD, mean_mr)
+        # cck, pk = scipy.stats.kendalltau(RoD, mean_mr)                             
 
 
 
