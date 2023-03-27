@@ -353,7 +353,11 @@ MR_average_arr = np.array([])
 
 list_average_rod = []
 list_median_rod = []
-fig, axes = plt.subplots(4,7)
+fig, axs = plt.subplots(nrows=4, ncols=7)
+m = 1
+n = 1
+
+
 for emission_point in range (1, 29):
     
 
@@ -393,9 +397,12 @@ for emission_point in range (1, 29):
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
         mean_mr = np.mean(MR_arr)
-                                    
-    ax.scatter(RoD_arr, MR_arr)              
-    ax.set_title('emission point' + str(emission_point))
+
+
+        for m in range(0,4):
+            for n in range(0,7):  
+                axs[m,n].scatter(RoD_arr, MR_arr)              
+                axs[m,n].set_title('emission point' + str(emission_point))
 
 
     # print('shitshow', ppress[:,342])
@@ -412,8 +419,9 @@ for emission_point in range (1, 29):
     
     RoD_average_arr = np.append(RoD_average_arr, RoD_average)                       
     MR_average_arr = np.append(MR_average_arr, MR_average)                          
-    # print(len(MR_average_arr))                                                    
-
+    # print(len(MR_average_arr))    
+                                                
+plt.show()
 print(list_average_rod)
 print(list_median_rod)
 
@@ -447,7 +455,7 @@ print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 #     plt.show()
 #     plt.close()
 
-plot_emission_point = True
+plot_emission_point = False
 if plot_emission_point == True:
     fig, ax = plt.subplots()                                                        ## Plot MR W.R.T. RoD ##
     fig.set_figheight(8)
