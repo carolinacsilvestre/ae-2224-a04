@@ -354,14 +354,16 @@ MR_average_arr = np.array([])
 list_average_rod = []
 list_median_rod = []
 fig, axs = plt.subplots(nrows=4, ncols=7)
+emission_point = 1
 m = 1
 n = 1
 
 
-for emission_point in range (1, 29):
+while emission_point <= 28 and m < 4:
     
+    i = emission_point * 50
 
-    for i in range((emission_point-1) * 50,(emission_point)*50):                ## A loop covering all 50 parcels in one emission location ##
+    while i <= (emission_point+1) * 50 and n < 7:              ## A loop covering all 50 parcels in one emission location ##
 
         ppress_temp = ppress[:,i]                                                   ## Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
     # print(type(ppress_temp))
@@ -381,7 +383,6 @@ for emission_point in range (1, 29):
 
         RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum             ## Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
           
-
         # elif ppress_temp1[min] != ppress_temp1[0]:
 
         #     min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
@@ -390,20 +391,23 @@ for emission_point in range (1, 29):
 
         #     RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum
 
-
-
         RoD_arr = np.append(RoD_arr, RoD)                                           ## Append the R.O.D. of each single parcel into an array ##
         mr_one_parcel = airO3_001[:,i][0:number_of_t]                               ## Mixing ratio of a single parcel, expressed as an array W.R.T. time window ##
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
         mean_mr = np.mean(MR_arr)
 
+   
+        axs[m,n].scatter(RoD_arr, MR_arr)              
+        axs[m,n].set_title('emission point' + str(emission_point))
 
-        for m in range(0,4):
-            for n in range(0,7):  
-                axs[m,n].scatter(RoD_arr, MR_arr)              
-                axs[m,n].set_title('emission point' + str(emission_point))
+        i = i + 1
 
+        if i == (emission_point+1) * 50:
+            n = n + 1
+
+        if n == 7 :
+            m = m + 1
 
     # print('shitshow', ppress[:,342])
 
@@ -420,8 +424,13 @@ for emission_point in range (1, 29):
     RoD_average_arr = np.append(RoD_average_arr, RoD_average)                       
     MR_average_arr = np.append(MR_average_arr, MR_average)                          
     # print(len(MR_average_arr))    
+
+    emission_point = emission_point + 1
                                                 
 plt.show()
+
+
+
 print(list_average_rod)
 print(list_median_rod)
 
@@ -559,7 +568,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 #Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = True        ## Activation mixing ratio plot ##
+activate_plot4 = False         ## Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
@@ -609,14 +618,6 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
     cmap.set_over("crimson")
     
     norm= matplotlib.colors.Normalize(vmin=0,vmax=75)
-
-
-    ######This is where the plotting starts
-    i=0
-    for emission_point in range (1, 29):   
-
-        for i in range((emission_point-1) * 50,(emission_point)*50):
-            i = i+1
     
     #Plot a Lagrangian air parcel with parcel ID given by "parcel4"
     sc = ax.scatter(plon[:,parcel4], plat[:,parcel4], s=20, marker='o',
