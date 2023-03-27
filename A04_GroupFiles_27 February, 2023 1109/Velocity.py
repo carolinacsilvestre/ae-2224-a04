@@ -22,9 +22,9 @@ import scipy.stats
 
 #USER INPUT - File path
 #f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
-f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
+#f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
 f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*' 
-f_string = 'D:/Python safe/all test data/*'
+#f_string = 'D:/Python safe/all test data/*'
 
 
 #USER INPUT - Switches to determine which data types should be loaded
@@ -388,9 +388,7 @@ for emission_point in range (1, 28):
         average_mr_one_parcel = np.average(mr_one_parcel)                           ## Average mixing ratio of a single parcel throughout the time window ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)                           ## Append the mixing ratio ##
         mean_mr = np.mean(MR_arr)
-        ccp, pp = scipy.stats.pearsonr(RoD, mean_mr) 
-        ccs, ps = scipy.stats.spearmanr(RoD, mean_mr)
-        cck, pk = scipy.stats.kendalltau(RoD, mean_mr)                             
+                                    
 
 
 
@@ -415,7 +413,12 @@ print(list_median_rod)
 
 print(list_average_rod.sort())
 print(list_median_rod.sort())
-
+ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)   
+print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr) 
+print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr) 
+print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # print(MR_arr)
 # print(len(MR_arr))
@@ -452,7 +455,7 @@ if plot_emission_point == True:
     ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
     ax.set_xlabel('Rate of descent of all parcels of 28 emission locations')
     ax.set_ylabel('Mixing ratio of all parcels of 28 emission locations')
-    ax.set_title(str(28))
+    ax.set_title("Relationship between O3 mixing ratio and rate of descent over a 40 day window")
     plt.show()
     plt.close()
 
