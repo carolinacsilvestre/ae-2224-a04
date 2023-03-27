@@ -18,6 +18,10 @@ arising from a short-term increase in ozone.'''
 # JUST KEEP THESE ALL UNCOMMENTED! IT WILL WORK JUST FINE ########################################################3
 # f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
 # f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
+f_string = 'D:/Python safe/all test data/*'
+
+
+
 import scipy.stats
 from matplotlib.animation import FuncAnimation
 import glob  # Dynamic file name loading
@@ -27,7 +31,7 @@ import matplotlib.pyplot as plt  # Plotting
 from mpl_toolkits.basemap import Basemap  # For map plotting
 from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
-f_string = 'D:/Python safe/all test data/*'
+
 
 
 # USER INPUT - Switches to determine which data types should be loaded
@@ -518,6 +522,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
+    
     # Scatter plot command
     sc = ax.scatter(time, ppress[:, parcel3], s=30, marker='o',
                     c=airO3_001[:, parcel3]*1E09,
