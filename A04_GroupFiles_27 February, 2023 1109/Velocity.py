@@ -399,7 +399,7 @@ while emission_point <= 28 and m < 4:
 
    
         axs[m,n].scatter(RoD_arr, MR_arr)              
-        axs[m,n].set_title('emission point' + str(emission_point))
+        axs[m,n].set_title(str(emission_point))
 
         i = i + 1
 
