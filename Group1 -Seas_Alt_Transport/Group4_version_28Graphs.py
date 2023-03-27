@@ -193,7 +193,7 @@ if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_stri
 
 #print(plon[0,parcel10],plat[0,parcel10])
 #why  40 not correct????
-step = 10
+step = 20
 columns = 360/step
 rows = 180/step
 
@@ -329,7 +329,7 @@ if attila_switch == True:
     #Plot a Lagrangian air parcel with parcel ID given by "parcel2"
   #before ADEED  ax.scatter(plon[:,parcel2], plat[:,parcel2], s=20, marker='o', color='green',
        #        zorder=2) #added c=setOFcolor
-
+    
     for i in range(1):
         parcel2 = i
         ax.scatter(plon[:,parcel2], plat[:,parcel2], s=20, marker='o', c=ppress[:,parcel],
@@ -723,18 +723,25 @@ for i, ax in enumerate(axs.flat):
 
 
 
+    ax.set_ylabel(f'E. P. {i}', loc='top')
+    #ax.set_xlabel('XLabel', loc='left')
+    #cbar = fig.colorbar(sc)
+    #cbar.set_label("ZLabel", loc='top')
+
+
+
 
 
 #Define colorbar features
-#cb = fig.colorbar(sc2, extend='both', 
-                      #  orientation='horizontal',fraction=0.052, 
-                       # pad=0.065)
+cb = fig.colorbar(sc2, extend='both', 
+                        orientation='horizontal',fraction=0.052, 
+                        pad=0.065)
         
 #Adjust colorbar tickmark size
-#cb.ax.tick_params(labelsize=14)
+cb.ax.tick_params(labelsize=14)
         
 #Label the colorbar
-#cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold')
+cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold',loc='bottom')
 
 
 plt.show()
