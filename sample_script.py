@@ -11,17 +11,37 @@ from mpl_toolkits.basemap import Basemap #For map plotting
 from mpl_toolkits.basemap import shiftgrid #For shifting longitudes
 import matplotlib.colors #To create new colorbar
 import matplotlib.cm as cm
+import os
 
 # =============================================================================
 # LOADING DATA FROM NETCDF (.NC) FILES
 # =============================================================================
 
 #USER INPUT - File path
-f_string = 'C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Python scripts/data_250/*' #Insert file path to folder containing all input data, do not forget wildcard
+ #Insert file path to folder containing all input data, do not forget wildcard
+season = "winter"
+altitude = 300
+
+
+if season == "summer":
+    if altitude == 200:
+        f_string = 'C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Data/200_July/*'
+    if altitude == 250:
+        f_string = 'C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Data/250_July/*'
+    if altitude == 300: 
+        f_string = 'C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Data/300_July/*' 
+else: 
+    if altitude == 200:
+        f_string = 'C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Data/200_Jan/*'
+    if altitude == 250:
+        f_string = 'C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Data/250_Jan/*'
+    if altitude == 300:
+        f_string = 'C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Data/300_Jan/*'
+
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
-o3tracer_switch = True
+o3tracer_switch = False
 rad_fluxes_switch = True
 parcel_id = 249
 #Read in file names based on f_string variable
@@ -46,7 +66,7 @@ global_net_flx = [] #Holds all net fluxes for the 28 EPs (3 months)
 #Positions of air parcels
 if attila_switch == True:
     for file in filenames_all:
-        if 'attila.nc' in file:
+        if 'attila' in file:
             data = Dataset(file,'r')
             print('\n')
             print('File loaded: ')
@@ -182,6 +202,8 @@ if rad_fluxes_switch == True and not '250' in f_string:
 #Delete unnecessary variables
 if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_string:
     del temp, data
+
+os.chdir('C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/Plots')
 """
 # =============================================================================
 # PLOT TYPE 1 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS
@@ -563,6 +585,7 @@ if attila_switch == True and rad_fluxes_switch == True:
     plt.show()
     plt.close()
 """
+
 # =============================================================================
 # PLOT TYPE 7 - Net radiative fluxes from short-term ozone increase with airparcel trajectory (Single EP)
 # =============================================================================
@@ -811,9 +834,6 @@ mp.drawparallels(np.arange(-90,110,20),
                          labels=[True,False,False,True], 
                          linewidth=0.2, fontsize=10) #Draw lat lines every 20º
     
-#Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
-colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
-cmap= matplotlib.colors.ListedColormap(colors)
     
 cmap.set_under("w")
 cmap.set_over("red")
@@ -821,7 +841,7 @@ cmap.set_over("red")
    
 #Plot the flux on the map
 sc2 = mp.pcolor(x, y, flux_list,
-                    cmap='RdYlGn_r',shading='auto')
+                    cmap='Reds',shading='auto')
     
 #Define colorbar features
 cb = fig.colorbar(sc2, extend='both', 
@@ -835,5 +855,6 @@ cb.ax.tick_params(labelsize=14)
 cb.set_label(label="Radiative Forcing due to emissions from every emission point",size=14,weight='bold')
     
     #Save and close the map plot
+plt.savefig("RFmap"+season+str(altitude)+".png")
 plt.show()
 plt.close()
