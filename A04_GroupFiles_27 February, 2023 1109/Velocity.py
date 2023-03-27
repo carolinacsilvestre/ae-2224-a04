@@ -22,8 +22,8 @@ import scipy.stats
 
 #USER INPUT - File path
 #f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
-#f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
-f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*' 
+f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
+#f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*' 
 #f_string = 'D:/Python safe/all test data/*'
 
 
@@ -350,7 +350,8 @@ MR_average_arr = np.array([])
 
 list_average_rod = []
 list_median_rod = []
-for emission_point in range (1, 28):
+for emission_point in range (1, 29):
+    
 
     for i in range((emission_point-1) * 50,(emission_point)*50):                ## A loop covering all 50 parcels in one emission location ##
 
