@@ -359,11 +359,9 @@ m = 1
 n = 1
 
 
-while emission_point <= 28 and m < 4:
-    
-    i = emission_point * 50
+for emission_point in range(1,29):
 
-    while i <= (emission_point+1) * 50 and n < 7:              ## A loop covering all 50 parcels in one emission location ##
+    for i in range((emission_point-1)*50, emission_point*50):              ## A loop covering all 50 parcels in one emission location ##
 
         ppress_temp = ppress[:,i]                                                   ## Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
     # print(type(ppress_temp))
@@ -401,14 +399,6 @@ while emission_point <= 28 and m < 4:
         axs[m,n].scatter(RoD_arr, MR_arr)              
         axs[m,n].set_title(str(emission_point))
 
-        i = i + 1
-
-        if i == (emission_point+1) * 50:
-            n = n + 1
-
-        if n == 7 :
-            m = m + 1
-
     # print('shitshow', ppress[:,342])
 
     MR_average = np.average(MR_arr)                                                 
@@ -424,8 +414,6 @@ while emission_point <= 28 and m < 4:
     RoD_average_arr = np.append(RoD_average_arr, RoD_average)                       
     MR_average_arr = np.append(MR_average_arr, MR_average)                          
     # print(len(MR_average_arr))    
-
-    emission_point = emission_point + 1
                                                 
 plt.show()
 
