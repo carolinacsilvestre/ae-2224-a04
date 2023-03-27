@@ -354,7 +354,7 @@ list_average_rod = []
 list_median_rod = []
 fig, axs = plt.subplots(nrows=4, ncols=7)
 m = 0
-n = 0
+n = -1
 
 for emission_point in range(0, 28):
 
@@ -401,13 +401,16 @@ for emission_point in range(0, 28):
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
         mean_mr = np.mean(MR_arr)
-        
-        axs[n, m].scatter(RoD_arr, MR_arr)
-        axs[n, m].set_title(str(emission_point))
-        n = n + 1
-        if n == 7:
-            m = m + 1
-            n = 0
+    n = n + 1  
+    if n == 7:
+         m = m + 1
+         n = 0
+    print(n,m) 
+    axs[m,n].scatter(RoD_arr, MR_arr)
+    axs[m,n].set_title(str(emission_point))
+    
+    
+    
 
     # print('shitshow', ppress[:,342])
 
