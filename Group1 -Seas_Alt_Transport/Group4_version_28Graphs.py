@@ -653,8 +653,7 @@ plt.title( "2-D Heat Map" )
 plt.show()
 '''
 fig, axs = plt.subplots(nrows=7, ncols=4, figsize=(32, 32))
-rows=3#9
-columns=9#36
+fig.tight_layout()
 for i, ax in enumerate(axs.flat):
     flux_list=TrendMap(i)
     lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elementss
@@ -687,13 +686,15 @@ for i, ax in enumerate(axs.flat):
     mp.drawcoastlines(linewidth=0.2)
     mp.drawcountries(linewidth=0.2)
         
-    meridians = mp.drawmeridians(np.arange(-180,200,20), 
-                            labels=[False,False,False,True], 
-                            linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+
+    #space between numbers
+   ## meridians = mp.drawmeridians(np.arange(-180,200,45), 
+    ##                        labels=[False,False,False,True], 
+    ##                       linewidth=0.2, fontsize=10) #Draw lon lines every 20º
         
-    mp.drawparallels(np.arange(-90,110,20), 
-                            labels=[True,False,False,True], 
-                            linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+    ##mp.drawparallels(np.arange(-90,110,20), 
+    ##                        labels=[True,False,False,True], 
+    ##                        linewidth=0.2, fontsize=10) #Draw lat lines every 20º
         
     #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
     colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
