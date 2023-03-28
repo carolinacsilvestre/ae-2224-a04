@@ -199,7 +199,7 @@ rows = 180/step
 
 def TrendMap(EmissionPoint):
 
-    parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)
+    parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1) #[0]#
     TrendMapPlot = np.zeros((int(rows),int(columns)))
     
     for parcel2Ai in parcel2A:
@@ -652,6 +652,7 @@ mp.fillcontinents(color='lightgray')
 plt.title( "2-D Heat Map" )
 plt.show()
 '''
+############################################################28 by 28 fig############################################
 fig, axs = plt.subplots(nrows=7, ncols=4, figsize=(32, 32))
 fig.tight_layout()
 for i, ax in enumerate(axs.flat):
@@ -733,6 +734,90 @@ for i, ax in enumerate(axs.flat):
 
 
 #Define colorbar features
+##cb = fig.colorbar(sc2, extend='both', 
+                      #  orientation='horizontal',fraction=0.052, 
+                      #  pad=0.065)
+        
+#Adjust colorbar tickmark size
+##cb.ax.tick_params(labelsize=14)
+        
+#Label the colorbar
+##cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold',loc='right')
+
+
+plt.show()
+plt.close()
+############################################################end############################################
+
+
+
+#################################Single Heat Map (airparcel trajectory can be added)####################################### 
+fig, ax = plt.subplots()
+
+flux_list=TrendMap(0)
+print(f"this is wdsfdpso{flux_list}")
+lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elementss
+lon = np.linspace(-180,180,int(columns)+1)
+fig.set_figheight(8)
+fig.set_figwidth(14)
+    
+#Define map projection and settings
+#For more info: https://matplotlib.org/basemap/users/cyl.html
+mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                        llcrnrlon = -180,
+                        llcrnrlat = -90,
+                        urcrnrlon = 180,
+                        urcrnrlat = 90,
+                        resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+    
+
+x, y = mp(lon, lat)
+    
+#Choose the settings for the coastlines, countries, meridians...
+mp.drawcoastlines(linewidth=0.2)
+mp.drawcountries(linewidth=0.2)
+    
+#Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
+cmap= matplotlib.colors.ListedColormap(colors)
+    
+
+
+
+
+cmap.set_under("w")
+cmap.set_over("red")
+    
+
+#Plot the flux on the map
+sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')
+    
+meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                         labels=[False,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+    
+mp.drawparallels(np.arange(-90,110,20), 
+                         labels=[True,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+
+
+######draws the parcels themselves on top of them w start and end point and color bar#######
+
+for i in range(50):
+        parcel2 = i
+        ax.scatter(plon[:,parcel2], plat[:,parcel2], s=20, marker='o', c=ppress[:,parcel],
+                zorder=2)
+
+        #print(plon[:,parcel2].shape)
+
+        ax.scatter(plon[-1,parcel2], plat[-1,parcel2], s=140, marker='$F$', color='red',
+                zorder=2)
+        
+        #Plot start and end points with an "S" and "F" respectively.
+        ax.scatter(plon[0,parcel2], plat[0,parcel2], s=140, marker='$S$', color='red',
+                zorder=2)
+        
+
 cb = fig.colorbar(sc2, extend='both', 
                         orientation='horizontal',fraction=0.052, 
                         pad=0.065)
@@ -741,11 +826,14 @@ cb = fig.colorbar(sc2, extend='both',
 cb.ax.tick_params(labelsize=14)
         
 #Label the colorbar
-cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold',loc='bottom')
+cb.set_label(label="Heat map of airparcel 0 from the first emission point (E.P. 0)",size=14,weight='bold')
 
+######END draws the parcels themselves on top of them w start and end point and color bar#######
 
 plt.show()
 plt.close()
+
+################################# END ####################################### 
 
 
 
