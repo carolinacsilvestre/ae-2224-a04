@@ -516,7 +516,7 @@ activate_plot3 = True  # activation of vertical location plot with colorbar##
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Set up axis object for plotting the map
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(nrows= 7, ncols= 4)
 
     # Adjust dimensions of map plot
     fig.set_figheight(8)
@@ -534,32 +534,48 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
-    
+    m = 0
+    n = 0
+
     # Scatter plot command
-    for parcel3 in range(0,50):
-        sc = ax.scatter(time, ppress[:, parcel3], s=30, marker='o',
+    for emission_points in range(1,29):
+        for parcel3 in range((emission_points - 1) * 50,emission_points * 50 ):
+            sc = ax[m,n].scatter(time, ppress[:, parcel3], s=5, marker='o',
                     c=airO3_001[:, parcel3]*1E09,
                     cmap=cmap, norm=norm, linewidth=1)
+            ax[m,n].invert_yaxis() 
+            print('nooooooooooooooooooooooooo', (m,n))
+            n = n + 1
+            if n == 4:
+                m = m + 1
+                n = 0
+            if m == 7:
+                break
+        if m == 7:
+            break
+            
+            
+            
 
     # print('lennnnnnn', len(airO3_001[:,parcel3]))
 
     # Pressure altitude increases towards the surface, reading convention
-    ax.invert_yaxis()
+    
 
     # Set spacing and sizing of axes tickmarks
-    ax.set_xticks(np.arange(0, 110, 10))
-    ax.set_yticks(np.arange(0, 1200, 200))
+    # ax.set_xticks(np.arange(0, 110, 10))
+    # ax.set_yticks(np.arange(0, 1200, 200))
 
-    ax.xaxis.set_tick_params(labelsize=20) 
-    ax.yaxis.set_tick_params(labelsize=20) 
+    # ax.xaxis.set_tick_params(labelsize=20) 
+    # ax.yaxis.set_tick_params(labelsize=20) 
 
     # Labeling of axes and plot title
-    ax.set_xlabel(
-        "Time elapsed since emission \n [Days]", fontsize=22, weight='bold')
-    ax.set_ylabel(
-        "Air parcel pressure altitude \n [hPa]", fontsize=22, weight='bold')
-    ax.set_title("Air parcel with colorbar - vertical",
-                 fontsize=24, weight='bold')
+    # ax.set_xlabel(
+    #     "Time elapsed since emission \n [Days]", fontsize=22, weight='bold')
+    # ax.set_ylabel(
+    #     "Air parcel pressure altitude \n [hPa]", fontsize=22, weight='bold')
+    # ax.set_title("Air parcel with colorbar - vertical",
+    #              fontsize=24, weight='bold')
 
     # Define colorbar features
     cb = fig.colorbar(sc, ticks=bounds, extend='both')
