@@ -520,7 +520,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Adjust dimensions of map plot
     fig.set_figheight(8)
-    fig.set_figwidth(14)
+    fig.set_figwidth(20)
 
     # parcel3 = 0  # Parcel ID, 0 means first.
 
