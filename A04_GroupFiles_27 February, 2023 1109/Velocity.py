@@ -414,11 +414,11 @@ for emission_point in range(1, 29):
     if n == 4:
          m = m + 1
          n = 0
-    # print(n,m) 
+    print(n,m) 
     fig.set_figheight(9)
     fig.set_figwidth(25)
-    axs[m,n].scatter(RoD_arr, MR_arr * 10E9, s = 5)
-    axs[m,n].set_title(str(emission_point))
+    axs[n,m].scatter(RoD_arr, MR_arr * 10E9, s = 5)
+    axs[n,m].set_title(str(emission_point))
     ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
     print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
     ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
