@@ -424,7 +424,7 @@ for emission_point in range(1, 29):
         fig.set_figheight(9)
         fig.set_figwidth(25)
         fig.suptitle('Jan 2014 200hpa')
-        axs[n,m].scatter(RoD_arr, MR_arr * 10E9, s = 5)
+        axs[n,m].scatter(RoD_arr, MR_arr * 1E9, s = 5)
         axs[n,m].set_title(str(emission_point))
     ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
     print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
@@ -528,7 +528,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     fig, ax = plt.subplots(nrows= 7, ncols= 4)
 
     # Adjust dimensions of map plot
-    fig.set_figheight(8)
+    fig.set_figheight(8.5)
     fig.set_figwidth(20)
 
     # parcel3 = 0  # Parcel ID, 0 means first.
@@ -547,11 +547,11 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     n = 0
 
     # Scatter plot command
-    
+
     for emission_points in range(1,29):
         for parcel3 in range((emission_points - 1) * 50,emission_points * 50 ):
             
-            sc = ax[m,n].scatter(time, ppress[:, parcel3], s=5, marker='o',
+            sc = ax[m,n].scatter(time, ppress[:, parcel3], s=2, marker='o',
                     c=airO3_001[:, parcel3]*1E09,
                     cmap=cmap, norm=norm, linewidth=1)
         ax[m,n].invert_yaxis()    
