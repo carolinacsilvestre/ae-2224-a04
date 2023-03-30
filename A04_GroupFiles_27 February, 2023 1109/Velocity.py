@@ -16,10 +16,10 @@ arising from a short-term increase in ozone.'''
 
 
 # JUST KEEP THESE ALL UNCOMMENTED! IT WILL WORK JUST FINE ########################################################3
-f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
-# f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
+# f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
+f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
 # f_string = 'D:/Python safe/all test data/*'
-#f_string = 'E:/all data/Winter 2014 200hpa/*'
+f_string = 'E:/all data/Jan 2014 200hpa/*'
 
 
 # print('for got sake', f_string)
@@ -359,6 +359,7 @@ MR_average_arr = np.array([])
 list_average_rod = []
 list_median_rod = []
 fig, axs = plt.subplots(nrows=4, ncols=7)
+fig.suptitle('Jan 2014 200hpa', fontsize = 15)
 m = 0
 n = -1
 
@@ -407,16 +408,24 @@ for emission_point in range(1, 29):
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
         mean_mr = np.mean(MR_arr)
+        
+
     n = n + 1  
     if n == 4:
          m = m + 1
          n = 0
-    fig.set_figheight(16)
-    fig.set_figwidth(30)
-    axs[n,m].scatter(RoD_arr, MR_arr * 10E9, s = 5)
-    axs[n,m].set_title(str(emission_point))
-    # if m == 2 and n == 5:
-    #     print('Avg parcel is', mr_one_parcel, 'yo')
+    # print(n,m) 
+    fig.set_figheight(9)
+    fig.set_figwidth(25)
+    axs[m,n].scatter(RoD_arr, MR_arr * 10E9, s = 5)
+    axs[m,n].set_title(str(emission_point))
+    ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
+    print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+    ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
+    print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+    cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
+    print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+    
     
     
     
