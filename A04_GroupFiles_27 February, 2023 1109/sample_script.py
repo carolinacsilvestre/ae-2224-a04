@@ -15,9 +15,23 @@ import matplotlib.animation as animation  # For animation
 # =============================================================================
 # LOADING DATA FROM NETCDF (.NC) FILES
 # =============================================================================
+season = 'summer'
+altitude = 250
 
-# USER INPUT - File path
-f_string = 'D:/Data/*'  # Insert file path to input data, do not forget wildcard
+if season == 'summer':
+    if altitude == 200:
+        f_string = 'D:/Data/200 July/*'
+    if altitude == 250:
+        f_string = 'D:/Data/250 July/*'
+    if altitude == 300:
+        f_string = 'D:/Data/300 July/*'
+elif season == 'winter':
+    if altitude == 200:
+        f_string = 'D:/Data/200 Jan/*'
+    if altitude == 250:
+        f_string = 'D:/Data/250 Jan/*'
+    if altitude == 300:
+        f_string = 'D:/Data/300 Jan/*'
 
 # USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -192,7 +206,7 @@ if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_stri
 # =============================================================================
 
 # Requires ATTILA air parcel trajectory location data
-def plot_air_parcel_trajectories(Air_Parcel_ID):
+def plot_vertical_trajectory(Air_Parcel_ID):
     if attila_switch == True:
         # Set up axis object for plotting the map
         fig, ax = plt.subplots()
@@ -229,13 +243,12 @@ def plot_air_parcel_trajectories(Air_Parcel_ID):
         plt.close()
         return plot
 
-
 # =============================================================================
 # PLOT TYPE 2 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP)
 # =============================================================================
 
 # Requires ATTILA air parcel trajectory location data
-def plot_air_parcel_trajectories_map(Air_Parcel_ID):
+def plot_trajectories_map(Air_Parcel_ID):
     if attila_switch == True:
         parcel2 = Air_Parcel_ID  # Parcel ID, 0 means first.
 
@@ -291,13 +304,12 @@ def plot_air_parcel_trajectories_map(Air_Parcel_ID):
         plt.close()
         return plot2
 
-
 # =============================================================================
 # PLOT TYPE 3 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS W/ COLORBAR
 # =============================================================================
 
 # Requires ATTILA air parcel trajectory location and O3 data
-def plot_air_parcel_trajectories_colorbar(Air_Parcel_ID):
+def plot_vertical_trajectory_o3(Air_Parcel_ID):
     if attila_switch == True and o3tracer_switch == True:
         # Set up axis object for plotting the map
         fig, ax = plt.subplots()
@@ -355,13 +367,12 @@ def plot_air_parcel_trajectories_colorbar(Air_Parcel_ID):
         plt.close()
         return sc
 
-
 # =================================================================================
 # PLOT TYPE 4 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP) W/ COLORBAR
 # =================================================================================
 
 # Requires ATTILA air parcel trajectory locatio and O3 data
-def plot_air_parcel_trajectories_map_colorbar(Air_Parcel_ID):
+def plot_trajectory_map_o3(Air_Parcel_ID):
     if attila_switch == True and o3tracer_switch == True:
         parcel4 = Air_Parcel_ID  # Parcel ID, 0 means first.
 
@@ -439,7 +450,7 @@ def plot_air_parcel_trajectories_map_colorbar(Air_Parcel_ID):
 # =============================================================================
 
 # Requires lat,lon from ATTILA data files and fluxes
-def plot_net_radiative_fluxes_single_EP(Emission_point):
+def plot_net_RF(Emission_point):
     if attila_switch == True and rad_fluxes_switch == True:
         # Set up axis object for plotting the map
         fig, ax = plt.subplots()  # Subplots are useful for drawing multiple plots together
@@ -512,7 +523,6 @@ def plot_net_radiative_fluxes_single_EP(Emission_point):
         plt.close()
         return sc2
 
-
 def plot_emission_point_trajectories_map(Emission_point):
     if attila_switch == True:
 
@@ -567,3 +577,13 @@ def plot_emission_point_trajectories_map(Emission_point):
         plt.show()
         plt.close()
         return plot2
+
+flux_list = []
+for i in range(28):
+    flux_time_avg = np.mean(global_net_flx[i], axis=0)
+    flux_list.append(np.sum(flux_time_avg))
+
+
+np.array(flux_list).reshape(7, 4)
+print(flux_list)
+
