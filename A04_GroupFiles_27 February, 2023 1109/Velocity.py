@@ -17,10 +17,12 @@ arising from a short-term increase in ozone.'''
 
 # JUST KEEP THESE ALL UNCOMMENTED! IT WILL WORK JUST FINE ########################################################3
 # f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
-# f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
-f_string = 'D:/Python safe/all test data/*'
+f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
+# f_string = 'D:/Python safe/all test data/*'
+f_string = 'E:/all data/Jan 2014 200hpa/*'
 
 
+# print('for got sake', f_string)
 
 import scipy.stats
 from matplotlib.animation import FuncAnimation
@@ -37,7 +39,7 @@ import matplotlib.colors  # To create new colorbar
 # USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
 o3tracer_switch = True
-rad_fluxes_switch = True
+rad_fluxes_switch = False
 
 # Read in file names based on f_string variable
 filenames_all = sorted(glob.glob(f_string))  # Get all file names in f_string
@@ -62,7 +64,7 @@ global_net_flx = []  # Holds all net fluxes for the 28 EPs (3 months)
 # Positions of air parcels
 if attila_switch == True:
     for file in filenames_all:
-        if 'attila.nc' in file:
+        if 'attila' in file:
             data = Dataset(file, 'r')
             print('\n')
             print('File loaded: ')
@@ -77,7 +79,7 @@ if attila_switch == True:
             # Time
             temp = data.variables['time'][:]
             time.append(temp)
-
+            
             # Air parcel longitudinal position
             temp = data.variables['PLON'][:]
             plon.append(temp)
@@ -357,13 +359,14 @@ MR_average_arr = np.array([])
 list_average_rod = []
 list_median_rod = []
 fig, axs = plt.subplots(nrows=4, ncols=7)
+fig.suptitle('Jan 2014 200hpa', fontsize = 15)
 m = 0
 n = -1
 
-for emission_point in range(0, 28):
+for emission_point in range(1, 29):
 
     # A loop covering all 50 parcels in one emission location ##
-    for i in range((emission_point)*50, (emission_point+1)*50):
+    for i in range(((emission_point-1) *50), (emission_point)*50):
 
         # Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
         ppress_temp = ppress[:, i]
@@ -405,13 +408,24 @@ for emission_point in range(0, 28):
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
         mean_mr = np.mean(MR_arr)
+        
+
     n = n + 1  
     if n == 7:
          m = m + 1
          n = 0
-    print(n,m) 
-    axs[m,n].scatter(RoD_arr, MR_arr)
+    # print(n,m) 
+    fig.set_figheight(9)
+    fig.set_figwidth(25)
+    axs[m,n].scatter(RoD_arr, MR_arr * 10E9, s = 5)
     axs[m,n].set_title(str(emission_point))
+    ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
+    print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+    ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
+    print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+    cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
+    print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+    
     
     
     
@@ -468,7 +482,7 @@ print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 #     plt.show()
 #     plt.close()
 
-plot_emission_point = False
+plot_emission_point = True
 if plot_emission_point == True:
     fig, ax = plt.subplots()  # Plot MR W.R.T. RoD ##
     fig.set_figheight(8)
@@ -483,6 +497,7 @@ if plot_emission_point == True:
     ax.set_xlabel('Emission point rate of descent [hPa/day]')
     ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
     ax.set_title("July 2014, 250hPa, 40 day window")
+    plt.savefig('Mr vs RoD, July 2014 40D')
     plt.show()
     plt.close()
 
@@ -560,8 +575,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Save and close the map plot
     plt.tight_layout()  # Ensure all parts of the plot will show after saving
-    plt.savefig("air_parcel_ID"+str(parcel3)+"_vertical_colorbar.png",
-                format="png", dpi=300)
+    # plt.savefig("air_parcel_ID"+str(parcel3)+"_vertical_colorbar.png",format="png", dpi=300)
     plt.show()
     plt.close()
 
