@@ -655,7 +655,7 @@ plt.show()
 ############################################################28 by 28 fig############################################
 fig, axs = plt.subplots(nrows=7, ncols=4, figsize=(32, 32))
 fig.tight_layout()
-for i, ax in enumerate(axs.flat):
+for i, ax in np.ndenumerate(axs):#i, ax in enumerate(axs.flat):
     flux_list=TrendMap(i)
     lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elementss
     lon = np.linspace(-180,180,int(columns)+1)
@@ -744,7 +744,7 @@ for i, ax in enumerate(axs.flat):
 #Label the colorbar
 ##cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold',loc='right')
 
-
+axs = axs.transpose()
 plt.show()
 plt.close()
 ############################################################end############################################
