@@ -361,6 +361,7 @@ fig.suptitle('Jan 2014 200hpa', fontsize = 15)
 m = 0
 n = -1
 
+
 for emission_point in range(1, 29):
 
     # A loop covering all 50 parcels in one emission location ##
@@ -478,8 +479,8 @@ print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 #     plt.show()
 #     plt.close()
 
-plot_emission_point = False
-if plot_emission_point == True:
+plot_emission_point = False 
+if plot_emission_point == True: 
     fig, ax = plt.subplots()  # Plot MR W.R.T. RoD ##
     fig.set_figheight(8)
     fig.set_figwidth(15)
@@ -526,7 +527,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     # Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
     colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
     cmap = matplotlib.colors.ListedColormap(colors)
-    bounds = [0, 15, 30, 45, 60, 75]
+    bounds = [0, 15, 30, 45, 60, 75] 
 
     cmap.set_under("w")
     cmap.set_over("crimson")
@@ -625,7 +626,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
     mp.fillcontinents(color='lightgray')
 
     # Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
-    colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
+    colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"] 
     cmap = matplotlib.colors.ListedColormap(colors)
     bounds = [0, 15, 30, 45, 60, 75]
 
