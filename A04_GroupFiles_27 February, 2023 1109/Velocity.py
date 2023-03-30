@@ -22,7 +22,7 @@ f_string = 'D:/Python safe/all test data/*'
 # f_string = 'E:/all data/Winter 2014 200hpa/*'
 
 
-
+# print('for got sake', f_string)
 
 import scipy.stats
 from matplotlib.animation import FuncAnimation
@@ -414,7 +414,7 @@ for emission_point in range(1, 29):
     print(n,m) 
     fig.set_figheight(16)
     fig.set_figwidth(30)
-    axs[m,n].scatter(RoD_arr, MR_arr, s = 5)
+    axs[m,n].scatter(RoD_arr, MR_arr * 10E9, s = 5)
     axs[m,n].set_title(str(emission_point))
     
     
