@@ -418,17 +418,14 @@ for emission_point in range(1, 29):
     fig.set_figheight(9)
     fig.set_figwidth(25)
     fig.suptitle('Jan 2014 200hpa')
-    axs[m,n].scatter(RoD_arr, MR_arr * 10E9, s = 5)
-    axs[m,n].set_title(str(emission_point))
+    axs[n,m].scatter(RoD_arr, MR_arr * 10E9, s = 5)
+    axs[n,m].set_title(str(emission_point))
     ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
     print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
     ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
     print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
     cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
     print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-    
-    
-    
     
 
     # print('shitshow', ppress[:,342])
