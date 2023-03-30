@@ -14,14 +14,6 @@ arising from a short-term increase in ozone.'''
 # USER INPUT - File path
 # f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 
-
-# JUST KEEP THESE ALL UNCOMMENTED! IT WILL WORK JUST FINE ########################################################3
-# f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
-# f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
-# f_string = 'D:/Python safe/all test data/*'
-f_string = 'E:/all data/Jan 2014 200hpa/*'
-
-
 f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
 
 # print('for got sake', f_string)
