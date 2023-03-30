@@ -23,6 +23,7 @@ f_string = 'D:/Python safe/all test data/*'
 
 
 
+
 import scipy.stats
 from matplotlib.animation import FuncAnimation
 import glob  # Dynamic file name loading
@@ -361,10 +362,10 @@ fig, axs = plt.subplots(nrows=4, ncols=7)
 m = 0
 n = -1
 
-for emission_point in range(0, 28):
+for emission_point in range(1, 29):
 
     # A loop covering all 50 parcels in one emission location ##
-    for i in range((emission_point)*50, (emission_point+1)*50):
+    for i in range(((emission_point-1) *50), (emission_point)*50):
 
         # Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
         ppress_temp = ppress[:, i]
@@ -414,7 +415,7 @@ for emission_point in range(0, 28):
     fig.set_figheight(16)
     fig.set_figwidth(30)
     axs[m,n].scatter(RoD_arr, MR_arr, s = 5)
-    axs[m,n].set_title(str(emission_point + 1))
+    axs[m,n].set_title(str(emission_point))
     
     
     
