@@ -19,7 +19,7 @@ arising from a short-term increase in ozone.'''
 # f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
 # f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
 # f_string = 'D:/Python safe/all test data/*'
-f_string = 'E:/all data/Winter 2014 200hpa/*'
+f_string = 'E:/all data/Jan 2014 200hpa/*'
 
 
 # print('for got sake', f_string)
@@ -359,6 +359,7 @@ MR_average_arr = np.array([])
 list_average_rod = []
 list_median_rod = []
 fig, axs = plt.subplots(nrows=4, ncols=7)
+fig.suptitle('Jan 2014 200hpa', fontsize = 15)
 m = 0
 n = -1
 
@@ -411,11 +412,12 @@ for emission_point in range(1, 29):
     if n == 7:
          m = m + 1
          n = 0
-    print(n,m) 
-    fig.set_figheight(16)
-    fig.set_figwidth(30)
+    # print(n,m) 
+    fig.set_figheight(9)
+    fig.set_figwidth(25)
     axs[m,n].scatter(RoD_arr, MR_arr * 10E9, s = 5)
     axs[m,n].set_title(str(emission_point))
+    
     
     
     
