@@ -413,7 +413,7 @@ for emission_point in range(1, 29):
     if n == 4:
          m = m + 1
          n = 0
-    # print(n,m) 
+    print(n,m) 
     fig.set_figheight(9)
     fig.set_figwidth(25)
     fig.suptitle('Jan 2014 200hpa')
