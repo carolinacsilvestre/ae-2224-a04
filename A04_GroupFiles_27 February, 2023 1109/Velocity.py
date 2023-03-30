@@ -544,7 +544,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
-    # print('whaaaaaaaat', airO3_001[:, 1])
+    print('whaaaaaaaat', airO3_001[:, 1])
     # print(type(airO3_001[:, 1]))
     # print('min', np.min(airO3_001[:, 1]))
     m = 0
@@ -555,13 +555,14 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     plot_vertical_trajectory = True
     if plot_vertical_trajectory == True:
         for emission_points in range(1,29):
-            for parcel3 in range((emission_points - 1) * 50,emission_points * 50 ):
-                filtered = filter(lambda x: x != 0, airO3_001[:, parcel3])
-                print(filtered)
-                power = math.log10(filtered)
-                print(power)
+            for parcel3 in range((emission_points - 1) * 50,emission_points * 50):
+                array = airO3_001[:, parcel3]
+                median = np.median(array)
+            #     min_filtered = np.min(filtered_array)
+                power = np.abs(math.log10(median))
+                # print(power)
                 sc = ax[m,n].scatter(time, ppress[:, parcel3], s=2, marker='o',
-                        c=airO3_001[:, parcel3]*1E09,
+                        c=airO3_001[:, parcel3]* (10 ** (power + 1)),
                         cmap=cmap, norm=norm, linewidth=1)
             ax[m,n].set_title(str(emission_points))
             ax[m,n].invert_yaxis()    
