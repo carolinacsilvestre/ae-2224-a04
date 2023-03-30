@@ -356,8 +356,13 @@ MR_average_arr = np.array([])
 
 list_average_rod = []
 list_median_rod = []
-fig, axs = plt.subplots(nrows=4, ncols=7)
-fig.suptitle('Jan 2014 200hpa', fontsize = 15)
+
+plot_all_parcel = False
+
+if plot_all_parcel == True: 
+    fig, axs = plt.subplots(nrows=4, ncols=7)
+
+    fig.suptitle('Jan 2014 200hpa', fontsize = 15)
 m = 0
 n = -1
 
@@ -413,12 +418,14 @@ for emission_point in range(1, 29):
     if n == 4:
          m = m + 1
          n = 0
-    print(n,m) 
-    fig.set_figheight(9)
-    fig.set_figwidth(25)
-    fig.suptitle('Jan 2014 200hpa')
-    axs[n,m].scatter(RoD_arr, MR_arr * 10E9, s = 5)
-    axs[n,m].set_title(str(emission_point))
+    # print(n,m) 
+
+    if plot_all_parcel == True:
+        fig.set_figheight(9)
+        fig.set_figwidth(25)
+        fig.suptitle('Jan 2014 200hpa')
+        axs[n,m].scatter(RoD_arr, MR_arr * 10E9, s = 5)
+        axs[n,m].set_title(str(emission_point))
     ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
     print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
     ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
@@ -443,7 +450,9 @@ for emission_point in range(1, 29):
     MR_average_arr = np.append(MR_average_arr, MR_average)
     # print(len(MR_average_arr))
 
-plt.show()
+
+if plot_all_parcel == True:
+    plt.show()
 
 
 print(list_average_rod)
@@ -538,19 +547,20 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     n = 0
 
     # Scatter plot command
+    
     for emission_points in range(1,29):
         for parcel3 in range((emission_points - 1) * 50,emission_points * 50 ):
+            
             sc = ax[m,n].scatter(time, ppress[:, parcel3], s=5, marker='o',
                     c=airO3_001[:, parcel3]*1E09,
                     cmap=cmap, norm=norm, linewidth=1)
-            ax[m,n].invert_yaxis() 
-            print('nooooooooooooooooooooooooo', (m,n))
-            n = n + 1
-            if n == 4:
-                m = m + 1
-                n = 0
-            if m == 7:
-                break
+        ax[m,n].invert_yaxis()    
+        cb = fig.colorbar(sc, ticks=bounds, extend='both')
+            # print('nooooooooooooooooooooooooo', (m,n))
+        n = n + 1
+        if n == 4:
+            m = m + 1
+            n = 0
         if m == 7:
             break
             
@@ -578,7 +588,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     #              fontsize=24, weight='bold')
 
     # Define colorbar features
-    cb = fig.colorbar(sc, ticks=bounds, extend='both')
+    
 
     # Adjust colorbar tickmark size
     cb.ax.tick_params(labelsize=18)
