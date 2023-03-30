@@ -12,7 +12,7 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string =r"C:/Users/31683/Desktop/project data/PreliminaryData/*"
+f_string =r"C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -655,7 +655,8 @@ plt.show()
 ############################################################28 by 28 fig############################################
 fig, axs = plt.subplots(nrows=7, ncols=4, figsize=(32, 32))
 fig.tight_layout()
-for i, ax in np.ndenumerate(axs):#i, ax in enumerate(axs.flat):
+axs = axs.transpose()
+for i, ax in enumerate(axs.flat):
     flux_list=TrendMap(i)
     lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elementss
     lon = np.linspace(-180,180,int(columns)+1)
@@ -724,7 +725,7 @@ for i, ax in np.ndenumerate(axs):#i, ax in enumerate(axs.flat):
 
 
 
-    ax.set_ylabel(f'E. P. {i}', loc='top')
+    ax.set_ylabel(f'E. P. {i+1}', loc='top')
     #ax.set_xlabel('XLabel', loc='left')
     #cbar = fig.colorbar(sc)
     #cbar.set_label("ZLabel", loc='top')
@@ -744,7 +745,7 @@ for i, ax in np.ndenumerate(axs):#i, ax in enumerate(axs.flat):
 #Label the colorbar
 ##cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold',loc='right')
 
-axs = axs.transpose()
+
 plt.show()
 plt.close()
 ############################################################end############################################
