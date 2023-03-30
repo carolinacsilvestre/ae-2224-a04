@@ -413,7 +413,7 @@ for emission_point in range(0, 28):
     print(n,m) 
     fig.set_figheight(16)
     fig.set_figwidth(30)
-    axs[m,n].scatter(RoD_arr, MR_arr)
+    axs[m,n].scatter(RoD_arr, MR_arr, s = 5)
     axs[m,n].set_title(str(emission_point + 1))
     
     
