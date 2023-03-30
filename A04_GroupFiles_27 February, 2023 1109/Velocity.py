@@ -25,6 +25,7 @@ import matplotlib.pyplot as plt  # Plotting
 from mpl_toolkits.basemap import Basemap  # For map plotting
 from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
+import math
 
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
@@ -528,7 +529,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     fig, ax = plt.subplots(nrows= 7, ncols= 4)
 
     # Adjust dimensions of map plot
-    fig.set_figheight(8.5)
+    fig.set_figheight(10)
     fig.set_figwidth(20)
 
     # parcel3 = 0  # Parcel ID, 0 means first.
@@ -543,35 +544,43 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
+    # print('whaaaaaaaat', airO3_001[:, 1])
+    # print(type(airO3_001[:, 1]))
+    # print('min', np.min(airO3_001[:, 1]))
     m = 0
     n = 0
 
     # Scatter plot command
 
-    for emission_points in range(1,29):
-        for parcel3 in range((emission_points - 1) * 50,emission_points * 50 ):
+    plot_vertical_trajectory = True
+    if plot_vertical_trajectory == True:
+        for emission_points in range(1,29):
+            for parcel3 in range((emission_points - 1) * 50,emission_points * 50 ):
+                filtered = filter(lambda x: x != 0, airO3_001[:, parcel3])
+                print(filtered)
+                power = math.log10(filtered)
+                print(power)
+                sc = ax[m,n].scatter(time, ppress[:, parcel3], s=2, marker='o',
+                        c=airO3_001[:, parcel3]*1E09,
+                        cmap=cmap, norm=norm, linewidth=1)
+            ax[m,n].set_title(str(emission_points))
+            ax[m,n].invert_yaxis()    
+            cb = fig.colorbar(sc, ticks=bounds, extend='both')
+            cb.ax.tick_params(labelsize=10)
+            # cb.set_label(
+            # label="O$_3$ Mixing Ratio [nmol·mol$^{-1}$]", size=10, weight='bold')
+            #     # print('nooooooooooooooooooooooooo', (m,n))
+            n = n + 1
+            if n == 4:
+                m = m + 1
+                n = 0
+            if m == 7:
+                break
             
-            sc = ax[m,n].scatter(time, ppress[:, parcel3], s=2, marker='o',
-                    c=airO3_001[:, parcel3]*1E09,
-                    cmap=cmap, norm=norm, linewidth=1)
-        ax[m,n].invert_yaxis()    
-        cb = fig.colorbar(sc, ticks=bounds, extend='both')
-            # print('nooooooooooooooooooooooooo', (m,n))
-        n = n + 1
-        if n == 4:
-            m = m + 1
-            n = 0
-        if m == 7:
-            break
-            
-            
-            
-
     # print('lennnnnnn', len(airO3_001[:,parcel3]))
 
     # Pressure altitude increases towards the surface, reading convention
     
-
     # Set spacing and sizing of axes tickmarks
     # ax.set_xticks(np.arange(0, 110, 10))
     # ax.set_yticks(np.arange(0, 1200, 200))
@@ -589,20 +598,19 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Define colorbar features
     
-
     # Adjust colorbar tickmark size
-    cb.ax.tick_params(labelsize=18)
+    # cb.ax.tick_params(labelsize=18)
 
     # Label the colorbar
-    cb.set_label(
-        label="O$_3$ Mixing Ratio [nmol·mol$^{-1}$]", size=18, weight='bold')
 
     # Save and close the map plot
-    plt.tight_layout()  # Ensure all parts of the plot will show after saving
-    # plt.savefig("air_parcel_ID"+str(parcel3)+"_vertical_colorbar.png",format="png", dpi=300)
+        plt.tight_layout()  # Ensure all parts of the plot will show after saving
+        # plt.savefig("air_parcel_ID"+str(parcel3)+"_vertical_colorbar.png",format="png", dpi=300)
+        plt.show()
+        plt.close()
+
     plt.show()
     plt.close()
-
 
 # =================================================================================
 # PLOT TYPE 4 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP) W/ COLORBAR
