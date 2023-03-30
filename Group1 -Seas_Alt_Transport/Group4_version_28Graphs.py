@@ -655,6 +655,7 @@ plt.show()
 ############################################################28 by 28 fig############################################
 fig, axs = plt.subplots(nrows=7, ncols=4, figsize=(32, 32))
 fig.tight_layout()
+axs = axs.transpose()
 for i, ax in enumerate(axs.flat):
     flux_list=TrendMap(i)
     lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elementss
@@ -724,7 +725,7 @@ for i, ax in enumerate(axs.flat):
 
 
 
-    ax.set_ylabel(f'E. P. {i}', loc='top')
+    ax.set_ylabel(f'E. P. {i+1}', loc='top')
     #ax.set_xlabel('XLabel', loc='left')
     #cbar = fig.colorbar(sc)
     #cbar.set_label("ZLabel", loc='top')
