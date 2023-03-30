@@ -16,8 +16,6 @@ arising from a short-term increase in ozone.'''
 
 f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
 
-# print('for got sake', f_string)
-
 import scipy.stats
 from matplotlib.animation import FuncAnimation
 import glob  # Dynamic file name loading
@@ -28,13 +26,13 @@ from mpl_toolkits.basemap import Basemap  # For map plotting
 from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
 
-
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'D:/Python safe/all test data/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'E:/all data/Jan 2014 200hpa/*'
+
 
 # USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -480,7 +478,7 @@ print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 #     plt.show()
 #     plt.close()
 
-plot_emission_point = True
+plot_emission_point = False
 if plot_emission_point == True:
     fig, ax = plt.subplots()  # Plot MR W.R.T. RoD ##
     fig.set_figheight(8)
@@ -512,7 +510,7 @@ if plot_emission_point == True:
 # print(len(time))
 # print(np.shape(ppress))
 
-activate_plot3 = False  # activation of vertical location plot with colorbar##
+activate_plot3 = True  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
@@ -523,7 +521,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     fig.set_figheight(8)
     fig.set_figwidth(14)
 
-    parcel3 = 0  # Parcel ID, 0 means first.
+    # parcel3 = 0  # Parcel ID, 0 means first.
 
     # Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
     colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
@@ -537,7 +535,8 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     
     # Scatter plot command
-    sc = ax.scatter(time, ppress[:, parcel3], s=30, marker='o',
+    for parcel3 in range(0,50):
+        sc = ax.scatter(time, ppress[:, parcel3], s=30, marker='o',
                     c=airO3_001[:, parcel3]*1E09,
                     cmap=cmap, norm=norm, linewidth=1)
 
@@ -550,8 +549,8 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     ax.set_xticks(np.arange(0, 110, 10))
     ax.set_yticks(np.arange(0, 1200, 200))
 
-    ax.xaxis.set_tick_params(labelsize=20)
-    ax.yaxis.set_tick_params(labelsize=20)
+    ax.xaxis.set_tick_params(labelsize=20) 
+    ax.yaxis.set_tick_params(labelsize=20) 
 
     # Labeling of axes and plot title
     ax.set_xlabel(
