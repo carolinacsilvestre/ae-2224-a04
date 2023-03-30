@@ -18,8 +18,8 @@ arising from a short-term increase in ozone.'''
 # JUST KEEP THESE ALL UNCOMMENTED! IT WILL WORK JUST FINE ########################################################3
 # f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
 # f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
-f_string = 'D:/Python safe/all test data/*'
-# f_string = 'E:/all data/Winter 2014 200hpa/*'
+# f_string = 'D:/Python safe/all test data/*'
+f_string = 'E:/all data/Winter 2014 200hpa/*'
 
 
 # print('for got sake', f_string)
@@ -64,7 +64,7 @@ global_net_flx = []  # Holds all net fluxes for the 28 EPs (3 months)
 # Positions of air parcels
 if attila_switch == True:
     for file in filenames_all:
-        if 'attila.nc' in file:
+        if 'attila' in file:
             data = Dataset(file, 'r')
             print('\n')
             print('File loaded: ')
