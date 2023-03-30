@@ -4,8 +4,9 @@ import numpy as np #Array processing
 from netCDF4 import Dataset #NETCDF file handling
 import matplotlib.pyplot as plt #Plotting
 from mpl_toolkits.basemap import Basemap #For map plotting
+from mpl_toolkits.basemap import shiftgrid
+import matplotlib.colors
 import os
-import tqdm
 
 # =============================================================================
 # LOADING DATA FROM NETCDF (.NC) FILES
@@ -45,7 +46,7 @@ def path_chooser(season, altitude):
     # Return the file path as a string
     return f_string
 
-def read_files(f_string,pbar,verbose=True):
+def read_files(f_string, emission_point=None,RF=True,Atilla=False,O3=False,verbose=True):
     """
     It reads in the net fluxes for each of the 28 emission points (3 months) and returns a list of 28
     net fluxes
@@ -61,110 +62,171 @@ def read_files(f_string,pbar,verbose=True):
         print('Files in input folder: ')
         print(filenames_all)
 
-    #Variables declaration
-    rad_flx_SW = [] #Holds 1 specific call for SW radiative fluxes
-    rad_flx_LW = [] #Holds 1 specific call for LW radiative fluxes
-    rad_flx_SW_02 = [] #SW flux for call 02
-    rad_flx_LW_02 = [] #LW flux for call 02
-    global_net_flx = [] #Holds all net fluxes for the 28 EPs (3 months)
-    
+    if RF:
+        #Variables declaration
+        rad_flx_SW = [] #Holds 1 specific call for SW radiative fluxes
+        rad_flx_LW = [] #Holds 1 specific call for LW radiative fluxes
+        rad_flx_SW_02 = [] #SW flux for call 02
+        rad_flx_LW_02 = [] #LW flux for call 02
+        global_net_flx = [] #Holds all net fluxes for the 28 EPs (3 months)
+        
 
-    #Radiative fluxes corresponding to O3 increase, specifically for 250hPa
-    if '250' in f_string:
-        for file in filenames_all:
-            #Get call 2 separately, which will be subtracted from calls 3-30
-            if file.find('fluxes_tp') != -1 and file.find('EP02') != -1:
-                #fluxes_tp_NAmerica_July2014_EP02
-                data = Dataset(file,'r')
-                if verbose:
-                    print('\n')
-                    print('File loaded: ')
-                    print(file)
-                
-                
-                #Radiative fluxes
-                rad_flx_SW_02 = data.variables['flxs_tp'][:]
-                rad_flx_LW_02 = data.variables['flxt_tp'][:]
-                
-            #Start at 3 since first two calls are not emission points
-            for ep in range(3,31):
-                #If there is no match, output is -1.
-                if file.find('fluxes_tp') != -1 and file.find('EP'+str(ep).zfill(2)) != -1:
+        #Radiative fluxes corresponding to O3 increase, specifically for 250hPa
+        if '250' in f_string:
+            for file in filenames_all:
+                #Get call 2 separately, which will be subtracted from calls 3-30
+                if file.find('fluxes_tp') != -1 and file.find('EP02') != -1:
+                    #fluxes_tp_NAmerica_July2014_EP02
                     data = Dataset(file,'r')
                     if verbose:
                         print('\n')
                         print('File loaded: ')
                         print(file)
-
                     
                     
                     #Radiative fluxes
-                    rad_flx_SW = data.variables['flxs_tp'][:]
-                    rad_flx_LW = data.variables['flxt_tp'][:]
-                    #Calculate net flux and append
-                    global_net_flx.append((rad_flx_LW+rad_flx_SW)- #\
-                                        (rad_flx_LW_02+rad_flx_SW_02))
-                    if season == "summer":
-                        pbar.update(0.5)
-                    else:
-                        pbar.update(1)
+                    rad_flx_SW_02 = data.variables['flxs_tp'][:]
+                    rad_flx_LW_02 = data.variables['flxt_tp'][:]
                     
-                    #Delete unnecessary variables
-                    del rad_flx_LW, rad_flx_SW
+                #Start at 3 since first two calls are not emission points
+                for ep in range(3,31):
+                    #If there is no match, output is -1.
+                    if file.find('fluxes_tp') != -1 and file.find('EP'+str(ep).zfill(2)) != -1:
+                        data = Dataset(file,'r')
+                        if verbose:
+                            print('\n')
+                            print('File loaded: ')
+                            print(file)
+
+                        
+                        
+                        #Radiative fluxes
+                        rad_flx_SW = data.variables['flxs_tp'][:]
+                        rad_flx_LW = data.variables['flxt_tp'][:]
+                        #Calculate net flux and append
+                        global_net_flx.append((rad_flx_LW+rad_flx_SW)- #\
+                                            (rad_flx_LW_02+rad_flx_SW_02))
+                        
+                        #Delete unnecessary variables
+                        del rad_flx_LW, rad_flx_SW
+                    
+
+        #Fluxes from the VISO submodel, for 200 and 300 hPa
+        if not '250' in f_string:
+            #Start at 3 since first two calls are not emission points
+            for ep in range(3,31):
+                for file in filenames_all:
+                    if 'viso' in file:
+                        data = Dataset(file,'r')
+                        if verbose:
+                            print('\n')
+                            print('File loaded: ')
+                            print(file)
+
+                        
+                        
+                        #Store call 2 containing only background O3 fluxes
+                        temp = data.variables['flxs_tp_02'][:]
+                        rad_flx_SW_02.append(temp)
+                        temp = data.variables['flxt_tp_02'][:]
+                        rad_flx_LW_02.append(temp)
+                        
+                        #Other emission point
+                        temp = data.variables['flxs_tp_'+str(ep).zfill(2)][:]
+                        rad_flx_SW.append(temp)
+                        
+                        temp = data.variables['flxt_tp_'+str(ep).zfill(2)][:]
+                        rad_flx_LW.append(temp)        
+                #Concatenate the SW and LW flux data for all 3 months
+                rad_flx_SW = np.concatenate(rad_flx_SW, axis=0)
+                rad_flx_LW = np.concatenate(rad_flx_LW, axis=0) 
+                rad_flx_SW_02 = np.concatenate(rad_flx_SW_02, axis=0)
+                rad_flx_LW_02 = np.concatenate(rad_flx_LW_02, axis=0)
                 
+                #Calculate and append net fluxes for each of the 28 emission points
+                global_net_flx.append((rad_flx_LW+rad_flx_SW)-(rad_flx_LW_02+rad_flx_SW_02))
+                
+                #Clear the radiative flux list holding the 3-month period data for a given call
+                rad_flx_SW = []
+                rad_flx_LW = []
+                rad_flx_SW_02 = []
+                rad_flx_LW_02 = []
+                
+                if verbose:
+                    print('Net flux for EP'+str(ep-2)+' loaded...')
+                
+            del rad_flx_LW, rad_flx_SW, rad_flx_LW_02, rad_flx_SW_02
 
-    #Fluxes from the VISO submodel, for 200 and 300 hPa
-    if not '250' in f_string:
-        #Start at 3 since first two calls are not emission points
-        for ep in range(3,31):
-            for file in filenames_all:
-                if 'viso' in file:
-                    data = Dataset(file,'r')
-                    if verbose:
-                        print('\n')
-                        print('File loaded: ')
-                        print(file)
-
-                    
-                    
-                    #Store call 2 containing only background O3 fluxes
-                    temp = data.variables['flxs_tp_02'][:]
-                    rad_flx_SW_02.append(temp)
-                    temp = data.variables['flxt_tp_02'][:]
-                    rad_flx_LW_02.append(temp)
-                    
-                    #Other emission point
-                    temp = data.variables['flxs_tp_'+str(ep).zfill(2)][:]
-                    rad_flx_SW.append(temp)
-                    
-                    temp = data.variables['flxt_tp_'+str(ep).zfill(2)][:]
-                    rad_flx_LW.append(temp)        
-            #Concatenate the SW and LW flux data for all 3 months
-            rad_flx_SW = np.concatenate(rad_flx_SW, axis=0)
-            rad_flx_LW = np.concatenate(rad_flx_LW, axis=0) 
-            rad_flx_SW_02 = np.concatenate(rad_flx_SW_02, axis=0)
-            rad_flx_LW_02 = np.concatenate(rad_flx_LW_02, axis=0)
-            
-            #Calculate and append net fluxes for each of the 28 emission points
-            global_net_flx.append((rad_flx_LW+rad_flx_SW)-(rad_flx_LW_02+rad_flx_SW_02))
-            pbar.update(1)
-            
-            #Clear the radiative flux list holding the 3-month period data for a given call
-            rad_flx_SW = []
-            rad_flx_LW = []
-            rad_flx_SW_02 = []
-            rad_flx_LW_02 = []
-            
-            if verbose:
-                print('Net flux for EP'+str(ep-2)+' loaded...')
-            
-        del rad_flx_LW, rad_flx_SW, rad_flx_LW_02, rad_flx_SW_02
-
-    #Delete unnecessary variables
-    if not '250' in f_string:
-        del temp, data
-    return global_net_flx
+        #Delete unnecessary variables
+        if not '250' in f_string:
+            del temp, data
+        return global_net_flx
     
+    if Atilla:
+        #Variables declaration
+        time = [] #Attila
+        plat = [] #Attila
+        plon = [] #Attila
+        ppress = [] #Attila in Pa
+
+        for file in filenames_all:
+            if 'attila' in file:
+                data = Dataset(file,'r')
+                #print('\n')
+                #print('File loaded: ')
+                #print(file)
+                
+                #Latitudes and longitudes
+                lats = data.variables['lat'][:]
+                lons_0to36 = data.variables['lon'][:] #Varies from 0 to 360 deg
+                lons_18to18 = data.variables['lon'][:] #Will be converted later to -180 to 180 deg
+                
+                #Time
+                temp = data.variables['time'][:]
+                time.append(temp)
+                
+                #Air parcel longitudinal position
+                temp = data.variables['PLON'][:]
+                plon.append(temp)
+                
+                #Air parcel latitudinal position
+                temp = data.variables['PLAT'][:]
+                plat.append(temp)
+                
+                #Air parcel pressure altitude
+                temp = data.variables['PPRESS'][:]
+                ppress.append(temp)
+    
+        #Concatenation of variables, lists become multi-dimensional numpy arrays
+        time = np.concatenate(time, axis=0)
+        plon = np.concatenate(plon, axis=0)
+        plat = np.concatenate(plat, axis=0)
+        ppress = np.concatenate(ppress, axis=0)/100 #Convert to hPa
+        
+        #Convert longitude range from [0, 360] to [-180, 180]
+        plon = (plon + 180) % 360 -180 #Air parcel longitudinal coordinates
+        lons_18to18 = (lons_18to18 + 180) % 360 -180 #EMAC grid longitudes
+        return lats ,lons_0to36,plon,plat
+    if O3:
+        airO3_001 = []
+        key = "airO3_" + str(emission_point).zfill(3)
+        #O3 data along air parcel trajectories
+        for file in filenames_all:
+            if 'O3lg' in file:
+                data = Dataset(file,'r')
+                #print('\n')
+                #print('File loaded: ')
+                #print(file)
+                
+                #O3 along air parcels for each emission point
+                temp = data.variables[key][:,:1400] #Only the first 1400 trajectories
+                airO3_001.append(temp)
+                
+                #NOTE: do not forget there are 28 emission points in total!
+        
+        #Concatenation of variables, lists become multi-dimensional numpy arrays
+        airO3_001 = np.concatenate(airO3_001, axis=0)
+        return airO3_001
 
 def calculate_values(global_net_flx):
     """
@@ -178,13 +240,14 @@ def calculate_values(global_net_flx):
     for n in range(28):
         flux = global_net_flx[n]
         flux_time_avg = np.mean(flux,axis=0)
-        flux_list.append(np.sum(flux_time_avg)*10**(-3)*A_section)
+        flux_list.append(np.mean(flux_time_avg)*10**(-3)*A_section)
     flux_list = np.array(flux_list).reshape(7, 4,order="F") 
     lat = np.linspace(85,25,7)  # define x as an array with 4 elements
     lon = np.linspace(-115,-55,4)  # define y as an array with 7 elements
-    return lat, lon, flux_list
+    max = np.max(flux_list)
+    return lat, lon, flux_list,max
 
-def plot_values(lat,lon,flux_list,pbar,colors="Reds",show=False,save=True,dpi=300):
+def plot_RF_all_points(lat,lon,flux_list,colors="Reds",show=False,save=True,dpi=300,max=10):
     """
     This function takes in a list of latitudes, a list of longitudes, a list of fluxes, and a color
     scheme, and plots the fluxes on a map
@@ -220,7 +283,6 @@ def plot_values(lat,lon,flux_list,pbar,colors="Reds",show=False,save=True,dpi=30
     #makes lat array a lat x lon array and same for lon array
     #lon, lat = np.meshgrid(lons_shft, lats)
     x, y = mp(lon, lat)
-    pbar.update(5)
         
     #Choose the settings for the coastlines, countries, meridians...
     mp.drawcoastlines(linewidth=0.2)
@@ -235,11 +297,9 @@ def plot_values(lat,lon,flux_list,pbar,colors="Reds",show=False,save=True,dpi=30
                             linewidth=0.2, fontsize=10) #Draw lat lines every 20º
         
         
-    
+    norm= matplotlib.colors.Normalize(vmin=0,vmax=max)
     #Plot the flux on the map
-    sc2 = mp.pcolor(x, y, flux_list,
-                        cmap='Reds',shading='auto')
-    pbar.update(5)    
+    sc2 = mp.pcolor(x, y, flux_list, cmap='Reds',shading='auto',norm=norm)
     #Define colorbar features
     cb = fig.colorbar(sc2, extend='both', 
                         orientation='horizontal',fraction=0.052, 
@@ -257,29 +317,210 @@ def plot_values(lat,lon,flux_list,pbar,colors="Reds",show=False,save=True,dpi=30
     if show:
         plt.show()
     plt.close()
-    pbar.update(5)
+
+def plot_RF_per_point(global_net_flx,lons_0to36,lats,EP):
+    #Set up axis object for plotting the map
+    fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+    
+    #Adjust dimensions of map plot
+    fig.set_figheight(8)
+    fig.set_figwidth(14)
+    
+    #Define map projection and settings
+    #For more info: https://matplotlib.org/basemap/users/cyl.html
+    mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                        llcrnrlon = -180,
+                        llcrnrlat = -90,
+                        urcrnrlon = 180,
+                        urcrnrlat = 90,
+                        resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+    
+    #Shift the fluxes from [0,360] to [-180,180]
+    net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[EP], 
+                                        lons_0to36,start=False)
+    
+    #Format the lat and lon arrays for map graphing, 
+    #makes lat array a lat x lon array and same for lon array
+    lon, lat = np.meshgrid(lons_shft, lats)
+    x, y = mp(lon, lat)
+    
+    #Choose the settings for the coastlines, countries, meridians...
+    mp.drawcoastlines(linewidth=0.2)
+    mp.drawcountries(linewidth=0.2)
+    
+    meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                        labels=[False,False,False,True], 
+                        linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+    
+    mp.drawparallels(np.arange(-90,110,20), 
+                        labels=[True,False,False,True], 
+                        linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+    
+    #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+    colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
+    bounds = [0, 0.5, 1, 1.5, 2, 2.5]
+    cmap= matplotlib.colors.LinearSegmentedColormap.from_list(bounds,colors)
+    
+    
+    cmap.set_under("w")
+    cmap.set_over("red")
+    
+    norm= matplotlib.colors.Normalize(vmin=0,vmax=2.5)
+    
+    #Time-average for the first emission point
+    time_avg_flux = np.mean(net_flx_EP_shft, axis=0)
+    
+    #Plot the flux on the map
+    sc2 = mp.pcolor(x, y, time_avg_flux*1000,
+                    cmap=cmap, norm=norm, shading='auto')
+    
+    #Define colorbar features
+    cb = fig.colorbar(sc2, #ticks=bounds, extend='both', 
+                    orientation='horizontal',fraction=0.052, 
+                    pad=0.065)
+    
+    #Adjust colorbar tickmark size
+    cb.ax.tick_params(labelsize=14)
+    
+    #Label the colorbar
+    cb.set_label(label="Radiative Forcing from Short-term O$_3$ [mW·m$^{-2}$]",size=14,weight='bold')
+    
+    #Save and close the map plot
+    plt.savefig("rad_fluxes_"+str(altitude)+season +"ep" +str(EP+1) + ".png",format="png",dpi=300)
+    if show:
+        plt.show()
+    plt.close()
+
+#for plot with results
+def plot_big(lst:list):
+    max_list = []
+    flux_list_all = []
+    for season, altitude in lst:   
+        path = path_chooser(season,altitude)
+        flux = read_files(path, verbose=verbose)
+        lat, lon, flux_list, maximum = calculate_values(flux)
+        max_list.append(maximum)
+        flux_list_all.append(flux_list)
+
+    for i in range(len(lst)): 
+        season , altitude = lst[i]
+        plot_RF_all_points(lat,lon,flux_list_all[i],show=show,max=max(max_list))
+
+#for plot of individual EP
+def plot_small(EP,season,altitude,show=True):
+    path = path_chooser(season,altitude)
+    flux = read_files(path, verbose=verbose,RF=True,Atilla=False)
+    lats ,lons, plon,plat = read_files(path, verbose=verbose,RF=False,Atilla=True)
+    plot_RF_per_point(flux,lons,lats,EP)
+
+def plot_overlay(EP,global_net_flx,lons_0to36,lats,plon,plat,airO3_001,cut=30):
+    #Requires lat,lon from ATTILA data files and fluxes
+    #Set up axis object for plotting the map
+    emission_point = EP
+    #Set up axis object for plotting the map
+    fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+    
+    #Adjust dimensions of map plot
+    fig.set_figheight(8)
+    fig.set_figwidth(14)
+    
+    #Define map projection and settings
+    #For more info: https://matplotlib.org/basemap/users/cyl.html
+    mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                         llcrnrlon = -180,
+                         llcrnrlat = -90,
+                         urcrnrlon = 180,
+                         urcrnrlat = 90,
+                         resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+    
+    #Shift the fluxes from [0,360] to [-180,180]
+    net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[emission_point-1], 
+                                           lons_0to36,start=False)
+    
+    #Format the lat and lon arrays for map graphing, 
+    #makes lat array a lat x lon array and same for lon array
+    lon, lat = np.meshgrid(lons_shft, lats)
+    x, y = mp(lon, lat)
+    
+    #Choose the settings for the coastlines, countries, meridians...
+    mp.drawcoastlines(linewidth=0.2)
+    mp.drawcountries(linewidth=0.2)
+    
+    meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                         labels=[False,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+    
+    mp.drawparallels(np.arange(-90,110,20), 
+                         labels=[True,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+    
+    #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+    colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
+    bounds = [0, 0.5, 1, 1.5, 2, 2.5]
+    cmap= matplotlib.colors.LinearSegmentedColormap.from_list(bounds,colors)
+    cmap.set_under("w")
+    cmap.set_over("red")
+    
+    norm= matplotlib.colors.Normalize(vmin=0,vmax=2.5)
+    
+    #Time-average for the first emission point
+    time_avg_flux = np.mean(net_flx_EP_shft, axis=0)
+    
+    #Plot the flux on the map
+
+    
+    for i in range(50):
+        #Plot a Lagrangian air parcel with parcel ID given by "parcel2"
+        ax.scatter(plon[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09>cut], plat[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09>cut], s=20, marker='o', color='black',
+               zorder=2,alpha = 0.05)
+        #ax.scatter(plon[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09<30], plat[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09<30], s=20, marker='o', color='green',zorder=2,alpha = 0.05)
+    sc2 = mp.pcolor(x, y, time_avg_flux*1000,
+                    cmap=cmap, norm=norm, shading='auto')
+    #Define colorbar features
+    cb = fig.colorbar(sc2, ticks=bounds, extend='both', 
+                      orientation='horizontal',fraction=0.052, 
+                      pad=0.065)
+    
+    #Adjust colorbar tickmark size
+    cb.ax.tick_params(labelsize=14)
+    
+    #Label the colorbar
+    cb.set_label(label="Radiative Forcing from Short-term O$_3$ [mW·m$^{-2}$]",size=14,weight='bold')
+    
+    #Save and close the map plot
+    plt.savefig("rad_fluxes_map_" + str(emission_point) + ".png",format="png",dpi=300)
+    plt.show()
+    plt.close()
+
 # Changing the current working directory to the plots folder.
 os.chdir('C:/Users/twanv/OneDrive - Delft University of Technology/Bsc - 2/Q3/Project/plots')
 
 A_earth = 5.1e8 #km^2
-frac = 2.8**2/360**2
+frac = 2.8**2/(360*180)
 A_section = A_earth*frac*10**6 #m^2
+A_section = 1
 
 verbose = False
-show = False
+show = True
 save = True
-list = []
+lst = []
 
 # Looping through the seasons and altitudes and plotting the fluxes for each of them.
 for season in ["summer","winter"]:
     for altitude in [200,250,300]:
-        list.append([season,altitude])
+        lst.append([season,altitude])
 
-total = 43*len(list)
-pbar = tqdm.tqdm(total=total) 
-for season, altitude in list:   
-    path = path_chooser(season,altitude)
-    flux = read_files(path,pbar, verbose=verbose)
-    lat, lon, flux_list = calculate_values(flux)
-    plot_values(lat,lon,flux_list,pbar,show=show)
-pbar.close()
+#plot overlay of position on map with radiative forcing
+#select point and dataset:
+season = "summer"
+altitude = 250
+emission_point = 1
+
+#import data
+f_string = path_chooser(season,altitude)
+global_net_flux = read_files(f_string,RF=True,Atilla=False,O3=False,verbose=False)
+lats , lons_0to36,plon,plat = read_files(f_string,RF=False,Atilla=True,O3=False,verbose=False)
+airO3 = read_files(f_string,emission_point=emission_point,RF=False,Atilla=False,O3=True,verbose=False)
+
+#plot data
+plot_overlay(emission_point,global_net_flux,lons_0to36,lats,plon,plat,airO3)

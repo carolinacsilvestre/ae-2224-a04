@@ -12,6 +12,7 @@ from mpl_toolkits.basemap import shiftgrid #For shifting longitudes
 import matplotlib.colors #To create new colorbar
 import matplotlib.cm as cm
 import os
+import tqdm
 
 # =============================================================================
 # LOADING DATA FROM NETCDF (.NC) FILES
@@ -19,8 +20,8 @@ import os
 
 #USER INPUT - File path
  #Insert file path to folder containing all input data, do not forget wildcard
-season = "winter"
-altitude = 200
+season = "summer"
+altitude = 250
 
 
 if season == "summer":
@@ -40,8 +41,8 @@ else:
 
 
 #USER INPUT - Switches to determine which data types should be loaded
-attila_switch = False
-o3tracer_switch = False
+attila_switch = True
+o3tracer_switch = True
 rad_fluxes_switch = True
 parcel_id = 249
 #Read in file names based on f_string variable
@@ -106,7 +107,7 @@ if attila_switch == True:
 
 #O3 data along air parcel trajectories
 if o3tracer_switch == True:
-    for file in filenames_all:
+    for file in tqdm.tqdm(filenames_all, desc="load 03"):
         if 'O3lg' in file:
             data = Dataset(file,'r')
             #print('\n')
@@ -121,10 +122,11 @@ if o3tracer_switch == True:
     
     #Concatenation of variables, lists become multi-dimensional numpy arrays
     airO3_001 = np.concatenate(airO3_001, axis=0)
+    print(airO3_001.shape)
     
 #Radiative fluxes corresponding to O3 increase, specifically for 250hPa
 if rad_fluxes_switch == True and '250' in f_string:
-    for file in filenames_all:
+    for file in tqdm.tqdm(filenames_all,desc="load fluxes"):
         
         #Get call 2 separately, which will be subtracted from calls 3-30
         if file.find('fluxes_tp') != -1 and file.find('EP02') != -1:
@@ -161,7 +163,7 @@ if rad_fluxes_switch == True and '250' in f_string:
 if rad_fluxes_switch == True and not '250' in f_string:
     #Start at 3 since first two calls are not emission points
     for ep in range(3,31):
-        for file in filenames_all:
+        for file in tqdm.tqdm(filenames_all,desc="load fluxes"):
             if 'viso' in file:
                 data = Dataset(file,'r')
                 #print('\n')
@@ -489,8 +491,8 @@ if attila_switch == True and o3tracer_switch == True:
     sc = ax.scatter(plon[:,parcel4], plat[:,parcel4], s=20, marker='o',
                c=airO3_001[:,parcel4]*1E09,cmap=cmap,norm=norm,zorder=2)
     
-    #Plot starting point with an "S", "+4" is added to avoid overlay of letter on point
-    ax.scatter(plon[0,parcel4]+4, plat[0,parcel4], s=140, marker='$S$', color='black',
+    #Plot starting point with an "S", "+4" is added to avoid orlay of letter on point
+    ax.scatter(plon[0,parcel4]+4, plat[0,parcel4], s=140, marker='$S$', vecolor='black',
                zorder=2)
     
     #Define colorbar features
@@ -507,8 +509,8 @@ if attila_switch == True and o3tracer_switch == True:
     plt.savefig("air_parcel_ID"+str(parcel4)+"_map_colorbar.png",format="png",dpi=300)
     plt.show()
     plt.close()
- """  
-"""  
+ 
+
 # =============================================================================
 # PLOT TYPE 5 - Net radiative fluxes from short-term ozone increase (Single EP)
 # =============================================================================
@@ -555,8 +557,9 @@ if attila_switch == True and rad_fluxes_switch == True:
     
     #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
     colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
-    cmap= matplotlib.colors.ListedColormap(colors)
     bounds = [0, 0.5, 1, 1.5, 2, 2.5]
+    cmap= matplotlib.colors.LinearSegmentedColormap.from_list(bounds,colors)
+    
     
     cmap.set_under("w")
     cmap.set_over("red")
@@ -571,7 +574,7 @@ if attila_switch == True and rad_fluxes_switch == True:
                     cmap=cmap, norm=norm, shading='auto')
     
     #Define colorbar features
-    cb = fig.colorbar(sc2, ticks=bounds, extend='both', 
+    cb = fig.colorbar(sc2, #ticks=bounds, extend='both', 
                       orientation='horizontal',fraction=0.052, 
                       pad=0.065)
     
@@ -585,12 +588,11 @@ if attila_switch == True and rad_fluxes_switch == True:
     plt.savefig("rad_fluxes_map_example.png",format="png",dpi=300)
     plt.show()
     plt.close()
+"""
 
- 
 # =============================================================================
 # PLOT TYPE 7 - Net radiative fluxes from short-term ozone increase with airparcel trajectory (Single EP)
 # =============================================================================
-
 
 
 #Requires lat,lon from ATTILA data files and fluxes
@@ -649,11 +651,10 @@ if attila_switch == True and rad_fluxes_switch == True:
     #Plot the flux on the map
 
     
-    #for ID in range(50):
+    for i in tqdm.tqdm(range(50),desc="all 50 parcels from one emission point"):
         #Plot a Lagrangian air parcel with parcel ID given by "parcel2"
-        #ax.scatter(plon[:,(emission_point-1)*50+ID], plat[:,(emission_point-1)*50+ID], s=20, marker='o', color='black',
-               #zorder=2,alpha = 0.05)
-    
+        ax.scatter(plon[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09>=30], plat[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09>30], s=20, marker='o', color='black',
+               zorder=2,alpha = 0.05)
     sc2 = mp.pcolor(x, y, time_avg_flux*1000,
                     cmap=cmap, norm=norm, shading='auto')
     #Define colorbar features
@@ -675,10 +676,10 @@ if attila_switch == True and rad_fluxes_switch == True:
 # =================================================================================
 # PLOT TYPE 8 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP) W/ COLORBAR
 # =================================================================================
-
+"""
 #Requires ATTILA air parcel trajectory locatio and O3 data
 if attila_switch == True and o3tracer_switch == True:
-    emission_point = 1
+    emission_point = 28
     #Set up axis object for plotting the map
     fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
     
@@ -780,7 +781,7 @@ anim = FuncAnimation(fig, animate, frames=len(plon[:,1]), interval=200)
 
 # Save the animation as a GIF
 anim.save('earthquake_map2.gif', writer='pillow', fps=5)
-"""
+
 
 A_earth = 5.1e8 #km^2
 frac = 2.8**2/360**2
@@ -857,4 +858,4 @@ cb.set_label(label="Average Radiative Forcing (3 months) in "+season+ " at " +st
     #Save and close the map plot
 plt.savefig("RFmap"+season+str(altitude)+".png")
 plt.show()
-plt.close()
+plt.close()"""
