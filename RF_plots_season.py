@@ -413,7 +413,7 @@ def plot_small(EP,season,altitude,show=True):
     lats ,lons, plon,plat = read_files(path, verbose=verbose,RF=False,Atilla=True)
     plot_RF_per_point(flux,lons,lats,EP)
 
-def plot_overlay(EP,global_net_flx,lons_0to36,lats,plon,plat,airO3_001,cut=30):
+def plot_overlay(EP,global_net_flx,lons_0to36,lats,plon,plat,airO3_001,cut=30,plot_below_cut=False,c1='black',c2='green'):
     #Requires lat,lon from ATTILA data files and fluxes
     #Set up axis object for plotting the map
     emission_point = EP
@@ -471,9 +471,25 @@ def plot_overlay(EP,global_net_flx,lons_0to36,lats,plon,plat,airO3_001,cut=30):
     
     for i in range(50):
         #Plot a Lagrangian air parcel with parcel ID given by "parcel2"
-        ax.scatter(plon[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09>cut], plat[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09>cut], s=20, marker='o', color='black',
+        ax.scatter(plon[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09>cut], plat[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09>cut], s=20, marker='o', color=c1,
                zorder=2,alpha = 0.05)
-        #ax.scatter(plon[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09<30], plat[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09<30], s=20, marker='o', color='green',zorder=2,alpha = 0.05)
+        if plot_below_cut:
+            ax.scatter(plon[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09<30], plat[:,(emission_point-1)*50+i][airO3_001[:,(emission_point-1)*50+i]*1E09<30], s=20, marker='o', color=c2,zorder=2,alpha = 0.025)
+    
+
+
+    # Add the legend, and set the handler map to use the change_alpha function
+    from matplotlib.lines import Line2D
+
+
+    if plot_below_cut:
+            legend_elements = [ Line2D([0], [0], markerfacecolor=c1,marker='o', color='w', label="mixing ratio above "+str(cut)+"%",markersize=15),
+                        Line2D([0], [0], markerfacecolor=c2,marker='o', color='w', label="mixing ratio below "+str(cut)+"%", markersize=15),]
+    else:
+        legend_elements = [ Line2D([0], [0], markerfacecolor=c1,marker='o', color='w', label="mixing ratio above "+str(cut)+"%",markersize=15),]
+    # Create the figure
+    plt.legend(handles=legend_elements)
+
     sc2 = mp.pcolor(x, y, time_avg_flux*1000,
                     cmap=cmap, norm=norm, shading='auto')
     #Define colorbar features
@@ -523,4 +539,4 @@ lats , lons_0to36,plon,plat = read_files(f_string,RF=False,Atilla=True,O3=False,
 airO3 = read_files(f_string,emission_point=emission_point,RF=False,Atilla=False,O3=True,verbose=False)
 
 #plot data
-plot_overlay(emission_point,global_net_flux,lons_0to36,lats,plon,plat,airO3)
+plot_overlay(emission_point,global_net_flux,lons_0to36,lats,plon,plat,airO3,cut=15,plot_below_cut=True)
