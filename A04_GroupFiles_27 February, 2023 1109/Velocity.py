@@ -28,7 +28,7 @@ import matplotlib.colors  # To create new colorbar
 import math
 
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
+    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'D:/Python safe/all test data/*'
 if len(sorted(glob.glob(f_string))) == 0:
@@ -414,6 +414,8 @@ for emission_point in range(1, 29):
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
         End_point_arr = np.append(End_point_arr, end_point_altitude)
         #mean_mr = np.mean(MR_arr)
+    median_end_point = np.median(End_point_arr)
+    
         
 
     n = n + 1  
@@ -443,8 +445,7 @@ for emission_point in range(1, 29):
 
     RoD_median = np.median(RoD_arr)
 
-    list_average_rod.append(RoD_average)
-    list_median_rod.append(RoD_median)
+  
 
     # print('sabnxfgklsdhgfig', RoD_average)
 
