@@ -166,20 +166,22 @@ for f_string in foldernamelist:
     rows = 180/step
     EmissionPoint = 0
     def TrendMap():
-        for EmissionPoint in range(0, 28):
-            parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)
-            TrendMapPlot = np.zeros((int(rows),int(columns)))
-            
-            for parcel2Ai in parcel2A:
-                for point in range(len(plon[:,parcel2Ai])):
-                    for Nlong in range(int(columns)):
-                        if -180+(Nlong*step) <= plon[point,parcel2Ai] and plon[point,parcel2Ai] <= -180+((Nlong+1)*step):
-                            for Nlat in range(int(rows)):
-                                if 90-(Nlat*step) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*step):
-                                    TrendMapPlot[Nlat][Nlong]+=1
-            print(np.sum(TrendMapPlot))
-            TrendMapPlot=np.flip(TrendMapPlot,0)
-            makePlot(TrendMap)
+        for latitude in range(0, 7):
+            for EmissionPointjump in range(0, 4):
+                EmissionPoint = latitude + (EmissionPointjump+1)*7
+                parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)
+                TrendMapPlot = np.zeros((int(rows),int(columns)))
+                
+                for parcel2Ai in parcel2A:
+                    for point in range(len(plon[:,parcel2Ai])):
+                        for Nlong in range(int(columns)):
+                            if -180+(Nlong*step) <= plon[point,parcel2Ai] and plon[point,parcel2Ai] <= -180+((Nlong+1)*step):
+                                for Nlat in range(int(rows)):
+                                    if 90-(Nlat*step) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*step):
+                                        TrendMapPlot[Nlat][Nlong]+=1
+                print(np.sum(TrendMapPlot))
+                TrendMapPlot=np.flip(TrendMapPlot,0)
+                makePlot(TrendMap)
 
 
 
