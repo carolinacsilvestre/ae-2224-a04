@@ -350,6 +350,7 @@ MR_arr = np.array([])
 RoD_average_arr = np.array([])
 MR_average_arr = np.array([])
 End_point_arr = np.array([])
+Median_ep_arr = np.array([])
 ############### CORRELATION COEFFICIENTS ##############
 # ccp, pp = scipy.stats.pearsonr(x, y)
 # ccs, ps = scipy.stats.spearmanr(x, y)
@@ -414,7 +415,10 @@ for emission_point in range(1, 29):
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
         End_point_arr = np.append(End_point_arr, end_point_altitude)
         #mean_mr = np.mean(MR_arr)
-    median_end_point = np.median(End_point_arr)
+        Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
+
+    #for i in range(((emission_point-1) *50), (emission_point)*50):
+        #if ppress_temp[number_of_t] == End_point_arr[emission_point][]
     
         
 
@@ -453,16 +457,12 @@ for emission_point in range(1, 29):
     MR_average_arr = np.append(MR_average_arr, MR_average)
     # print(len(MR_average_arr))
 
-
-if plot_all_parcel == True:
+print(Median_ep_arr)
+if plot_all_parcel == False:
     plt.show()
 
 
-print(list_average_rod)
-print(list_median_rod)
 
-print(list_average_rod.sort())
-print(list_median_rod.sort())
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
 #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
 ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
