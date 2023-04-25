@@ -365,7 +365,7 @@ if plot_all_parcel == True:
     fig.suptitle('Jan 2014 200hpa', fontsize = 15)
 m = 0
 n = -1
-
+Median_ep_arr = np.array([])
 fig, axs = plt.subplots()
 for emission_point in range(1, 29):
 
@@ -374,14 +374,18 @@ for emission_point in range(1, 29):
 
         # Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
         if emission_point == 24:
-            ppress_24th = ppress[:,emission_point * 50]
+            ppress_24th = ppress[:,emission_point * 50 + 26]
             ppress_24th_1 = ppress_24th[0:number_of_t]
+            # print(len(number_of_t))
+
+
             fig.set_figheight(9)
             fig.set_figwidth(25)
             fig.suptitle('The median trajectory of the 24th emission point')
-            axs.scatter(ppress_24th_1, M, s = 5)
+            axs.invert_yaxis()
+            axs.scatter(time_window_arr, ppress_24th_1, s = 5)
             axs.set_title(str(emission_point))
-            fig.show()
+            plt.show()
         ppress_temp = ppress[:, i]
     # print(type(ppress_temp))
     # print(np.shape(ppress_temp))
@@ -423,7 +427,12 @@ for emission_point in range(1, 29):
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
         End_point_arr = np.append(End_point_arr, end_point_altitude)
         #mean_mr = np.mean(MR_arr)
-    median_end_point = np.median(End_point_arr)
+        Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
+    print('whattttttt', len(Median_ep_arr))
+
+    for i in range(((emission_point-1) *50), (emission_point)*50):
+        the_array = np.where(ppress_temp[0: number_of_t] == Median_ep_arr[emission_point])
+        print('heeeeeyyyyyyyy',the_array)
     
         
 
@@ -469,12 +478,6 @@ for emission_point in range(1, 29):
 if plot_all_parcel == True:
     plt.show()
 
-
-print(list_average_rod)
-print(list_median_rod)
-
-print(list_average_rod.sort())
-print(list_median_rod.sort())
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
 #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
 ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
@@ -535,7 +538,7 @@ if plot_emission_point == True:
 # print(len(time))
 # print(np.shape(ppress))
 
-activate_plot3 = True  # activation of vertical location plot with colorbar##
+activate_plot3 = False  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
