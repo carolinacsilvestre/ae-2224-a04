@@ -349,14 +349,13 @@ RoD_arr = np.array([])
 MR_arr = np.array([])
 RoD_average_arr = np.array([])
 MR_average_arr = np.array([])
-
+End_point_arr = np.array([])
 ############### CORRELATION COEFFICIENTS ##############
 # ccp, pp = scipy.stats.pearsonr(x, y)
 # ccs, ps = scipy.stats.spearmanr(x, y)
 # cck, pk = scipy.stats.kendalltau(x, y)
 
-list_average_rod = []
-list_median_rod = []
+
 
 plot_all_parcel = False
 
@@ -379,6 +378,7 @@ for emission_point in range(1, 29):
     # print(np.shape(ppress_temp))
         # Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
         ppress_temp1 = ppress_temp[0: number_of_t]
+        end_point_altitude = ppress_temp[number_of_t]
         # Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
         min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])
 
@@ -412,7 +412,8 @@ for emission_point in range(1, 29):
         average_mr_one_parcel = np.average(mr_one_parcel)
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
-        mean_mr = np.mean(MR_arr)
+        End_point_arr = np.append(End_point_arr, end_point_altitude)
+        #mean_mr = np.mean(MR_arr)
         
 
     n = n + 1  
@@ -428,11 +429,11 @@ for emission_point in range(1, 29):
         axs[n,m].scatter(RoD_arr, MR_arr * 1E9, s = 5)
         axs[n,m].set_title(str(emission_point))
     ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
-    print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+    #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
     ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
-    print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+    #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
     cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
-    print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+    #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
     
 
     # print('shitshow', ppress[:,342])
@@ -462,11 +463,11 @@ print(list_median_rod)
 print(list_average_rod.sort())
 print(list_median_rod.sort())
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
-print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+#print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
 ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
-print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+#print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
-print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+#print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # print(MR_arr)
 # print(len(MR_arr))
