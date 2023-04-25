@@ -366,13 +366,22 @@ if plot_all_parcel == True:
 m = 0
 n = -1
 
-
+fig, axs = plt.subplots()
 for emission_point in range(1, 29):
 
     # A loop covering all 50 parcels in one emission location ##
     for i in range(((emission_point-1) *50), (emission_point)*50):
 
         # Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
+        if emission_point == 24:
+            ppress_24th = ppress[:,emission_point * 50]
+            ppress_24th_1 = ppress_24th[0:number_of_t]
+            fig.set_figheight(9)
+            fig.set_figwidth(25)
+            fig.suptitle('The median trajectory of the 24th emission point')
+            axs.scatter(ppress_24th_1, M, s = 5)
+            axs.set_title(str(emission_point))
+            fig.show()
         ppress_temp = ppress[:, i]
     # print(type(ppress_temp))
     # print(np.shape(ppress_temp))
@@ -430,6 +439,9 @@ for emission_point in range(1, 29):
         fig.suptitle('Jan 2014 200hpa')
         axs[n,m].scatter(RoD_arr, MR_arr * 1E9, s = 5)
         axs[n,m].set_title(str(emission_point))
+
+
+
     ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
     #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
     ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
