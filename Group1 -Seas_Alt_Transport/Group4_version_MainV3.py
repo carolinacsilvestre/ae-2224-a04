@@ -13,7 +13,7 @@ import matplotlib.colors #To create new colorbar
 
 #USER INPUT - File path
 f_string =r"C:/Users/31683/Desktop/project data/*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
-foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
+foldernamelist = ["D:/project data/Winter/*","D:/project data/Summer/*"]
 print(f_string)
 
 
@@ -167,10 +167,14 @@ for f_string in foldernamelist:
     EmissionPoint = 0
     def TrendMap():
         for latitude in range(0, 7):
+            EmissionPointList = []
+            TrendMapPlot = np.zeros((int(rows),int(columns)))
             for EmissionPointjump in range(0, 4):
+                
                 EmissionPoint = latitude + (EmissionPointjump+1)*7
+                EmissionPointList.append(EmissionPoint)
                 parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)
-                TrendMapPlot = np.zeros((int(rows),int(columns)))
+                
                 
                 for parcel2Ai in parcel2A:
                     for point in range(len(plon[:,parcel2Ai])):
@@ -181,7 +185,7 @@ for f_string in foldernamelist:
                                         TrendMapPlot[Nlat][Nlong]+=1
                 print(np.sum(TrendMapPlot))
                 TrendMapPlot=np.flip(TrendMapPlot,0)
-                makePlot(TrendMap)
+            makePlot(TrendMap)
 
 
 
