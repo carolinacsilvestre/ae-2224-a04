@@ -545,7 +545,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
-    print('whaaaaaaaat', airO3_001[:, 1])
+    # print('whaaaaaaaat', airO3_001[:, 1])
     # print(type(airO3_001[:, 1]))
     # print('min', np.min(airO3_001[:, 1]))
     m = 0
