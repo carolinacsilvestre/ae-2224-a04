@@ -7,6 +7,7 @@ from mpl_toolkits.basemap import Basemap #For map plotting
 from mpl_toolkits.basemap import shiftgrid
 import matplotlib.colors
 import os
+import time
 import pandas as pd
 # =============================================================================
 # LOADING DATA FROM NETCDF (.NC) FILES
@@ -14,6 +15,7 @@ import pandas as pd
 
 #USER INPUT - File path
  #Insert file path to folder containing all input data, do not forget wildcard
+start = time.time()
 
 def path_chooser(season, altitude):
     """
@@ -247,7 +249,7 @@ def calculate_values(global_net_flx):
     max = np.max(flux_list)
     return lat, lon, flux_list,max
 
-def plot_RF_all_points(lat,lon,flux_list,colors="Reds",show=True,save=True,dpi=300,max=10):
+def plot_RF_all_points(lat,lon,flux_list,colors="Reds",show=False, save=True, dpi=300,max=10,season="winter",altitude=300):
     """
     This function takes in a list of latitudes, a list of longitudes, a list of fluxes, and a color
     scheme, and plots the fluxes on a map
@@ -392,7 +394,7 @@ def plot_RF_per_point(global_net_flx,lons_0to36,lats,EP):
     plt.close()
 
 #for plot with results
-def plot_big(lst:list):
+def plot_big(lst:list,show:bool=True,save:bool=False):
     max_list = []
     flux_list_all = []
     for season, altitude in lst:   
@@ -402,14 +404,14 @@ def plot_big(lst:list):
         max_list.append(maximum)
         flux_list_all.append(flux_list)
 
-    for i in range(len(lst)): 
+    for i in range(len(lst)):
         season , altitude = lst[i]
-        plot_RF_all_points(lat,lon,flux_list_all[i],max=max(max_list))
+        plot_RF_all_points(lat,lon,flux_list_all[i],max=max(max_list),season=season,altitude=altitude,show=show,save=save)
 
-    lst = ['summer200', 'summer250', 'summer300','winter200', 'winter250', 'winter300']
-    df = pd.DataFrame(flux_list_all[0].reshape(28,order='F'), columns=[lst[0]])
-    for i in range(1, len(flux_list_all)):
-        df[lst[i]] = flux_list_all[i].reshape(28,order='F')
+    #lst = ['summer200', 'summer250', 'summer300','winter200', 'winter250', 'winter300']
+    #df = pd.DataFrame(flux_list_all[0].reshape(28,order='F'), columns=[lst[0]])
+    #for i in range(1, len(flux_list_all)):
+    #    df[lst[i]] = flux_list_all[i].reshape(28,order='F')
     #print(df)
     #df.to_csv('data.csv')
 
@@ -524,7 +526,7 @@ A_section = A_earth*frac*10**6 #m^2
 A_section = 1
 
 verbose = False
-show = True
+show = False
 save = True
 lst = []
 
@@ -533,19 +535,21 @@ for season in ["summer","winter"]:
     for altitude in [200,250,300]:
         lst.append([season,altitude])
 
-plot_big(lst)
+plot_big(lst, show, save)
 
-#plot overlay of position on map with radiative forcing
-#select point and dataset:
-#season = "summer"
-#altitude = 250
-#emission_point = 12
+# plot overlay of position on map with radiative forcing
+# select point and dataset:
+# season = "summer"
+# altitude = 250
+# emission_point = 12
 
-#import data
-#f_string = path_chooser(season,altitude)
-#global_net_flux = read_files(f_string,RF=True,Atilla=False,O3=False,verbose=False)
-#lats , lons_0to36,plon,plat = read_files(f_string,RF=False,Atilla=True,O3=False,verbose=False)
-#airO3 = read_files(f_string,emission_point=emission_point,RF=False,Atilla=False,O3=True,verbose=False)
+# import data
+# f_string = path_chooser(season,altitude)
+# global_net_flux = read_files(f_string,RF=True,Atilla=False,O3=False,verbose=False)
+# lats , lons_0to36,plon,plat = read_files(f_string,RF=False,Atilla=True,O3=False,verbose=False)
+# airO3 = read_files(f_string,emission_point=emission_point,RF=False,Atilla=False,O3=True,verbose=False)
 
-#plot data
-#plot_overlay(emission_point,global_net_flux,lons_0to36,lats,plon,plat,airO3,cut=15,plot_below_cut=True)
+# plot data
+# plot_overlay(emission_point,global_net_flux,lons_0to36,lats,plon,plat,airO3,cut=15,plot_below_cut=True)
+
+print( time.time() - start )
