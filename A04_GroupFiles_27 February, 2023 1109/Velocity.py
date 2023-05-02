@@ -430,7 +430,7 @@ for emission_point in range(1, 29):
         # print('omg', len(End_point_arr))
         #mean_mr = np.mean(MR_arr)
     Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
-    print('whattttttt', len(Median_ep_arr))
+    # print('whattttttt', len(Median_ep_arr))
     
         
 
@@ -474,8 +474,16 @@ for emission_point in range(1, 29):
 
 print('this is the median', Median_ep_arr)
 
+
+
 if plot_all_parcel == True:
-    plt.show()
+    fig.show()
+
+### Find The Median Trajectory ###
+
+# for emission_point in range(1, 29):
+#     for i in range(((emission_point-1) *50), (emission_point)*50):
+
 
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
 #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
