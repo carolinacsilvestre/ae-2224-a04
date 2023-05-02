@@ -28,7 +28,7 @@ import matplotlib.colors  # To create new colorbar
 import math
 
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/*'
+    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'D:/Python safe/all test data/*'
 if len(sorted(glob.glob(f_string))) == 0:
@@ -349,14 +349,13 @@ RoD_arr = np.array([])
 MR_arr = np.array([])
 RoD_average_arr = np.array([])
 MR_average_arr = np.array([])
-
+End_point_arr = np.array([])
 ############### CORRELATION COEFFICIENTS ##############
 # ccp, pp = scipy.stats.pearsonr(x, y)
 # ccs, ps = scipy.stats.spearmanr(x, y)
 # cck, pk = scipy.stats.kendalltau(x, y)
 
-list_average_rod = []
-list_median_rod = []
+
 
 plot_all_parcel = False
 
@@ -366,19 +365,34 @@ if plot_all_parcel == True:
     fig.suptitle('Jan 2014 200hpa', fontsize = 15)
 m = 0
 n = -1
-
-
+Median_ep_arr = np.array([])
+End_point_arr = np.array([])
+fig, axs = plt.subplots()
 for emission_point in range(1, 29):
 
     # A loop covering all 50 parcels in one emission location ##
     for i in range(((emission_point-1) *50), (emission_point)*50):
 
         # Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
+        if emission_point == 24:
+            ppress_24th = ppress[:,emission_point * 50 + 26]
+            ppress_24th_1 = ppress_24th[0:number_of_t]
+            # print(len(number_of_t))
+
+
+            fig.set_figheight(9)
+            fig.set_figwidth(25)
+            fig.suptitle('The median trajectory of the 24th emission point')
+            axs.invert_yaxis()
+            axs.scatter(time_window_arr, ppress_24th_1, s = 5)
+            axs.set_title(str(emission_point))
+            plt.show()
         ppress_temp = ppress[:, i]
     # print(type(ppress_temp))
     # print(np.shape(ppress_temp))
         # Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
         ppress_temp1 = ppress_temp[0: number_of_t]
+        end_point_altitude = ppress_temp[number_of_t]
         # Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
         min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])
 
@@ -412,7 +426,12 @@ for emission_point in range(1, 29):
         average_mr_one_parcel = np.average(mr_one_parcel)
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
-        mean_mr = np.mean(MR_arr)
+        End_point_arr = np.append(End_point_arr, end_point_altitude)
+        # print('omg', len(End_point_arr))
+        #mean_mr = np.mean(MR_arr)
+    Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
+    # print('whattttttt', len(Median_ep_arr))
+    
         
 
     n = n + 1  
@@ -427,12 +446,15 @@ for emission_point in range(1, 29):
         fig.suptitle('Jan 2014 200hpa')
         axs[n,m].scatter(RoD_arr, MR_arr * 1E9, s = 5)
         axs[n,m].set_title(str(emission_point))
+
+
+
     ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
-    print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+    #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
     ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
-    print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+    #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
     cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
-    print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+    #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
     
 
     # print('shitshow', ppress[:,342])
@@ -442,8 +464,7 @@ for emission_point in range(1, 29):
 
     RoD_median = np.median(RoD_arr)
 
-    list_average_rod.append(RoD_average)
-    list_median_rod.append(RoD_median)
+  
 
     # print('sabnxfgklsdhgfig', RoD_average)
 
@@ -451,23 +472,26 @@ for emission_point in range(1, 29):
     MR_average_arr = np.append(MR_average_arr, MR_average)
     # print(len(MR_average_arr))
 
+print('this is the median', Median_ep_arr)
+
+
 
 if plot_all_parcel == True:
-    plt.show()
+    fig.show()
+
+### Find The Median Trajectory ###
+
+# for emission_point in range(1, 29):
+#     for i in range(((emission_point-1) *50), (emission_point)*50):
 
 
-print(list_average_rod)
-print(list_median_rod)
-
-print(list_average_rod.sort())
-print(list_median_rod.sort())
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
-print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+#print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
 ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
-print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+#print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
-print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-
+#print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+print('pijiu')
 # print(MR_arr)
 # print(len(MR_arr))
 
@@ -552,9 +576,9 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Scatter plot command
 
-    plot_vertical_trajectory = True
-    if plot_vertical_trajectory == True:
-        for emission_points in range(1,29):
+    plot_vertical_trajectory = False
+    if plot_vertical_trajectory == True: 
+        for emission_points in range(1,29): 
             for parcel3 in range((emission_points - 1) * 50,emission_points * 50):
                 array = airO3_001[:, parcel3]
                 median = np.median(array)

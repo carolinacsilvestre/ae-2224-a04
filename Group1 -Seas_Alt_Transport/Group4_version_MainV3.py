@@ -13,7 +13,7 @@ import matplotlib.colors #To create new colorbar
 
 #USER INPUT - File path
 f_string =r"C:/Users/31683/Desktop/project data/*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
-foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
+foldernamelist = ["D:/project data/Winter/*","D:/project data/Summer/*"]
 print(f_string)
 
 
@@ -91,99 +91,106 @@ for f_string in foldernamelist:
 
 
 
+    # mohammad's code
+
+    def makePlot(flux_list):
+    
+        lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elements
+        lon = np.linspace(-180,180,int(columns)+1)
+        #Set up axis object for plotting the map
+        fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+            
+        #Adjust dimensions of map plot
+        fig.set_figheight(8)
+        fig.set_figwidth(14)
+            
+        #Define map projection and settings
+        #For more info: https://matplotlib.org/basemap/users/cyl.html
+        mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                                llcrnrlon = -180,
+                                llcrnrlat = -90,
+                                urcrnrlon = 180,
+                                urcrnrlat = 90,
+                                resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+            
+        #Shift the fluxes from [0,360] to [-180,180]
+        #net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[1], lons_0to36,start=False)
+            
+        #Format the lat and lon arrays for map graphing, 
+        #makes lat array a lat x lon array and same for lon array
+        #lon, lat = np.meshgrid(lons_shft, lats)
+        x, y = mp(lon, lat)
+            
+        #Choose the settings for the coastlines, countries, meridians...
+        mp.drawcoastlines(linewidth=0.2)
+        mp.drawcountries(linewidth=0.2)
+            
+        meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                                labels=[False,False,False,True], 
+                                linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+            
+        mp.drawparallels(np.arange(-90,110,20), 
+                                labels=[True,False,False,True], 
+                                linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+            
+        #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+        colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
+        cmap= matplotlib.colors.ListedColormap(colors)
+            
+        cmap.set_under("w")
+        cmap.set_over("red")
+            
+        
+        #Plot the flux on the map
+        sc2 = mp.pcolor(x, y, flux_list,
+                            cmap='hot_r',shading='auto')
+            
+        #Define colorbar features
+        cb = fig.colorbar(sc2, extend='both', 
+                            orientation='horizontal',fraction=0.052, 
+                            pad=0.065)
+            
+        #Adjust colorbar tickmark size
+        cb.ax.tick_params(labelsize=14)
+            
+        #Label the colorbar
+        cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold')
+            
+            #Save and close the map plot
+        plt.show()
+        plt.close()
+
 
     step = 10
     columns = 360/step
     rows = 180/step
     EmissionPoint = 0
     def TrendMap():
+        for latitude in range(0, 7):
+            EmissionPointList = []
+            TrendMapPlot = np.zeros((int(rows),int(columns)))
+            for EmissionPointjump in range(0, 4):
+                
+                EmissionPoint = latitude + (EmissionPointjump+1)*7
+                EmissionPointList.append(EmissionPoint)
+                parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)
+                
+                
+                for parcel2Ai in parcel2A:
+                    for point in range(len(plon[:,parcel2Ai])):
+                        for Nlong in range(int(columns)):
+                            if -180+(Nlong*step) <= plon[point,parcel2Ai] and plon[point,parcel2Ai] <= -180+((Nlong+1)*step):
+                                for Nlat in range(int(rows)):
+                                    if 90-(Nlat*step) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*step):
+                                        TrendMapPlot[Nlat][Nlong]+=1
+                print(np.sum(TrendMapPlot))
+                TrendMapPlot=np.flip(TrendMapPlot,0)
+            makePlot(TrendMap)
 
-        parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)
-        TrendMapPlot = np.zeros((int(rows),int(columns)))
-        
-        for parcel2Ai in parcel2A:
-            for point in range(len(plon[:,parcel2Ai])):
-                for Nlong in range(int(columns)):
-                    if -180+(Nlong*step) <= plon[point,parcel2Ai] and plon[point,parcel2Ai] <= -180+((Nlong+1)*step):
-                        for Nlat in range(int(rows)):
-                            if 90-(Nlat*step) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*step):
-                                TrendMapPlot[Nlat][Nlong]+=1
-        print(np.sum(TrendMapPlot))
-        TrendMapPlot=np.flip(TrendMapPlot,0)
-        return TrendMapPlot
-
-    print(TrendMap())
 
 
 
-    # mohammad's code
-
-
-    flux_list=TrendMap()
-    lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elements
-    lon = np.linspace(-180,180,int(columns)+1)
-    #Set up axis object for plotting the map
-    fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
-        
-    #Adjust dimensions of map plot
-    fig.set_figheight(8)
-    fig.set_figwidth(14)
-        
-    #Define map projection and settings
-    #For more info: https://matplotlib.org/basemap/users/cyl.html
-    mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
-                            llcrnrlon = -180,
-                            llcrnrlat = -90,
-                            urcrnrlon = 180,
-                            urcrnrlat = 90,
-                            resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
-        
-    #Shift the fluxes from [0,360] to [-180,180]
-    #net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[1], lons_0to36,start=False)
-        
-    #Format the lat and lon arrays for map graphing, 
-    #makes lat array a lat x lon array and same for lon array
-    #lon, lat = np.meshgrid(lons_shft, lats)
-    x, y = mp(lon, lat)
-        
-    #Choose the settings for the coastlines, countries, meridians...
-    mp.drawcoastlines(linewidth=0.2)
-    mp.drawcountries(linewidth=0.2)
-        
-    meridians = mp.drawmeridians(np.arange(-180,200,20), 
-                            labels=[False,False,False,True], 
-                            linewidth=0.2, fontsize=10) #Draw lon lines every 20º
-        
-    mp.drawparallels(np.arange(-90,110,20), 
-                            labels=[True,False,False,True], 
-                            linewidth=0.2, fontsize=10) #Draw lat lines every 20º
-        
-    #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
-    colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
-    cmap= matplotlib.colors.ListedColormap(colors)
-        
-    cmap.set_under("w")
-    cmap.set_over("red")
-        
     
-    #Plot the flux on the map
-    sc2 = mp.pcolor(x, y, flux_list,
-                        cmap='hot_r',shading='auto')
-        
-    #Define colorbar features
-    cb = fig.colorbar(sc2, extend='both', 
-                        orientation='horizontal',fraction=0.052, 
-                        pad=0.065)
-        
-    #Adjust colorbar tickmark size
-    cb.ax.tick_params(labelsize=14)
-        
-    #Label the colorbar
-    cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold')
-        
-        #Save and close the map plot
-    plt.show()
-    plt.close()
 
 '''
 ##################
