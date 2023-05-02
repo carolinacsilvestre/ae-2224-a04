@@ -373,23 +373,7 @@ for emission_point in range(1, 29):
     # A loop covering all 50 parcels in one emission location ##
     for i in range(((emission_point-1) *50), (emission_point)*50):
 
-        # Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
-
-        # if emission_point == 24:
-        #     ppress_24th = ppress[:,emission_point * 50 + 26]
-        #     ppress_24th_1 = ppress_24th[0:number_of_t]
-        #     # print(len(number_of_t))
-        #     fig.set_figheight(9)
-        #     fig.set_figwidth(25)
-        #     fig.suptitle('The median trajectory of the 24th emission point')
-        #     axs.invert_yaxis()
-        #     axs.scatter(time_window_arr, ppress_24th_1, s = 5)
-        #     axs.set_title(str(emission_point))
-        #     plt.show()
-
         ppress_temp = ppress[:, i]
-    # print(type(ppress_temp))
-    # print(np.shape(ppress_temp))
         # Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
         ppress_temp1 = ppress_temp[0: number_of_t]
         end_point_altitude = ppress_temp[number_of_t]
@@ -427,15 +411,6 @@ for emission_point in range(1, 29):
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
 
-        End_point_arr = np.append(End_point_arr, end_point_altitude)
-        # print('boy look here', len(End_point_arr))
-        # print('omg', len(End_point_arr))
-        #mean_mr = np.mean(MR_arr)
-    Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
-    # print('whattttttt', len(Median_ep_arr))
-    print('boy look here', len(End_point_arr))
-        
-
     n = n + 1  
     if n == 4:
          m = m + 1
@@ -466,37 +441,13 @@ for emission_point in range(1, 29):
 
     RoD_median = np.median(RoD_arr)
 
-  
-
-    # print('sabnxfgklsdhgfig', RoD_average)
-
     RoD_average_arr = np.append(RoD_average_arr, RoD_average)
     MR_average_arr = np.append(MR_average_arr, MR_average)
-    # print(len(MR_average_arr))
-
-print('this is the median', Median_ep_arr)
-
-
-
 
 if plot_all_parcel == True:
     fig.show()
 
 ### Find The Median Trajectory ###
-
-for emission_point in range(1, 29):
-    for i in range(((emission_point-1) *50), (emission_point)*50):
-        ppress_temp = ppress[:, i]
-        ppress_temp1 = ppress_temp[0: number_of_t]
-        trajectory = np.where(ppress_temp1[-1] == Median_ep_arr[emission_point-1])
-
-        print([ppress_temp1[-1]])
-        if emission_point > 1:
-            break
-        # print(emission_point)
-        # if type(trajectory) == int:
-        #     print(i)
-
 
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
 #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
@@ -532,11 +483,6 @@ if plot_emission_point == True:
     fig.set_figheight(8)
     fig.set_figwidth(15)
     ax.grid(True)
-    # ax.set_aspect('equal')
-    # ax.set_xlim([0, 30])
-    # ax.set_ylim([0, 6E-8])
-    # ax.set_xticks(np.arange(0,30,2.5))
-    # ax.set_yticks(np.arange(0,6E-8,3E-9))
     ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
     ax.set_xlabel('Emission point rate of descent [hPa/day]')
     ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
@@ -589,17 +535,19 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Scatter plot command
 
-    plot_vertical_trajectory = False
+    plot_vertical_trajectory = True
     if plot_vertical_trajectory == True: 
         for emission_points in range(1,29): 
             for parcel3 in range((emission_points - 1) * 50,emission_points * 50): 
                 array = airO3_001[:, parcel3]
+                # print('here', array[1])
                 median = np.median(array)
+                # average = np.average(array)
             #     min_filtered = np.min(filtered_array)
                 power = np.abs(math.log10(median))
                 # print(power)
                 sc = ax[m,n].scatter(time, ppress[:, parcel3], s=2, marker='o',
-                        c=airO3_001[:, parcel3]* (10 ** (power + 1)),
+                        c=airO3_001[:, parcel3] * (10 ** 9),
                         cmap=cmap, norm=norm, linewidth=1)
             ax[m,n].set_title(str(emission_points))
             ax[m,n].invert_yaxis()    
@@ -607,7 +555,6 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
             cb.ax.tick_params(labelsize=10)
             # cb.set_label(
             # label="O$_3$ Mixing Ratio [nmol·mol$^{-1}$]", size=10, weight='bold')
-            #     # print('nooooooooooooooooooooooooo', (m,n))
             n = n + 1
             if n == 4:
                 m = m + 1
