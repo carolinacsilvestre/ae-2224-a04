@@ -374,19 +374,19 @@ for emission_point in range(1, 29):
     for i in range(((emission_point-1) *50), (emission_point)*50):
 
         # Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
-        if emission_point == 24:
-            ppress_24th = ppress[:,emission_point * 50 + 26]
-            ppress_24th_1 = ppress_24th[0:number_of_t]
-            # print(len(number_of_t))
+        # if emission_point == 24:
+        #     ppress_24th = ppress[:,emission_point * 50 + 26]
+        #     ppress_24th_1 = ppress_24th[0:number_of_t]
+        #     # print(len(number_of_t))
 
 
-            fig.set_figheight(9)
-            fig.set_figwidth(25)
-            fig.suptitle('The median trajectory of the 24th emission point')
-            axs.invert_yaxis()
-            axs.scatter(time_window_arr, ppress_24th_1, s = 5)
-            axs.set_title(str(emission_point))
-            plt.show()
+        #     fig.set_figheight(9)
+        #     fig.set_figwidth(25)
+        #     fig.suptitle('The median trajectory of the 24th emission point')
+        #     axs.invert_yaxis()
+        #     axs.scatter(time_window_arr, ppress_24th_1, s = 5)
+        #     axs.set_title(str(emission_point))
+        #     plt.show()
         ppress_temp = ppress[:, i]
     # print(type(ppress_temp))
     # print(np.shape(ppress_temp))
@@ -430,7 +430,7 @@ for emission_point in range(1, 29):
         # print('omg', len(End_point_arr))
         #mean_mr = np.mean(MR_arr)
     Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
-    # print('whattttttt', len(Median_ep_arr))
+    #print('whattttttt', len(Median_ep_arr))
     
         
 
@@ -576,7 +576,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Scatter plot command
 
-    plot_vertical_trajectory = False
+    plot_vertical_trajectory = True
     if plot_vertical_trajectory == True: 
         for emission_points in range(1,29): 
             for parcel3 in range((emission_points - 1) * 50,emission_points * 50):
@@ -643,11 +643,11 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 # Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = False  # Activation mixing ratio plot ##
+activate_plot4 = True  # Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
-    parcel4 = 25  # Parcel ID, 0 means first.
+    parcel4 = 24  # Parcel ID, 0 means first.
 
     # Set up axis object for plotting the map
     fig, ax = plt.subplots()  # Subplots are useful for drawing multiple plots together
