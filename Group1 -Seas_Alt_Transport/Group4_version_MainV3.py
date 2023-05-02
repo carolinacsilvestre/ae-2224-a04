@@ -13,7 +13,8 @@ import matplotlib.colors #To create new colorbar
 
 #USER INPUT - File path
 f_string =r"C:/Users/31683/Desktop/project data/*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
-foldernamelist = ["D:/project data/Winter/*","D:/project data/Summer/*"]
+foldernamelist = ["C:/Users/joren/Documents/project data/Winter/*","C:/Users/joren/Documents/project data/Summer/*"]
+#Joren foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
 print(f_string)
 
 
@@ -186,6 +187,34 @@ for f_string in foldernamelist:
                 print(np.sum(TrendMapPlot))
                 TrendMapPlot=np.flip(TrendMapPlot,0)
             makePlot(TrendMap)
+
+    TrendMap()
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
