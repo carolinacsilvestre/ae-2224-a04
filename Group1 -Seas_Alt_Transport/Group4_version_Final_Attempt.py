@@ -12,8 +12,8 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-#Celina foldernamelist = ["C:/Users/31683/Desktop/project data/PreliminaryData/*","C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
-foldernamelist = ["C:/Users/joren/Documents/project data/Winter300/*","C:/Users/joren/Documents/project data/Summer/*"]
+foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
+#foldernamelist = ["C:/Users/joren/Documents/project data/Winter300/*","C:/Users/joren/Documents/project data/Summer/*"]
 #Joren foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
 
 #USER INPUT - Switches to determine which data types should be loaded
@@ -21,8 +21,8 @@ attila_switch = True
 o3tracer_switch = False
 rad_fluxes_switch = False
 
-graphs28 = False
-graphsperlat = True
+graphs28 = True
+graphsperlat = False
 
 step = 20
 columns = 360/step
@@ -177,6 +177,7 @@ for f_string in foldernamelist:
     if graphs28:
         fig, axs = plt.subplots(nrows=7, ncols=4, figsize=(32, 32))
         fig.tight_layout()
+        axs = axs.transpose()
         for i, ax in enumerate(axs.flat):
             flux_list=TrendMap(i)
             lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elementss
@@ -367,7 +368,7 @@ for f_string in foldernamelist:
         ##cb.ax.tick_params(labelsize=14)
                 
         #Label the colorbar
-        graphtitle = 
+        #graphtitle = 
         cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold',loc='right')
 
         plt.show()
