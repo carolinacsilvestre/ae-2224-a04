@@ -355,7 +355,6 @@ MR_average_arr = np.array([])
 End_point_arr = np.array([])
 median_emission_arr = np.array([])
 
-
 ### average loop ###
 
 for emission_point in range(1, 29):
@@ -395,26 +394,25 @@ for emission_point in range(1, 29):
     MR_average = np.average(MR_arr)
     RoD_average = np.average(RoD_arr)
 
-    # MR_average = np.average(MR_arr)
-    # RoD_average = np.average(RoD_arr)
+    MR_average = np.average(MR_arr)
+    RoD_average = np.average(RoD_arr)
 
-    # RoD_median = np.median(RoD_arr)
-
-    # RoD_average_arr = np.append(RoD_average_arr, RoD_average)
-    # MR_average_arr = np.append(MR_average_arr, MR_average)
+    RoD_average_arr = np.append(RoD_average_arr, RoD_average)
+    MR_average_arr = np.append(MR_average_arr, MR_average)
 
 ### loop for finding median ###
 
 median_trajectory = np.array([])
-ep_median_trajectory_arr = np.array([])
+median_trajectory_28 = np.array([])
 for emission_point in range(1, 29):
     for i in range(((emission_point-1) *50), (emission_point)*50):
         ppress_temp = ppress[:, i]
         ppress_temp1 = ppress_temp[0: number_of_t]
         median_trajectory = np.append(median_trajectory, np.median(ppress_temp1))
-    ep_median_trajectory_arr = np.append(ep_median_trajectory_arr, median_trajectory)
+    median_trajectory_28 = np.append(median_trajectory_28, median_trajectory)
 
-    print('this is it',median_trajectory)
+print(len(median_trajectory_28))
+print('this is it',median_trajectory_28)
 ### Find The Median Trajectory ###
 
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
@@ -423,8 +421,6 @@ ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
 #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
 #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-# print(MR_arr)
-# print(len(MR_arr))
 
 # plot_parcel = False
 # if plot_parcel == True:
