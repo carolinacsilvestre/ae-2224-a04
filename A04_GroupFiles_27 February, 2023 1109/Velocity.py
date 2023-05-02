@@ -373,13 +373,6 @@ for emission_point in range(1, 29):
     # A loop covering all 50 parcels in one emission location ##
     for i in range(((emission_point-1) *50), (emission_point)*50):
 
-            fig.set_figheight(9)
-            fig.set_figwidth(25)
-            fig.suptitle('The median trajectory of the 24th emission point')
-            axs.invert_yaxis()
-            axs.scatter(time_window_arr, ppress_24th_1, s = 5)
-            axs.set_title(str(emission_point))
-            plt.show()
         ppress_temp = ppress[:, i]
         # Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
         ppress_temp1 = ppress_temp[0: number_of_t]
