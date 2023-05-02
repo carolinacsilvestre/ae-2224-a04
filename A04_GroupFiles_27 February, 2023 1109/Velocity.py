@@ -366,6 +366,7 @@ if plot_all_parcel == True:
 m = 0
 n = -1
 Median_ep_arr = np.array([])
+End_point_arr = np.array([])
 fig, axs = plt.subplots()
 for emission_point in range(1, 29):
 
@@ -426,13 +427,14 @@ for emission_point in range(1, 29):
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
         End_point_arr = np.append(End_point_arr, end_point_altitude)
+        # print('omg', len(End_point_arr))
         #mean_mr = np.mean(MR_arr)
-        Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
+    Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
     print('whattttttt', len(Median_ep_arr))
 
-    for i in range(((emission_point-1) *50), (emission_point)*50):
-        the_array = np.where(ppress_temp[0: number_of_t] == Median_ep_arr[emission_point])
-        print('heeeeeyyyyyyyy',the_array)
+    # for i in range(((emission_point-1) *50), (emission_point)*50):
+    # the_array = np.where(ppress_temp[0: number_of_t] == Median_ep_arr[emission_point])
+    # print('heeeeeyyyyyyyy',the_array)
     
         
 
@@ -538,7 +540,7 @@ if plot_emission_point == True:
 # print(len(time))
 # print(np.shape(ppress))
 
-activate_plot3 = False  # activation of vertical location plot with colorbar##
+activate_plot3 = True  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
