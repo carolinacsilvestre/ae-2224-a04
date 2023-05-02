@@ -356,7 +356,24 @@ End_point_arr = np.array([])
 median_emission_arr = np.array([])
 
 
+<<<<<<< Updated upstream
 ### average loop ###
+=======
+
+plot_all_parcel = False
+
+if plot_all_parcel == True: 
+    fig, axs = plt.subplots(nrows=4, ncols=7)
+
+    fig.suptitle('Jan 2014 200hpa', fontsize = 15)
+m = 0
+n = -1
+Median_ep_arr = np.array([])
+End_point_arr = np.array([])
+fig, axs = plt.subplots()
+
+### loop for finding average ###
+>>>>>>> Stashed changes
 
 for emission_point in range(1, 29):
 
@@ -364,7 +381,6 @@ for emission_point in range(1, 29):
     for i in range(((emission_point-1) *50), (emission_point)*50):
 
         ppress_temp = ppress[:, i]
-        # Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
         ppress_temp1 = ppress_temp[0: number_of_t]
         end_point_altitude = ppress_temp[number_of_t]
         # Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
@@ -407,6 +423,16 @@ for emission_point in range(1, 29):
 if plot_all_parcel == True:
     fig.show()
 
+### loop for finding median ###
+
+median_trajectory = np.array([])
+for emission_point in range(1, 29):
+    for i in range(((emission_point-1) *50), (emission_point)*50):
+        ppress_temp = ppress[:, i]
+        ppress_temp1 = ppress_temp[0: number_of_t]
+        median_trajectory = np.append(median_trajectory, np.median(ppress_temp1))
+
+    print('this is it',median_trajectory)
 ### Find The Median Trajectory ###
 
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
@@ -415,8 +441,12 @@ ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
 #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
 #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+<<<<<<< Updated upstream
 # print(MR_arr)
 # print(len(MR_arr))
+=======
+# print('pijiu')
+>>>>>>> Stashed changes
 
 # plot_parcel = False
 # if plot_parcel == True:
@@ -481,7 +511,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Scatter plot command
 
-    plot_vertical_trajectory = True
+    plot_vertical_trajectory = False
     if plot_vertical_trajectory == True: 
         for emission_points in range(1,29): 
             for parcel3 in range((emission_points - 1) * 50,emission_points * 50): 
