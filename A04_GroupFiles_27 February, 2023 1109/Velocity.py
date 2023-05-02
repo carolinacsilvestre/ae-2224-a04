@@ -373,6 +373,13 @@ for emission_point in range(1, 29):
     # A loop covering all 50 parcels in one emission location ##
     for i in range(((emission_point-1) *50), (emission_point)*50):
 
+            fig.set_figheight(9)
+            fig.set_figwidth(25)
+            fig.suptitle('The median trajectory of the 24th emission point')
+            axs.invert_yaxis()
+            axs.scatter(time_window_arr, ppress_24th_1, s = 5)
+            axs.set_title(str(emission_point))
+            plt.show()
         ppress_temp = ppress[:, i]
         # Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
         ppress_temp1 = ppress_temp[0: number_of_t]
@@ -603,11 +610,11 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 # Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = False  # Activation mixing ratio plot ##
+activate_plot4 = True  # Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
-    parcel4 = 25  # Parcel ID, 0 means first.
+    parcel4 = 24  # Parcel ID, 0 means first.
 
     # Set up axis object for plotting the map
     fig, ax = plt.subplots()  # Subplots are useful for drawing multiple plots together
