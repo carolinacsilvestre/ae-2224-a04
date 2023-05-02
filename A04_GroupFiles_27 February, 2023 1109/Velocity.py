@@ -402,26 +402,27 @@ for emission_point in range(1, 29):
 ### loop for finding median ###
 
 median_trajectory_matrix = np.array([])
-median_trajectory_28 = np.array([])
-median_trajectory = np.array([])
 fig, ax = plt.subplots()
-
+ax.invert_yaxis()
 for emission_point in range(1, 29):
+    median_trajectory = np.array([])
     median_trajectory_matrix = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
+    # print(np.shape(median_trajectory_matrix))
     for k in range(0, number_of_t):
-        median_vector = median_trajectory_matrix[:,k]
-        print('3', np.shape(median_vector))
+        median_vector = median_trajectory_matrix[k,:]
+        # print('3', np.shape(median_vector))
         median_value = np.median(median_vector)
         median_trajectory = np.append(median_trajectory, median_value)
-
-    ax.scatter(median_trajectory)
-
+    
+        # ax.invert_yaxis()
+    ax.scatter(time_window_arr, median_trajectory)
+    
 
 plt.show()
 
-print(len(median_trajectory_28))
-print('this is it',median_trajectory_28)
-### Find The Median Trajectory ###
+# print(len(median_trajectory))
+# print('this is it',median_trajectory)
+
 
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
 #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
