@@ -491,7 +491,7 @@ ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
 #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
 #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-
+print('pijiu')
 # print(MR_arr)
 # print(len(MR_arr))
 
