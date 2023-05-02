@@ -366,6 +366,7 @@ if plot_all_parcel == True:
 m = 0
 n = -1
 Median_ep_arr = np.array([])
+End_point_arr = np.array([])
 fig, axs = plt.subplots()
 for emission_point in range(1, 29):
 
@@ -373,19 +374,19 @@ for emission_point in range(1, 29):
     for i in range(((emission_point-1) *50), (emission_point)*50):
 
         # Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
-        if emission_point == 24:
-            ppress_24th = ppress[:,emission_point * 50 + 26]
-            ppress_24th_1 = ppress_24th[0:number_of_t]
-            # print(len(number_of_t))
 
+        # if emission_point == 24:
+        #     ppress_24th = ppress[:,emission_point * 50 + 26]
+        #     ppress_24th_1 = ppress_24th[0:number_of_t]
+        #     # print(len(number_of_t))
+        #     fig.set_figheight(9)
+        #     fig.set_figwidth(25)
+        #     fig.suptitle('The median trajectory of the 24th emission point')
+        #     axs.invert_yaxis()
+        #     axs.scatter(time_window_arr, ppress_24th_1, s = 5)
+        #     axs.set_title(str(emission_point))
+        #     plt.show()
 
-            fig.set_figheight(9)
-            fig.set_figwidth(25)
-            fig.suptitle('The median trajectory of the 24th emission point')
-            axs.invert_yaxis()
-            axs.scatter(time_window_arr, ppress_24th_1, s = 5)
-            axs.set_title(str(emission_point))
-            plt.show()
         ppress_temp = ppress[:, i]
     # print(type(ppress_temp))
     # print(np.shape(ppress_temp))
@@ -425,15 +426,14 @@ for emission_point in range(1, 29):
         average_mr_one_parcel = np.average(mr_one_parcel)
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
-        End_point_arr = np.append(End_point_arr, end_point_altitude)
-        #mean_mr = np.mean(MR_arr)
-        Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
-    print('whattttttt', len(Median_ep_arr))
 
-    for i in range(((emission_point-1) *50), (emission_point)*50):
-        the_array = np.where(ppress_temp[0: number_of_t] == Median_ep_arr[emission_point])
-        print('heeeeeyyyyyyyy',the_array)
-    
+        End_point_arr = np.append(End_point_arr, end_point_altitude)
+        # print('boy look here', len(End_point_arr))
+        # print('omg', len(End_point_arr))
+        #mean_mr = np.mean(MR_arr)
+    Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
+    # print('whattttttt', len(Median_ep_arr))
+    print('boy look here', len(End_point_arr))
         
 
     n = n + 1  
@@ -474,9 +474,29 @@ for emission_point in range(1, 29):
     MR_average_arr = np.append(MR_average_arr, MR_average)
     # print(len(MR_average_arr))
 
+print('this is the median', Median_ep_arr)
+
+
+
 
 if plot_all_parcel == True:
-    plt.show()
+    fig.show()
+
+### Find The Median Trajectory ###
+
+for emission_point in range(1, 29):
+    for i in range(((emission_point-1) *50), (emission_point)*50):
+        ppress_temp = ppress[:, i]
+        ppress_temp1 = ppress_temp[0: number_of_t]
+        trajectory = np.where(ppress_temp1[-1] == Median_ep_arr[emission_point-1])
+
+        print([ppress_temp1[-1]])
+        if emission_point > 1:
+            break
+        # print(emission_point)
+        # if type(trajectory) == int:
+        #     print(i)
+
 
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
 #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
@@ -484,7 +504,7 @@ ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
 #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
 #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-
+print('pijiu')
 # print(MR_arr)
 # print(len(MR_arr))
 
@@ -538,7 +558,7 @@ if plot_emission_point == True:
 # print(len(time))
 # print(np.shape(ppress))
 
-activate_plot3 = False  # activation of vertical location plot with colorbar##
+activate_plot3 = True  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
@@ -569,10 +589,10 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Scatter plot command
 
-    plot_vertical_trajectory = True
-    if plot_vertical_trajectory == True:
-        for emission_points in range(1,29):
-            for parcel3 in range((emission_points - 1) * 50,emission_points * 50):
+    plot_vertical_trajectory = False
+    if plot_vertical_trajectory == True: 
+        for emission_points in range(1,29): 
+            for parcel3 in range((emission_points - 1) * 50,emission_points * 50): 
                 array = airO3_001[:, parcel3]
                 median = np.median(array)
             #     min_filtered = np.min(filtered_array)
