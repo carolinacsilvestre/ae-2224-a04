@@ -356,20 +356,6 @@ End_point_arr = np.array([])
 median_emission_arr = np.array([])
 
 
-
-
-plot_all_parcel = False
-
-if plot_all_parcel == True: 
-    fig, axs = plt.subplots(nrows=4, ncols=7)
-
-    fig.suptitle('Jan 2014 200hpa', fontsize = 15)
-m = 0
-n = -1
-Median_ep_arr = np.array([])
-End_point_arr = np.array([])
-fig, axs = plt.subplots()
-
 ### average loop ###
 
 for emission_point in range(1, 29):
