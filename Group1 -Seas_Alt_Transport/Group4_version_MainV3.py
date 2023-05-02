@@ -187,6 +187,34 @@ for f_string in foldernamelist:
                 TrendMapPlot=np.flip(TrendMapPlot,0)
             makePlot(TrendMap)
 
+    TrendMap()
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
