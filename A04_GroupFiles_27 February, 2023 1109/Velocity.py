@@ -431,10 +431,6 @@ for emission_point in range(1, 29):
         #mean_mr = np.mean(MR_arr)
     Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
     print('whattttttt', len(Median_ep_arr))
-
-    # for i in range(((emission_point-1) *50), (emission_point)*50):
-    # the_array = np.where(ppress_temp[0: number_of_t] == Median_ep_arr[emission_point])
-    # print('heeeeeyyyyyyyy',the_array)
     
         
 
@@ -476,6 +472,7 @@ for emission_point in range(1, 29):
     MR_average_arr = np.append(MR_average_arr, MR_average)
     # print(len(MR_average_arr))
 
+print('this is the median', Median_ep_arr)
 
 if plot_all_parcel == True:
     plt.show()
@@ -571,9 +568,9 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Scatter plot command
 
-    plot_vertical_trajectory = True
-    if plot_vertical_trajectory == True:
-        for emission_points in range(1,29):
+    plot_vertical_trajectory = False
+    if plot_vertical_trajectory == True: 
+        for emission_points in range(1,29): 
             for parcel3 in range((emission_points - 1) * 50,emission_points * 50):
                 array = airO3_001[:, parcel3]
                 median = np.median(array)
