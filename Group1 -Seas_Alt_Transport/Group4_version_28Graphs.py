@@ -247,7 +247,7 @@ if attila_switch == True:
     
 
     setOFcolor=np.array(range(len(ppress[:,parcel])))
-   # print(setOFcolor)
+    print(setOFcolor)
     #Scatter plot settings
 
     #ADDED
