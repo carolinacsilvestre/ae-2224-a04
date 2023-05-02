@@ -383,7 +383,7 @@ for f_string in foldernamelist:
             lonmedian = np.median(plon[:,:50],axis = 1)
             print(lonmedian)
             latmedian = np.median(plat[:,:50],axis = 1)
-            lon180to180median = np.median(lons_18to18[:50],axis = 1)
+            lon180to180median = np.median(lons_18to18[:50])
 
             parcel2 = 25 #Parcel ID, 0 means first.
         
@@ -423,14 +423,14 @@ for f_string in foldernamelist:
             mp.fillcontinents(color='lightgray')
             
             #Plot a Lagrangian air parcel with parcel ID given by "parcel2"
-            ax.scatter(lonmedian[:50], latmedian[:50], s=20, marker='o', color='green',
+            ax.scatter(lonmedian[:], latmedian[:], s=20, marker='o', color='green',
                     zorder=2)
             
             #Plot start and end points with an "S" and "F" respectively.
-            ax.scatter(lonmedian[:50], latmedian[:50], s=140, marker='$S$', color='red',
+            ax.scatter(lonmedian[0], latmedian[0], s=140, marker='$S$', color='red',
                     zorder=2)
             
-            ax.scatter(lonmedian[:50], latmedian[:50], s=140, marker='$F$', color='red',
+            ax.scatter(lonmedian[-1], latmedian[-1], s=140, marker='$F$', color='red',
                     zorder=2)
             
             #Save and close the map plot
