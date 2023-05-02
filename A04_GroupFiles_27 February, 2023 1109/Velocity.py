@@ -353,7 +353,6 @@ MR_arr = np.array([])
 RoD_average_arr = np.array([])
 MR_average_arr = np.array([])
 End_point_arr = np.array([])
-median_emission_arr = np.array([])
 
 ### average loop ###
 
@@ -402,14 +401,23 @@ for emission_point in range(1, 29):
 
 ### loop for finding median ###
 
-median_trajectory = np.array([])
+median_trajectory_matrix = np.array([])
 median_trajectory_28 = np.array([])
+median_trajectory = np.array([])
+fig, ax = plt.subplots()
+
 for emission_point in range(1, 29):
-    for i in range(((emission_point-1) *50), (emission_point)*50):
-        ppress_temp = ppress[:, i]
-        ppress_temp1 = ppress_temp[0: number_of_t]
-        median_trajectory = np.append(median_trajectory, np.median(ppress_temp1))
-    median_trajectory_28 = np.append(median_trajectory_28, median_trajectory)
+    median_trajectory_matrix = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
+    for k in range(0, number_of_t):
+        median_vector = median_trajectory_matrix[:,k]
+        print('3', np.shape(median_vector))
+        median_value = np.median(median_vector)
+        median_trajectory = np.append(median_trajectory, median_value)
+
+    ax.scatter(median_trajectory)
+
+
+plt.show()
 
 print(len(median_trajectory_28))
 print('this is it',median_trajectory_28)
@@ -544,8 +552,8 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
         plt.show()
         plt.close()
 
-    plt.show()
-    plt.close()
+    # plt.show()
+    # plt.close()
 
 # =================================================================================
 # PLOT TYPE 4 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP) W/ COLORBAR
