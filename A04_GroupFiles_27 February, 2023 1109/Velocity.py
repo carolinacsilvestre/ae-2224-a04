@@ -355,25 +355,7 @@ MR_average_arr = np.array([])
 End_point_arr = np.array([])
 median_emission_arr = np.array([])
 
-
-<<<<<<< Updated upstream
 ### average loop ###
-=======
-
-plot_all_parcel = False
-
-if plot_all_parcel == True: 
-    fig, axs = plt.subplots(nrows=4, ncols=7)
-
-    fig.suptitle('Jan 2014 200hpa', fontsize = 15)
-m = 0
-n = -1
-Median_ep_arr = np.array([])
-End_point_arr = np.array([])
-fig, axs = plt.subplots()
-
-### loop for finding average ###
->>>>>>> Stashed changes
 
 for emission_point in range(1, 29):
 
@@ -412,27 +394,25 @@ for emission_point in range(1, 29):
     MR_average = np.average(MR_arr)
     RoD_average = np.average(RoD_arr)
 
-    # MR_average = np.average(MR_arr)
-    # RoD_average = np.average(RoD_arr)
+    MR_average = np.average(MR_arr)
+    RoD_average = np.average(RoD_arr)
 
-    # RoD_median = np.median(RoD_arr)
-
-    # RoD_average_arr = np.append(RoD_average_arr, RoD_average)
-    # MR_average_arr = np.append(MR_average_arr, MR_average)
-
-if plot_all_parcel == True:
-    fig.show()
+    RoD_average_arr = np.append(RoD_average_arr, RoD_average)
+    MR_average_arr = np.append(MR_average_arr, MR_average)
 
 ### loop for finding median ###
 
 median_trajectory = np.array([])
+median_trajectory_28 = np.array([])
 for emission_point in range(1, 29):
     for i in range(((emission_point-1) *50), (emission_point)*50):
         ppress_temp = ppress[:, i]
         ppress_temp1 = ppress_temp[0: number_of_t]
         median_trajectory = np.append(median_trajectory, np.median(ppress_temp1))
+    median_trajectory_28 = np.append(median_trajectory_28, median_trajectory)
 
-    print('this is it',median_trajectory)
+print(len(median_trajectory_28))
+print('this is it',median_trajectory_28)
 ### Find The Median Trajectory ###
 
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
@@ -441,12 +421,6 @@ ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
 #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
 #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-<<<<<<< Updated upstream
-# print(MR_arr)
-# print(len(MR_arr))
-=======
-# print('pijiu')
->>>>>>> Stashed changes
 
 # plot_parcel = False
 # if plot_parcel == True:
