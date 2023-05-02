@@ -368,6 +368,9 @@ n = -1
 Median_ep_arr = np.array([])
 End_point_arr = np.array([])
 fig, axs = plt.subplots()
+
+### average loop ###
+
 for emission_point in range(1, 29):
 
     # A loop covering all 50 parcels in one emission location ##
@@ -386,22 +389,7 @@ for emission_point in range(1, 29):
 
         # Find out the time corresponding to the minimum altitude ##
         time_at_minimum = time_window_arr[min]
-        # print(str(i),time_at_minimum)
-
-    # print(time_at_minimum)
-    # print(time_at_minimum)
-
-        # Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
         RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum
-
-        # elif ppress_temp1[min] != ppress_temp1[0]:
-
-        #     min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
-        #     time_at_minimum = time_window_arr[min]                                      ## Find out the time corresponding to the minimum altitude ##
-        #     # print(str(i),time_at_minimum)
-
-        #     RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum
-
         # Append the R.O.D. of each single parcel into an array ##
         RoD_arr = np.append(RoD_arr, RoD)
         # Mixing ratio of a single parcel, expressed as an array W.R.T. time window ##
@@ -411,35 +399,15 @@ for emission_point in range(1, 29):
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
 
-    n = n + 1  
-    if n == 4:
-         m = m + 1
-         n = 0
-    # print(n,m) 
-
-    if plot_all_parcel == True:
-        fig.set_figheight(9)
-        fig.set_figwidth(25)
-        fig.suptitle('Jan 2014 200hpa')
-        axs[n,m].scatter(RoD_arr, MR_arr * 1E9, s = 5)
-        axs[n,m].set_title(str(emission_point))
-
-
-
     ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
     #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
     ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
     #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
     cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
     #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-    
-
-    # print('shitshow', ppress[:,342])
 
     MR_average = np.average(MR_arr)
     RoD_average = np.average(RoD_arr)
-
-    RoD_median = np.median(RoD_arr)
 
     RoD_average_arr = np.append(RoD_average_arr, RoD_average)
     MR_average_arr = np.append(MR_average_arr, MR_average)
@@ -490,19 +458,6 @@ if plot_emission_point == True:
     plt.savefig('Mr vs RoD, July 2014 40D')
     plt.show()
     plt.close()
-
-
-# print(time_window_arr[3])
-# print(ppress[:,3])
-# print('len RoD', len(RoD_arr))
-
-# print(RoD_arr)
-
-# print(ppress[15])
-# print(len(ppress[15]))
-# # print(time)
-# print(len(time))
-# print(np.shape(ppress))
 
 activate_plot3 = True  # activation of vertical location plot with colorbar##
 
@@ -603,7 +558,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 # Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = True  # Activation mixing ratio plot ##
+activate_plot4 = False  # Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
