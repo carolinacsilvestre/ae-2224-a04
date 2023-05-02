@@ -343,6 +343,9 @@ time_window = 40  # Time window (days) for calculating the RoD ##
 time_window_arr = np.arange(0, time_window, 0.25)
 # Total number of time increments until time window (the increament 0.25 is given in the data, cannot change) ##
 number_of_t = int(time_window / 0.25)
+
+
+#########Empty Array Definitions##########
 # An array representing the rate of descent of the 50 parcels in location N(input), it should contain 50 elements##
 RoD_arr = np.array([])
 # An array representing the average mixing ratio of the 50 parcels ##
@@ -350,10 +353,8 @@ MR_arr = np.array([])
 RoD_average_arr = np.array([])
 MR_average_arr = np.array([])
 End_point_arr = np.array([])
-############### CORRELATION COEFFICIENTS ##############
-# ccp, pp = scipy.stats.pearsonr(x, y)
-# ccs, ps = scipy.stats.spearmanr(x, y)
-# cck, pk = scipy.stats.kendalltau(x, y)
+median_emission_arr = np.array([])
+
 
 
 
@@ -439,17 +440,25 @@ for emission_point in range(1, 29):
     #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
     cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
     #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+
     
 
-    # print('shitshow', ppress[:,342])
+    
+    for emission_point in range(1, 29):
+        # A loop covering all 50 parcels in one emission location ##
+        for i in range(((emission_point-1) *50), (emission_point)*50):
+            #add all air parcels together
+            parcel_merge = 0
+        median_emission = np.median(parcel_merge)
+        median_emission_arr = np.append(median_emission_arr, median_emission)
 
-    MR_average = np.average(MR_arr)
-    RoD_average = np.average(RoD_arr)
+    # MR_average = np.average(MR_arr)
+    # RoD_average = np.average(RoD_arr)
 
-    RoD_median = np.median(RoD_arr)
+    # RoD_median = np.median(RoD_arr)
 
-    RoD_average_arr = np.append(RoD_average_arr, RoD_average)
-    MR_average_arr = np.append(MR_average_arr, MR_average)
+    # RoD_average_arr = np.append(RoD_average_arr, RoD_average)
+    # MR_average_arr = np.append(MR_average_arr, MR_average)
 
 if plot_all_parcel == True:
     fig.show()
@@ -462,7 +471,6 @@ ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
 #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
 #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-print('pijiu')
 # print(MR_arr)
 # print(len(MR_arr))
 
