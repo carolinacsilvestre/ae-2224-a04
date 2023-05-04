@@ -434,17 +434,16 @@ for emission_point in range(1, 29):
     # print('see', np.shape(individual_trajectory))
     RoD = (- median_trajectory[0] + median_trajectory[min]) / time_at_minimum
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
-
-
-    # ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_arr_for_median * 10E9)
-    # #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-    # ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_arr_for_median * 10E9)
-    # #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-    # cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_arr_for_median * 10E9)
-    # #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
     
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
-    # ax[1].scatter(RoD_arr_for_median, MR_average_for_median)
+ax[1].scatter(RoD_arr_for_median, MR_average_arr_median)
+
+ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E9)
+#print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_average_arr_median * 10E9)
+#print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E9)
+#print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 print('2', np.shape(MR_average_arr_median))
 
 print('1', np.shape(RoD_arr_for_median))
