@@ -343,6 +343,9 @@ time_window = 40  # Time window (days) for calculating the RoD ##
 time_window_arr = np.arange(0, time_window, 0.25)
 # Total number of time increments until time window (the increament 0.25 is given in the data, cannot change) ##
 number_of_t = int(time_window / 0.25)
+
+
+#########Empty Array Definitions##########
 # An array representing the rate of descent of the 50 parcels in location N(input), it should contain 50 elements##
 RoD_arr = np.array([])
 # An array representing the average mixing ratio of the 50 parcels ##
@@ -350,36 +353,16 @@ MR_arr = np.array([])
 RoD_average_arr = np.array([])
 MR_average_arr = np.array([])
 End_point_arr = np.array([])
-Median_ep_arr = np.array([])
-############### CORRELATION COEFFICIENTS ##############
-# ccp, pp = scipy.stats.pearsonr(x, y)
-# ccs, ps = scipy.stats.spearmanr(x, y)
-# cck, pk = scipy.stats.kendalltau(x, y)
 
-
-
-plot_all_parcel = False
-
-if plot_all_parcel == True: 
-    fig, axs = plt.subplots(nrows=4, ncols=7)
-
-    fig.suptitle('Jan 2014 200hpa', fontsize = 15)
-m = 0
-n = -1
-
+### average loop ###
 
 for emission_point in range(1, 29):
 
     # A loop covering all 50 parcels in one emission location ##
     for i in range(((emission_point-1) *50), (emission_point)*50):
 
-        # Pressure altitude of a single parcel, expressed as an array W.R.T. time window ##
         ppress_temp = ppress[:, i]
-    # print(type(ppress_temp))
-    # print(np.shape(ppress_temp))
-        # Read the pressure altitude until the time window, the rest is discarded as they are irrelevant ##
         ppress_temp1 = ppress_temp[0: number_of_t]
-        end_point_altitude = ppress_temp[number_of_t]
         # Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
         min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])
 
@@ -389,22 +372,7 @@ for emission_point in range(1, 29):
 
         # Find out the time corresponding to the minimum altitude ##
         time_at_minimum = time_window_arr[min]
-        # print(str(i),time_at_minimum)
-
-    # print(time_at_minimum)
-    # print(time_at_minimum)
-
-        # Rate of descent (ROD) = (maximum pressure - starting pressure) / time elapsed ##
         RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum
-
-        # elif ppress_temp1[min] != ppress_temp1[0]:
-
-        #     min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])                ## Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
-        #     time_at_minimum = time_window_arr[min]                                      ## Find out the time corresponding to the minimum altitude ##
-        #     # print(str(i),time_at_minimum)
-
-        #     RoD = (- ppress_temp1[0] + ppress_temp1[min]) / time_at_minimum
-
         # Append the R.O.D. of each single parcel into an array ##
         RoD_arr = np.append(RoD_arr, RoD)
         # Mixing ratio of a single parcel, expressed as an array W.R.T. time window ##
@@ -413,54 +381,59 @@ for emission_point in range(1, 29):
         average_mr_one_parcel = np.average(mr_one_parcel)
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
-        End_point_arr = np.append(End_point_arr, end_point_altitude)
-        #mean_mr = np.mean(MR_arr)
-        Median_ep_arr = np.append(Median_ep_arr, np.median(End_point_arr))
 
-    #for i in range(((emission_point-1) *50), (emission_point)*50):
-        #if ppress_temp[number_of_t] == End_point_arr[emission_point][]
-    
-        
-
-    n = n + 1  
-    if n == 4:
-         m = m + 1
-         n = 0
-    # print(n,m) 
-
-    if plot_all_parcel == True:
-        fig.set_figheight(9)
-        fig.set_figwidth(25)
-        fig.suptitle('Jan 2014 200hpa')
-        axs[n,m].scatter(RoD_arr, MR_arr * 1E9, s = 5)
-        axs[n,m].set_title(str(emission_point))
-    ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
-    #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-    ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
-    #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-    cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
-    #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
     
 
-    # print('shitshow', ppress[:,342])
+    ##############OLD STUFF FOR AVG################
+    # MR_average = np.average(MR_arr)
+    # RoD_average = np.average(RoD_arr)
 
-    MR_average = np.average(MR_arr)
-    RoD_average = np.average(RoD_arr)
+    # MR_average = np.average(MR_arr)
+    # RoD_average = np.average(RoD_arr)
 
-    RoD_median = np.median(RoD_arr)
+    # RoD_average_arr = np.append(RoD_average_arr, RoD_average)
+    # MR_average_arr = np.append(MR_average_arr, MR_average)
 
-  
+### loop for finding median ###
 
-    # print('sabnxfgklsdhgfig', RoD_average)
+median_trajectory_matrix = np.array([])
+RoD_arr_for_median = np.array([])
+MR_arr_for_median = np.array([])
+fig, ax = plt.subplots()
+ax.invert_yaxis()
+for emission_point in range(1, 29):
+    median_trajectory = np.array([])
+    median_trajectory_matrix = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
+    # print(np.shape(median_trajectory_matrix))
+    for k in range(0, number_of_t):
+        median_vector = median_trajectory_matrix[k,:]
+        # print('3', np.shape(median_vector))
+        median_value = np.median(median_vector)
+        median_trajectory = np.append(median_trajectory, median_value)
+    
 
-    RoD_average_arr = np.append(RoD_average_arr, RoD_average)
-    MR_average_arr = np.append(MR_average_arr, MR_average)
-    # print(len(MR_average_arr))
+    min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
+    if min == 0:
+        min = int(np.where(median_trajectory == np.min(median_trajectory))[0])
+    
+    individual_trajectory = median_trajectory[emission_point]
+    RoD = (- individual_trajectory[0] + individual_trajectory[min]) / time_at_minimum
+    RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
 
-print(Median_ep_arr)
-if plot_all_parcel == False:
-    plt.show()
+    # ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
+    # #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+    # ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
+    # #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+    # cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
+    # #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+    
+    ax.scatter(time_window_arr, median_trajectory, s = 2)
+    
 
+plt.show()
+
+# print(len(median_trajectory))
+# print('this is it',median_trajectory)
 
 
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
@@ -469,9 +442,6 @@ ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
 #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
 #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-
-# print(MR_arr)
-# print(len(MR_arr))
 
 # plot_parcel = False
 # if plot_parcel == True:
@@ -497,11 +467,6 @@ if plot_emission_point == True:
     fig.set_figheight(8)
     fig.set_figwidth(15)
     ax.grid(True)
-    # ax.set_aspect('equal')
-    # ax.set_xlim([0, 30])
-    # ax.set_ylim([0, 6E-8])
-    # ax.set_xticks(np.arange(0,30,2.5))
-    # ax.set_yticks(np.arange(0,6E-8,3E-9))
     ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
     ax.set_xlabel('Emission point rate of descent [hPa/day]')
     ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
@@ -509,19 +474,6 @@ if plot_emission_point == True:
     plt.savefig('Mr vs RoD, July 2014 40D')
     plt.show()
     plt.close()
-
-
-# print(time_window_arr[3])
-# print(ppress[:,3])
-# print('len RoD', len(RoD_arr))
-
-# print(RoD_arr)
-
-# print(ppress[15])
-# print(len(ppress[15]))
-# # print(time)
-# print(len(time))
-# print(np.shape(ppress))
 
 activate_plot3 = True  # activation of vertical location plot with colorbar##
 
@@ -554,17 +506,19 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Scatter plot command
 
-    plot_vertical_trajectory = True
-    if plot_vertical_trajectory == True:
-        for emission_points in range(1,29):
-            for parcel3 in range((emission_points - 1) * 50,emission_points * 50):
+    plot_vertical_trajectory = False
+    if plot_vertical_trajectory == True: 
+        for emission_points in range(1,29): 
+            for parcel3 in range((emission_points - 1) * 50,emission_points * 50): 
                 array = airO3_001[:, parcel3]
+                # print('here', array[1])
                 median = np.median(array)
+                # average = np.average(array)
             #     min_filtered = np.min(filtered_array)
                 power = np.abs(math.log10(median))
                 # print(power)
                 sc = ax[m,n].scatter(time, ppress[:, parcel3], s=2, marker='o',
-                        c=airO3_001[:, parcel3]* (10 ** (power + 1)),
+                        c=airO3_001[:, parcel3] * (10 ** 9),
                         cmap=cmap, norm=norm, linewidth=1)
             ax[m,n].set_title(str(emission_points))
             ax[m,n].invert_yaxis()    
@@ -572,7 +526,6 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
             cb.ax.tick_params(labelsize=10)
             # cb.set_label(
             # label="O$_3$ Mixing Ratio [nmol·mol$^{-1}$]", size=10, weight='bold')
-            #     # print('nooooooooooooooooooooooooo', (m,n))
             n = n + 1
             if n == 4:
                 m = m + 1
@@ -612,8 +565,8 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
         plt.show()
         plt.close()
 
-    plt.show()
-    plt.close()
+    # plt.show()
+    # plt.close()
 
 # =================================================================================
 # PLOT TYPE 4 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP) W/ COLORBAR
@@ -625,7 +578,7 @@ activate_plot4 = False  # Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
-    parcel4 = 25  # Parcel ID, 0 means first.
+    parcel4 = 24  # Parcel ID, 0 means first.
 
     # Set up axis object for plotting the map
     fig, ax = plt.subplots()  # Subplots are useful for drawing multiple plots together
