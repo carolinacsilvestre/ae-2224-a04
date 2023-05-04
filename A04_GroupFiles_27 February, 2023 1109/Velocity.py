@@ -644,27 +644,29 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
     print('plat', np.shape(plat))
     plon_median = np.array([])
     plat_median = np.array([])
-    airO3_001_median = np.array([])
+    airO3_001_median_arr = np.array([])
     ##################### Determining the median trajectories #####################
     # fig, ax = plt.subplots(ncols = 2, nrows = 1)
     # ax[0].invert_yaxis()
 
     for emission_point in range(1, 29):
         median_trajectory = np.array([])
-        MR_arr_for_median = np.array([])
+        MR_arr_for_median_hor = np.array([])
         
-        plat_median = plat[:, ((emission_point-1) * 50):(emission_point * 50)]
-        plon_median = plon[:, ((emission_point-1) * 50):(emission_point * 50)]
-        MR_matrix_for_median = airO3_001[:, ((emission_point-1) * 50):(emission_point * 50)]
+        plat_median_matrix = plat[:, ((emission_point-1) * 50):(emission_point * 50)]
+        plon_median_matrix = plon[:, ((emission_point-1) * 50):(emission_point * 50)]
+        airO3_001_median_arr = airO3_001[:, ((emission_point-1) * 50):(emission_point * 50)]
 
         # print(np.shape(median_trajectory_matrix))
         for k in range(0, number_of_t):
-            median_vector = median_trajectory_matrix[k,:]
-            median_MR_vector = MR_matrix_for_median[k,:]
-            median_MR = np.median(median_MR_vector)
+            plon_median_vector = plon_median_matrix[k,:]
+            plat_median_vector = plat_median_matrix[k,:]
+
+            airO3_001_median_vector = airO3_001_median_arr[k,:]
+            airO3_001_median = np.median(airO3_001_median_vector)
             median_value = np.median(median_vector)
             median_trajectory = np.append(median_trajectory, median_value)
-            MR_arr_for_median = np.append(MR_arr_for_median, median_MR)
+            MR_arr_for_median_hor = np.append(MR_arr_for_median_hor, airO3_001_median)
 
         
         MR_average_median = np.average(MR_arr_for_median)
