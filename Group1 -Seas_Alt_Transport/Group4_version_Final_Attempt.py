@@ -13,7 +13,7 @@ import matplotlib.colors #To create new colorbar
 
 #USER INPUT - File path
 #foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
-foldernamelist = ["C:/Users/joren/Documents/project data/Winter300/*","C:/Users/joren/Documents/project data/Summer/*"]
+foldernamelist = ["C:/Users/joren/Documents/project data/Winter/*","C:/Users/joren/Documents/project data/Summer/*"]
 #Joren foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
 
 #USER INPUT - Switches to determine which data types should be loaded
@@ -22,9 +22,9 @@ o3tracer_switch = False
 rad_fluxes_switch = False
 
 graphs28 = False
-graphsperlat = False
+graphsperlat = True
 MedianTrajectories = False
-MedianTrajectoriesAll = True
+MedianTrajectoriesAll = False
 
 step = 20
 columns = 360/step
@@ -446,6 +446,7 @@ for f_string in foldernamelist:
     # MAKE  plot/calc median ALL  #
     
 #################################################################################################################
+
     if MedianTrajectoriesAll == True:
             
             parcel2 = 25 #Parcel ID, 0 means first.
