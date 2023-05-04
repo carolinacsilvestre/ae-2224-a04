@@ -403,13 +403,18 @@ fig, ax = plt.subplots()
 ax.invert_yaxis()
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
+    MR_arr_for_median = np.array([])
     median_trajectory_matrix = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
+    MR_matrix_for_median = airO3_001[:, ((emission_point-1) * 50):(emission_point * 50)]
     # print(np.shape(median_trajectory_matrix))
     for k in range(0, number_of_t):
         median_vector = median_trajectory_matrix[k,:]
+        median_MR_vector = MR_matrix_for_median[k,:]
         # print('3', np.shape(median_vector))
+        median_MR = np.median(median_MR_vector)
         median_value = np.median(median_vector)
         median_trajectory = np.append(median_trajectory, median_value)
+        MR_arr_for_median = np.append(MR_arr_for_median, median_MR)
     
 
     min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
