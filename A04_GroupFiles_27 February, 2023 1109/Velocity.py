@@ -385,14 +385,14 @@ for emission_point in range(1, 29):
     
 
     ##############OLD STUFF FOR AVG################
-    # MR_average = np.average(MR_arr)
-    # RoD_average = np.average(RoD_arr)
+    MR_average = np.average(MR_arr)
+    RoD_average = np.average(RoD_arr)
 
-    # MR_average = np.average(MR_arr)
-    # RoD_average = np.average(RoD_arr)
+    MR_average = np.average(MR_arr)
+    RoD_average = np.average(RoD_arr)
 
-    # RoD_average_arr = np.append(RoD_average_arr, RoD_average)
-    # MR_average_arr = np.append(MR_average_arr, MR_average)
+    RoD_average_arr = np.append(RoD_average_arr, RoD_average)
+    MR_average_arr = np.append(MR_average_arr, MR_average)
 
 ### loop for finding median ###
 
@@ -401,7 +401,7 @@ RoD_arr_for_median = np.array([])
 MR_arr_for_median = np.array([])
 MR_average_arr_median = np.array([])
 fig, ax = plt.subplots(ncols = 2, nrows = 1)
-ax[1].invert_yaxis()
+ax[0].invert_yaxis()
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
     MR_arr_for_median = np.array([])
@@ -436,31 +436,30 @@ for emission_point in range(1, 29):
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
     
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
-ax[1].scatter(RoD_arr_for_median, MR_average_arr_median)
+ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
+print('oh shit', MR_average_arr_median)
 
-ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E9)
-#print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_average_arr_median * 10E9)
-#print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E9)
-#print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
-print('2', np.shape(MR_average_arr_median))
+ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
+print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_average_arr_median * 10E15)
+print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E15)
+print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
-print('1', np.shape(RoD_arr_for_median))
-
+# print('2', np.shape(MR_average_arr_median))
+# print('1', np.shape(RoD_arr_for_median))
 
 plt.show()
 
 # print(len(median_trajectory))
 # print('this is it',median_trajectory)
 
-
 ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
-#print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+print("Average, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
 ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
-#print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+print("Average, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
-#print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+print("Average, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # plot_parcel = False
 # if plot_parcel == True:
