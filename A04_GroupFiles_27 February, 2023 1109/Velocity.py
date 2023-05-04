@@ -30,9 +30,9 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test data/*'
+    f_string = 'D:/Python safe/all test dat/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'E:/all data/Winter 2014 200hpa/*'
+    f_string = 'E:/all data/Summer 2014 250hpa/*'
 
 
 # USER INPUT - Switches to determine which data types should be loaded
@@ -434,6 +434,7 @@ for emission_point in range(1, 29):
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
     
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
+    ax[0].set_title('Summer 2014 250hpa')
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
 # print('Mixing ratio', MR_average_arr_median)
 # print('RoD', RoD_arr_for_median)
@@ -587,7 +588,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 # Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = True  # Activation mixing ratio plot ##
+activate_plot4 = False  # Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
