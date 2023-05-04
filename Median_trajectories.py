@@ -1,3 +1,4 @@
+import matplotlib.colors
 import numpy
 import numpy as np
 from RF_plots_season import path_chooser
@@ -76,8 +77,8 @@ def read_files(f_string, verbose=True):
         pbar.close()
     return ppress,time
 
-season = "summer"
-altitude = 250
+season = "winter"
+altitude = 300
 # Below are the quick examples
 f_string = path_chooser(season, altitude)
 
@@ -94,7 +95,7 @@ def clustering(inputdata,n_clusters=6):
     prediction = kmeans.fit_predict(inputdata)
     return prediction
 
-results = clustering(median_list)
+results = clustering(median_list,3)
 #make subplot
 fig, axs = plt.subplots(1, 2, figsize=(10, 5))  # Create a figure with two subplots
 fig.suptitle('Altitude Median vs Time and KMeans Clustering Results')  # Add a title to the figure
@@ -138,7 +139,9 @@ meridians = mp.drawmeridians(np.arange(-180, 200, 20), labels=[False, False, Fal
 mp.drawparallels(np.arange(-90, 110, 20), labels=[True, False, False, True], linewidth=0.2, fontsize=10)
 
 # Plot the flux on the map
-sc2 = mp.pcolor(x, y, cluster_list,color=color_grid)
+for n in range(4):
+    for m in range(7):
+        mp.scatter(x[n], y[m],s=100,color=color_grid[m,n])
 
 
 for i in range(28):
