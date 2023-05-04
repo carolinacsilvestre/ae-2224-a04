@@ -443,16 +443,13 @@ for f_string in foldernamelist:
 
 
 #####################################################################################################################
-    # MAKE  plot/calc median  #
+    # MAKE  plot/calc median ALL  #
     
 #################################################################################################################
     if MedianTrajectoriesAll == True:
-            lonmedian = np.median(plon[:,:50],axis = 1)
-            latmedian = np.median(plat[:,:50],axis = 1)
-            lon180to180median = np.median(lons_18to18[:50])
-
+            
             parcel2 = 25 #Parcel ID, 0 means first.
-        
+            
             #Set up axis object for plotting the map
             fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
             
@@ -460,50 +457,56 @@ for f_string in foldernamelist:
             fig.set_figheight(8)
             fig.set_figwidth(14)
             
-            #Define map projection and settings
-            #For more info: https://matplotlib.org/basemap/users/cyl.html
-            mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
-                                llcrnrlon = -180,
-                                llcrnrlat = -90,
-                                urcrnrlon = 180,
-                                urcrnrlat = 90,
-                                resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
-            
-            #Format the lat and lon arrays for map graphing, 
-            #makes lat array a lat x lon array and same for lon array
-            lon, lat = np.meshgrid(lon180to180median, latmedian)
-            x, y = mp(lon, lat)
-            
-            #Choose the settings for the coastlines, countries, meridians...
-            mp.drawcoastlines(linewidth=0.2)
-            mp.drawcountries(linewidth=0.2)
-            
-            meridians = mp.drawmeridians(np.arange(-180,200,20), 
-                                labels=[False,False,False,True], 
-                                linewidth=0.2, fontsize=10) #Draw lon lines every 20º
-            
-            mp.drawparallels(np.arange(-90,110,20), 
-                                labels=[True,False,False,True], 
-                                linewidth=0.2, fontsize=10) #Draw lat lines every 20º
-            
-            mp.fillcontinents(color='lightgray')
-            
-            #Plot a Lagrangian air parcel with parcel ID given by "parcel2"
-            
-            ax.scatter(plon[:,:50], plat[:,:50], s=20, marker='o', color='green',
-                    zorder=2)
-            ax.scatter(lonmedian[:], latmedian[:], s=20, marker='o', color='red',
-                    zorder=2)
-            
-            #Plot start and end points with an "S" and "F" respectively.
-            for f in range(0,28):
-                ax.scatter(lonmedian[0+f*50], latmedian[0+f*50], s=140, marker='$S$', color='orange',
+            for k in range(0,28):
+                lonmedian = np.median(plon[:,:50*k],axis = 1)
+                latmedian = np.median(plat[:,:50*k],axis = 1)
+                lon180to180median = np.median(lons_18to18[:50*k])
+
+                
+                
+                #Define map projection and settings
+                #For more info: https://matplotlib.org/basemap/users/cyl.html
+                mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                                    llcrnrlon = -180,
+                                    llcrnrlat = -90,
+                                    urcrnrlon = 180,
+                                    urcrnrlat = 90,
+                                    resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+                
+                #Format the lat and lon arrays for map graphing, 
+                #makes lat array a lat x lon array and same for lon array
+                lon, lat = np.meshgrid(lon180to180median, latmedian)
+                x, y = mp(lon, lat)
+                
+                #Choose the settings for the coastlines, countries, meridians...
+                mp.drawcoastlines(linewidth=0.2)
+                mp.drawcountries(linewidth=0.2)
+                
+                meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                                    labels=[False,False,False,True], 
+                                    linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+                
+                mp.drawparallels(np.arange(-90,110,20), 
+                                    labels=[True,False,False,True], 
+                                    linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+                
+                mp.fillcontinents(color='lightgray')
+                
+                #Plot a Lagrangian air parcel with parcel ID given by "parcel2"
+                
+
+                ax.scatter(lonmedian[:], latmedian[:], s=20, marker='o', color='red',
                         zorder=2)
                 
-                ax.scatter(lonmedian[49+f*50], latmedian[49+f*50, s=140, marker='$F$', color='orange',
+                #Plot start and end points with an "S" and "F" respectively.
+                
+                ax.scatter(lonmedian[0], latmedian[0], s=140, marker='$S$', color='orange',
                         zorder=2)
-            
+                
+                ax.scatter(lonmedian[-1], latmedian[-1], s=140, marker='$F$', color='orange',
+                        zorder=2)
+                
             #Save and close the map plot
-            plt.savefig("air_parcel_ID"+str(parcel2)+"_map.png",format="png",dpi=300)
+            #plt.savefig("air_parcel_ID"+str(parcel2)+"_map.png",format="png",dpi=300)
             plt.show()
             plt.close()
