@@ -402,6 +402,8 @@ MR_arr_for_median = np.array([])
 MR_average_arr_median = np.array([])
 fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
+plot_median_trajectory = False
+
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
     MR_arr_for_median = np.array([])
@@ -445,8 +447,8 @@ print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str
 
 # print('2', np.shape(MR_average_arr_median))
 # print('1', np.shape(RoD_arr_for_median))
-
-plt.show()
+if plot_median_trajectory == True:
+    plt.show()
 
 # print(len(median_trajectory))
 # print('this is it',median_trajectory)
@@ -490,7 +492,7 @@ if plot_emission_point == True:
     plt.show()
     plt.close()
 
-activate_plot3 = True  # activation of vertical location plot with colorbar##
+activate_plot3 = False  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
@@ -585,7 +587,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 # Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = False  # Activation mixing ratio plot ##
+activate_plot4 = True  # Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
