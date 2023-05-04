@@ -30,9 +30,9 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test data/*'
+    f_string = 'D:/Python safe/all test dat/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'E:/all data/Jan 2014 200hpa/*'
+    f_string = 'E:/all data/Winter 2014 200hpa/*'
 
 
 # USER INPUT - Switches to determine which data types should be loaded
@@ -433,8 +433,8 @@ for emission_point in range(1, 29):
     
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
-print('Mixing ratio', MR_average_arr_median)
-print('RoD', RoD_arr_for_median)
+# print('Mixing ratio', MR_average_arr_median)
+# print('RoD', RoD_arr_for_median)
 
 ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
 print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
@@ -451,12 +451,12 @@ plt.show()
 # print(len(median_trajectory))
 # print('this is it',median_trajectory)
 
-ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
-print("Average, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
-print("Average, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
-print("Average, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+# ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
+# print("Average, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+# ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
+# print("Average, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+# cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
+# print("Average, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # plot_parcel = False
 # if plot_parcel == True:
