@@ -399,8 +399,8 @@ for emission_point in range(1, 29):
 median_trajectory_matrix = np.array([])
 RoD_arr_for_median = np.array([])
 MR_arr_for_median = np.array([])
-fig, ax = plt.subplots()
-ax.invert_yaxis()
+fig, ax = plt.subplots(ncols = 2, nrows = 1)
+ax[1].invert_yaxis()
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
     MR_arr_for_median = np.array([])
@@ -415,7 +415,7 @@ for emission_point in range(1, 29):
         median_value = np.median(median_vector)
         median_trajectory = np.append(median_trajectory, median_value)
         MR_arr_for_median = np.append(MR_arr_for_median, median_MR)
-    
+    MR_average_median = np.average(MR_arr_for_median)
 
     min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
     if min == 0:
@@ -425,14 +425,15 @@ for emission_point in range(1, 29):
     RoD = (- individual_trajectory[0] + individual_trajectory[min]) / time_at_minimum
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
 
-    # ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
-    # #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-    # ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
-    # #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-    # cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
-    # #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+    ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_arr_for_median * 10E9)
+    #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+    ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_arr_for_median * 10E9)
+    #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+    cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_arr_for_median * 10E9)
+    #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
     
-    ax.scatter(time_window_arr, median_trajectory, s = 2)
+    ax[1].scatter(time_window_arr, median_trajectory, s = 2)
+    ax[2].scatter(RoD_arr_for_median, MR_arr_for_median)
     
 
 plt.show()
