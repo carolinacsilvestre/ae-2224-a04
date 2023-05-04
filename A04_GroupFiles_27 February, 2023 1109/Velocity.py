@@ -30,7 +30,7 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test data/*'
+    f_string = 'D:/Python safe/all test dat/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'E:/all data/Winter 2014 200hpa/*'
 
@@ -203,6 +203,8 @@ if rad_fluxes_switch == True:
 # #Delete unnecessary variables
 # if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_string:
 #     del temp, data
+
+
 
 # =============================================================================
 # PLOT TYPE 1 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS
@@ -592,7 +594,7 @@ activate_plot4 = True  # Activation mixing ratio plot ##
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
      # parcel4 Parcel ID, 0 means first.
-    parcel4 = 24
+
     # Set up axis object for plotting the map
     fig, ax = plt.subplots()  # Subplots are useful for drawing multiple plots together
 
@@ -635,16 +637,21 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
     cmap.set_under("w")
     cmap.set_over("crimson")
-
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
     print('plon',np.shape(plon))
     print('plat', np.shape(plat))
+<<<<<<< Updated upstream
     plon_median = np.array([])
     plat_median = np.array([])
     airO3_001_median = np.array([])
     
     for emission_point in range(0,29):  
+=======
+
+    for parcel4 in range(0,29): 
+        
+>>>>>>> Stashed changes
         # Plot a Lagrangian air parcel with parcel ID given by "parcel4"
         # sc = ax.scatter(plon[:, parcel4], plat[:, parcel4], s=20, marker='o',
         #                 c=airO3_001[:, parcel4]*1E09, cmap=cmap, norm=norm, zorder=2)
