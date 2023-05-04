@@ -30,9 +30,9 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test data/*'
+    f_string = 'D:/Python safe/all test dat/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'E:/all data/Jan 2014 200hpa/*'
+    f_string = 'E:/all data/Winter 2014 200hpa/*'
 
 
 # USER INPUT - Switches to determine which data types should be loaded
@@ -402,6 +402,8 @@ MR_arr_for_median = np.array([])
 MR_average_arr_median = np.array([])
 fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
+plot_median_trajectory = False
+
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
     MR_arr_for_median = np.array([])
@@ -413,7 +415,6 @@ for emission_point in range(1, 29):
     for k in range(0, number_of_t):
         median_vector = median_trajectory_matrix[k,:]
         median_MR_vector = MR_matrix_for_median[k,:]
-        # print('3', np.shape(median_vector))
         median_MR = np.median(median_MR_vector)
         median_value = np.median(median_vector)
         median_trajectory = np.append(median_trajectory, median_value)
@@ -428,16 +429,14 @@ for emission_point in range(1, 29):
     min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
     if min == 0:
         min = int(np.where(median_trajectory == np.min(median_trajectory))[0])
-    
-    # individual_trajectory = median_trajectory[emission_point]
-    # print('whaaaaat', np.shape(median_trajectory))
-    # print('see', np.shape(individual_trajectory))
+
     RoD = (- median_trajectory[0] + median_trajectory[min]) / time_at_minimum
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
     
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
-print('oh shit', MR_average_arr_median)
+# print('Mixing ratio', MR_average_arr_median)
+# print('RoD', RoD_arr_for_median)
 
 ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
 print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
@@ -448,18 +447,18 @@ print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str
 
 # print('2', np.shape(MR_average_arr_median))
 # print('1', np.shape(RoD_arr_for_median))
-
-plt.show()
+if plot_median_trajectory == True:
+    plt.show()
 
 # print(len(median_trajectory))
 # print('this is it',median_trajectory)
 
-ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
-print("Average, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
-print("Average, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
-print("Average, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+# ccp, pp = scipy.stats.pearsonr(RoD_average_arr, MR_average_arr)
+# print("Average, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+# ccs, ps = scipy.stats.spearmanr(RoD_average_arr, MR_average_arr)
+# print("Average, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+# cck, pk = scipy.stats.kendalltau(RoD_average_arr, MR_average_arr)
+# print("Average, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # plot_parcel = False
 # if plot_parcel == True:
@@ -493,7 +492,7 @@ if plot_emission_point == True:
     plt.show()
     plt.close()
 
-activate_plot3 = True  # activation of vertical location plot with colorbar##
+activate_plot3 = False  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
@@ -515,10 +514,6 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     cmap.set_over("crimson")
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
-
-    # print('whaaaaaaaat', airO3_001[:, 1])
-    # print(type(airO3_001[:, 1]))
-    # print('min', np.min(airO3_001[:, 1]))
     m = 0
     n = 0
 
@@ -592,11 +587,11 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 # Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = False  # Activation mixing ratio plot ##
+activate_plot4 = True  # Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
-    parcel4 = 24  # Parcel ID, 0 means first.
+     # parcel4 Parcel ID, 0 means first.
 
     # Set up axis object for plotting the map
     fig, ax = plt.subplots()  # Subplots are useful for drawing multiple plots together
@@ -643,13 +638,14 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
-    # Plot a Lagrangian air parcel with parcel ID given by "parcel4"
-    sc = ax.scatter(plon[:, parcel4], plat[:, parcel4], s=20, marker='o',
-                    c=airO3_001[:, parcel4]*1E09, cmap=cmap, norm=norm, zorder=2)
+    for parcel4 in range(0,29):
+        # Plot a Lagrangian air parcel with parcel ID given by "parcel4"
+        sc = ax.scatter(plon[:, parcel4], plat[:, parcel4], s=20, marker='o',
+                        c=airO3_001[:, parcel4]*1E09, cmap=cmap, norm=norm, zorder=2)
 
-    # Plot starting point with an "S", "+4" is added to avoid overlay of letter on point
-    ax.scatter(plon[0, parcel4]+4, plat[0, parcel4], s=140, marker='$S$', color='black',
-               zorder=2)
+        # Plot starting point with an "S", "+4" is added to avoid overlay of letter on point
+        ax.scatter(plon[0, parcel4]+4, plat[0, parcel4], s=140, marker='$S$', color='black',
+                zorder=2)
 
     # Define colorbar features
     cb = fig.colorbar(sc, ticks=bounds, extend='both',
