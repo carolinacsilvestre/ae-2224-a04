@@ -643,7 +643,10 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
     plon_median = np.array([])
     plat_median = np.array([])
     airO3_001_median = np.array([])
-    
+    ##################### Determining the median trajectories #####################
+
+
+    ##################### Plotting the median trajectories ########################
     for emission_point in range(0,29):  
         # Plot a Lagrangian air parcel with parcel ID given by "parcel4"
         # sc = ax.scatter(plon[:, parcel4], plat[:, parcel4], s=20, marker='o',
@@ -676,6 +679,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
                 "_map_colorbar.png", format="png", dpi=300)
     plt.show()
     plt.close()
+    ########################## Statistical analysis of the median trajectories and MR #############################
 
 
 # =============================================================================
