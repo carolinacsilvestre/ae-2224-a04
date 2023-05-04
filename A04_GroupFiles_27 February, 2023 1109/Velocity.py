@@ -590,7 +590,7 @@ activate_plot4 = True  # Activation mixing ratio plot ##
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
      # parcel4 Parcel ID, 0 means first.
-
+    parcel4 = 24
     # Set up axis object for plotting the map
     fig, ax = plt.subplots()  # Subplots are useful for drawing multiple plots together
 
@@ -636,7 +636,11 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
-    for parcel4 in range(0,29):
+    #Parcel4 should be the median trajectory parcel of each emission point
+    median_hor_arr = np.array([])
+
+    for emission_point in range(1,29): #looop over all emission points
+        ########take the median of plon and plat and then plot it for each emission point
         # Plot a Lagrangian air parcel with parcel ID given by "parcel4"
         sc = ax.scatter(plon[:, parcel4], plat[:, parcel4], s=20, marker='o',
                         c=airO3_001[:, parcel4]*1E09, cmap=cmap, norm=norm, zorder=2)
