@@ -664,19 +664,16 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
             airO3_001_median_vector = airO3_001_median_arr[k,:]
             airO3_001_median = np.median(airO3_001_median_vector)
-            median_value = np.median(median_vector)
-            median_trajectory = np.append(median_trajectory, median_value)
+            plon_median_value = np.median(plon_median_vector)
+            plat_median_value = np.median(plat_median_vector)
+            plon_median = np.append(plon_median, plon_median_value)
+            plat_median = np.append(plat_median, plat_median_value)
             MR_arr_for_median_hor = np.append(MR_arr_for_median_hor, airO3_001_median)
 
         
         MR_average_median = np.average(MR_arr_for_median)
 
         MR_average_arr_median = np.append(MR_average_arr_median, MR_average_median)
-        # print('dadasfoa', np.shape(MR_average_arr_median))
-
-        min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
-        if min == 0:
-            min = int(np.where(median_trajectory == np.min(median_trajectory))[0])
 
 
     ##################### Plotting the median trajectories ########################
