@@ -522,7 +522,7 @@ for season in ["summer","winter"]:
     for altitude in [200,250,300]:
         lst.append([season,altitude])
 
-plot_big(lst, show, save)
+#plot_big(lst, show, save)
 
 # plot overlay of position on map with radiative forcing
 # select point and dataset:
@@ -539,4 +539,4 @@ plot_big(lst, show, save)
 # plot data
 # plot_overlay(emission_point,global_net_flux,lons_0to36,lats,plon,plat,airO3,cut=15,plot_below_cut=True)
 
-print(time.time() - start)
+#print(time.time() - start)
