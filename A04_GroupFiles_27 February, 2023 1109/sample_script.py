@@ -16,12 +16,12 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string = "C:/Users/joren/Documents/project data/Winter300/*" #Insert file path to input data, do not forget wildcard
+f_string = 'C:/Users/31683/Desktop/project data/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
-o3tracer_switch = False
-rad_fluxes_switch = False
+o3tracer_switch = True
+rad_fluxes_switch = True
 
 #Read in file names based on f_string variable
 filenames_all = sorted(glob.glob(f_string)) #Get all file names in f_string
@@ -46,32 +46,32 @@ global_net_flx = [] #Holds all net fluxes for the 28 EPs (3 months)
 #Positions of air parcels
 if attila_switch == True:
     for file in filenames_all:
-        
-        data = Dataset(file,'r')
-        print('\n')
-        print('File loaded: ')
-        print(file)
-        
-        #Latitudes and longitudes
-        lats = data.variables['lat'][:]
-        lons_0to36 = data.variables['lon'][:] #Varies from 0 to 360 deg
-        lons_18to18 = data.variables['lon'][:] #Will be converted later to -180 to 180 deg
-        
-        #Time
-        temp = data.variables['time'][:]
-        time.append(temp)
-        
-        #Air parcel longitudinal position
-        temp = data.variables['PLON'][:]
-        plon.append(temp)
-        
-        #Air parcel latitudinal position
-        temp = data.variables['PLAT'][:]
-        plat.append(temp)
-        
-        #Air parcel pressure altitude
-        temp = data.variables['PPRESS'][:]
-        ppress.append(temp)
+        if 'attila.nc' in file:
+            data = Dataset(file,'r')
+            print('\n')
+            print('File loaded: ')
+            print(file)
+            
+            #Latitudes and longitudes
+            lats = data.variables['lat'][:]
+            lons_0to36 = data.variables['lon'][:] #Varies from 0 to 360 deg
+            lons_18to18 = data.variables['lon'][:] #Will be converted later to -180 to 180 deg
+            
+            #Time
+            temp = data.variables['time'][:]
+            time.append(temp)
+            
+            #Air parcel longitudinal position
+            temp = data.variables['PLON'][:]
+            plon.append(temp)
+            
+            #Air parcel latitudinal position
+            temp = data.variables['PLAT'][:]
+            plat.append(temp)
+            
+            #Air parcel pressure altitude
+            temp = data.variables['PPRESS'][:]
+            ppress.append(temp)
     
     #Concatenation of variables, lists become multi-dimensional numpy arrays
     time = np.concatenate(time, axis=0)
@@ -271,14 +271,14 @@ if attila_switch == True:
     mp.fillcontinents(color='lightgray')
     
     #Plot a Lagrangian air parcel with parcel ID given by "parcel2"
-    ax.scatter(plon[:,:50], plat[:,:50], s=20, marker='o', color='green',
+    ax.scatter(plon[:,parcel2], plat[:,parcel2], s=20, marker='o', color='green',
                zorder=2)
     
     #Plot start and end points with an "S" and "F" respectively.
-    ax.scatter(plon[0,:50], plat[0,:50], s=140, marker='$S$', color='red',
+    ax.scatter(plon[0,parcel2], plat[0,parcel2], s=140, marker='$S$', color='red',
                zorder=2)
     
-    ax.scatter(plon[-1,:50], plat[-1,:50], s=140, marker='$F$', color='red',
+    ax.scatter(plon[-1,parcel2], plat[-1,parcel2], s=140, marker='$F$', color='red',
                zorder=2)
     
     #Save and close the map plot

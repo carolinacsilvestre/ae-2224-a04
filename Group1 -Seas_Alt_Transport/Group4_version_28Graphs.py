@@ -12,7 +12,7 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
+f_string =r"C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -38,9 +38,6 @@ rad_flx_SW_02 = [] #SW flux for call 02
 rad_flx_LW_02 = [] #LW flux for call 02
 global_net_flx = [] #Holds all net fluxes for the 28 EPs (3 months)
 
-for f_string in foldernamelist:
-
-    print(f_string)
 #Load relevant variables from NETCDF files
 #Positions of air parcels
 if attila_switch == True:
@@ -217,18 +214,10 @@ def TrendMap(EmissionPoint):
     return TrendMapPlot
 
 #hello
-
-OurTrendMap=TrendMap(0)
-print(OurTrendMap)
+print(TrendMap(0))
 
 
-flattened_arr = []
 
-for row in OurTrendMap:
-    flattened_arr.extend(row)
-
-# Print the flattened array
-print(flattened_arr)
 
 
 ###########
@@ -250,7 +239,7 @@ if attila_switch == True:
     
 
     setOFcolor=np.array(range(len(ppress[:,parcel])))
-   # print(setOFcolor)
+    print(setOFcolor)
     #Scatter plot settings
 
     #ADDED

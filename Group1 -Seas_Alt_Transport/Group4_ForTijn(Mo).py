@@ -199,7 +199,7 @@ rows = 180/step
 
 def TrendMap(EmissionPoint):
 
-    parcel2A = np.array(np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)) #[0]#
+    parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1) #[0]#
     TrendMapPlot = np.zeros((int(rows),int(columns)))
     
     for parcel2Ai in parcel2A:
@@ -209,131 +209,18 @@ def TrendMap(EmissionPoint):
                     for Nlat in range(int(rows)):
                         if 90-(Nlat*step) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*step):
                             TrendMapPlot[Nlat][Nlong]+=1
-    #print(np.sum(TrendMapPlot))
-    #TrendMapPlot=np.flip(TrendMapPlot,0)
+    print(np.sum(TrendMapPlot))
+    TrendMapPlot=np.flip(TrendMapPlot,0)
     return TrendMapPlot
 
 print("ghello")
 print(TrendMap(0))
-print(TrendMap(1))
-Total_trendmap=np.zeros(TrendMap(0).shape)
-
-#print(TrendMap(0)+TrendMap(1))
-for i in range(28):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-#Main_trendmap=TrendMap(0)
-#print(Main_trendmap)
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("All emission points, all altitudes")
-plt.show()
 
 
-#####first ALT (0,7,14, 21)
-customrange=np.array([0,7,14,21])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
 
 
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
 
-labels = ["Lat 90 - 70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("1st range (90-80) emission points, all altitudes")
-plt.show()
 ###########
-#####first ALT (1,8,15, 22)
-customrange=np.array([1,8,15, 22])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 70 - 50", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("2nd range (80 - 70) emission points, all altitudes")
-plt.show()
-################
-customrange=np.array([2,9,16, 23])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 70 - 50", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("3rd range (70 - 60) emission points, all altitudes")
-plt.show()
-##################
-customrange=np.array([3,10,17, 24])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("4th range (60 - 50) emission points, all altitudes")
-plt.show()
-#####################
-customrange=np.array([4,11,18, 25])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("5th range (50 - 40) emission points, all altitudes")
-plt.show()
-###################
-customrange=np.array([5,12,19, 26])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("6th range (40 - 30) emission points, all altitudes")
-plt.show()
-###################
-customrange=np.array([6,13,20, 27])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("7th range (30 - 20) emission points, all altitudes")
-plt.show()
 # =============================================================================
 # PLOT TYPE 1 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS
 # =============================================================================
@@ -387,10 +274,22 @@ if attila_switch == True:
 # =============================================================================
 # PLOT TYPE 2 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP)
 # =============================================================================
-'''
+
 #Requires ATTILA air parcel trajectory location data
 if attila_switch == True:
 
+
+    #for i in range(50):
+
+   # parcel2 = 25 #Parcel ID, 0 means first.
+    
+
+    #ADDED LATER
+     #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+   ## colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
+   ## cmap= matplotlib.colors.ListedColormap(colors)
+   ## bounds = [0, 15, 30, 45, 60, 75]
+    #END ADDED LATER
 
     #Set up axis object for plotting the map
     fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
@@ -445,7 +344,31 @@ if attila_switch == True:
         ax.scatter(plon[0,parcel2], plat[0,parcel2], s=140, marker='$S$', color='red',
                 zorder=2)
 
+#original
+  ##  parcel2=50
+ ##   ax.scatter(plon[:,parcel2], plat[:,parcel2], s=20, marker='o', c=ppress[:,parcel],
+  ##              zorder=2)
+  ##  ax.scatter(plon[-1,parcel2], plat[-1,parcel2], s=140, marker='$F$', color='red',
+  ##             zorder=2)
 
+
+  ##  #Plot start and end points with an "S" and "F" respectively.
+  ##  ax.scatter(plon[0,parcel2], plat[0,parcel2], s=140, marker='$S$', color='red',
+  ##             zorder=2)
+
+
+#added later
+     #Plot a Lagrangian air parcel with parcel ID given by "parcel2"
+    ##ax.scatter(plon[:,parcel22], plat[:,parcel2], s=20, marker='o', color='green',
+     ##          zorder=2)
+    
+    #Plot start and end points with an "S" and "F" respectively.
+   ## ax.scatter(plon[0,parcel22], plat[0,parcel2], s=140, marker='$S$', color='red',
+    ##           zorder=2)
+    
+   ## ax.scatter(plon[-1,parcel22], plat[-1,parcel2], s=140, marker='$F$', color='red',
+     ##          zorder=2)
+#end added later
 
     #Save and close the map plot
     plt.savefig("air_parcel_ID"+str(parcel2)+"_map.png",format="png",dpi=300)
@@ -453,7 +376,7 @@ if attila_switch == True:
     plt.close() 
 
 
-'''
+
 
 
 
@@ -520,9 +443,216 @@ if attila_switch == True and o3tracer_switch == True:
     plt.show()
     plt.close()
 
+# =================================================================================
+# PLOT TYPE 4 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP) W/ COLORBAR
+# =================================================================================
 
+#Requires ATTILA air parcel trajectory locatio and O3 data
+if attila_switch == True and o3tracer_switch == True:
+
+    parcel4 = 25 #Parcel ID, 0 means first.
     
+    #Set up axis object for plotting the map
+    fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+    
+    #Adjust dimensions of map plot
+    fig.set_figheight(8)
+    fig.set_figwidth(14)
+    
+    #Define map projection and settings
+    #For more info: https://matplotlib.org/basemap/users/cyl.html
+    mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                         llcrnrlon = -180,
+                         llcrnrlat = -90,
+                         urcrnrlon = 180,
+                         urcrnrlat = 90,
+                         resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+    
+    #Format the lat and lon arrays for map graphing, 
+    #makes lat array a lat x lon array and same for lon array
+    lon, lat = np.meshgrid(lons_18to18, lats)
+    x, y = mp(lon, lat)
+    
+    #Choose the settings for the coastlines, countries, meridians...
+    mp.drawcoastlines(linewidth=0.2)
+    mp.drawcountries(linewidth=0.2)
+    
+    meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                         labels=[False,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+    
+    mp.drawparallels(np.arange(-90,110,20), 
+                         labels=[True,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+    
+    mp.fillcontinents(color='lightgray')
+    
+    #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+    colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
+    cmap= matplotlib.colors.ListedColormap(colors)
+    bounds = [0, 15, 30, 45, 60, 75]
+    
+    cmap.set_under("w")
+    cmap.set_over("crimson")
+    
+    norm= matplotlib.colors.Normalize(vmin=0,vmax=75)
+    
+    #Plot a Lagrangian air parcel with parcel ID given by "parcel4"
+    sc = ax.scatter(plon[:,parcel4], plat[:,parcel4], s=20, marker='o',
+               c=airO3_001[:,parcel4]*1E09,cmap=cmap,norm=norm,zorder=2)
+    
+    #Plot starting point with an "S", "+4" is added to avoid overlay of letter on point
+    ax.scatter(plon[0,parcel4]+4, plat[0,parcel4], s=140, marker='$S$', color='black',
+               zorder=2)
+    
+    #Define colorbar features
+    cb = fig.colorbar(sc, ticks=bounds, extend='both', 
+                      orientation='vertical',fraction=0.04, pad=0.03)
+    
+    #Adjust colorbar tickmark size
+    cb.ax.tick_params(labelsize=14)
+    
+    #Label the colorbar
+    cb.set_label(label="O$_3$ Mixing Ratio [nmol·mol$^{-1}$]",size=14,weight='bold')
+    
+    #Save and close the map plot
+    plt.savefig("air_parcel_ID"+str(parcel4)+"_map_colorbar.png",format="png",dpi=300)
+    plt.show()
+    plt.close()
+    
+# =============================================================================
+# PLOT TYPE 5 - Net radiative fluxes from short-term ozone increase (Single EP)
+# =============================================================================
+
+#Requires lat,lon from ATTILA data files and fluxes
+if attila_switch == True and rad_fluxes_switch == True:
+    
+    #Set up axis object for plotting the map
+    fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+    
+    #Adjust dimensions of map plot
+    fig.set_figheight(8)
+    fig.set_figwidth(14)
+    
+    #Define map projection and settings
+    #For more info: https://matplotlib.org/basemap/users/cyl.html
+    mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                         llcrnrlon = -180,
+                         llcrnrlat = -90,
+                         urcrnrlon = 180,
+                         urcrnrlat = 90,
+                         resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+    
+    #Shift the fluxes from [0,360] to [-180,180]
+    net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[0], 
+                                           lons_0to36,start=False)
+    
+    #Format the lat and lon arrays for map graphing, 
+    #makes lat array a lat x lon array and same for lon array
+    lon, lat = np.meshgrid(lons_shft, lats)
+    x, y = mp(lon, lat)
+    
+    #Choose the settings for the coastlines, countries, meridians...
+    mp.drawcoastlines(linewidth=0.2)
+    mp.drawcountries(linewidth=0.2)
+    
+    meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                         labels=[False,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+    
+    mp.drawparallels(np.arange(-90,110,20), 
+                         labels=[True,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+    
+    #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+    colors = ["#ffffff", "#fdcc8a", "#fc8d59", "#e34a33", "#b30000"]
+    cmap= matplotlib.colors.ListedColormap(colors)
+    bounds = [0, 0.5, 1, 1.5, 2, 2.5]
+    
+    cmap.set_under("w")
+    cmap.set_over("red")
+    
+    norm= matplotlib.colors.Normalize(vmin=0,vmax=2.5)
+    
+    #Time-average for the first emission point
+    time_avg_flux = np.mean(net_flx_EP_shft, axis=0)
+    
+    #Plot the flux on the map
+    sc2 = mp.pcolor(x, y, time_avg_flux*1000,
+                    cmap=cmap, norm=norm, shading='auto')
+    
+    #Define colorbar features
+    cb = fig.colorbar(sc2, ticks=bounds, extend='both', 
+                      orientation='horizontal',fraction=0.052, 
+                      pad=0.065)
+    
+    #Adjust colorbar tickmark size
+    cb.ax.tick_params(labelsize=14)
+    
+    #Label the colorbar
+    cb.set_label(label="Radiative Forcing from Short-term O$_3$ [mW·m$^{-2}$]",size=14,weight='bold')
+    
+    #Save and close the map plot
+    plt.savefig("rad_fluxes_map_example.png",format="png",dpi=300)
+    plt.show()
+    plt.close()
+
+
 '''
+##################
+import numpy as np
+import matplotlib.pyplot as plt
+  
+data = TrendMap(0)
+#Adjust dimensions of map plot
+
+# we can use differenrt cmaps (initial one =>'autumn' )
+m=plt.imshow( data , cmap = 'hot' , interpolation = 'nearest',aspect="auto" )
+
+
+
+
+#3
+fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+
+#Adjust dimensions of map plot
+fig.set_figheight(8)
+fig.set_figwidth(14)
+
+#Define map projection and settings
+#For more info: https://matplotlib.org/basemap/users/cyl.html
+mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                        llcrnrlon = -180,
+                        llcrnrlat = -90,
+                        urcrnrlon = 180,
+                        urcrnrlat = 90,
+                        resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+
+#Format the lat and lon arrays for map graphing, 
+#makes lat array a lat x lon array and same for lon array
+lon, lat = np.meshgrid(lons_18to18, lats)
+x, y = mp(lon, lat)
+
+#Choose the settings for the coastlines, countries, meridians...
+mp.drawcoastlines(linewidth=0.2)
+mp.drawcountries(linewidth=0.2)
+
+meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                        labels=[False,False,False,True], 
+                        linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+
+mp.drawparallels(np.arange(-90,110,20), 
+                        labels=[True,False,False,True], 
+                        linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+
+mp.fillcontinents(color='lightgray')
+#3
+
+  
+plt.title( "2-D Heat Map" )
+plt.show()
+'''
+
 ############################################################28 by 28 fig############################################
 fig, axs = plt.subplots(nrows=7, ncols=4, figsize=(32, 32))
 fig.tight_layout()
@@ -708,5 +838,5 @@ plt.close()
 ################################# END ####################################### 
 
 
-'''
+
 print("DONE!")

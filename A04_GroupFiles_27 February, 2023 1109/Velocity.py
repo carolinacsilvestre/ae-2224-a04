@@ -419,7 +419,9 @@ for emission_point in range(1, 29):
     min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
     if min == 0:
         min = int(np.where(median_trajectory == np.min(median_trajectory))[0])
-    RoD = (- median_trajectory[0] + median_trajectory[min]) / time_at_minimum
+    
+    individual_trajectory = median_trajectory[emission_point]
+    RoD = (- individual_trajectory[0] + individual_trajectory[min]) / time_at_minimum
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
 
 
