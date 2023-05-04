@@ -382,21 +382,17 @@ for emission_point in range(1, 29):
         # Append the mixing ratio ##
         MR_arr = np.append(MR_arr, average_mr_one_parcel)
 
-    ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
-    #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-    ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
-    #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-    cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
-    #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+    
 
-    MR_average = np.average(MR_arr)
-    RoD_average = np.average(RoD_arr)
+    ##############OLD STUFF FOR AVG################
+    # MR_average = np.average(MR_arr)
+    # RoD_average = np.average(RoD_arr)
 
-    MR_average = np.average(MR_arr)
-    RoD_average = np.average(RoD_arr)
+    # MR_average = np.average(MR_arr)
+    # RoD_average = np.average(RoD_arr)
 
-    RoD_average_arr = np.append(RoD_average_arr, RoD_average)
-    MR_average_arr = np.append(MR_average_arr, MR_average)
+    # RoD_average_arr = np.append(RoD_average_arr, RoD_average)
+    # MR_average_arr = np.append(MR_average_arr, MR_average)
 
 ### loop for finding median ###
 
@@ -424,7 +420,12 @@ for emission_point in range(1, 29):
     RoD = (- individual_trajectory[0] + individual_trajectory[min]) / time_at_minimum
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
 
-
+    # ccp, pp = scipy.stats.pearsonr(RoD_arr, MR_arr * 10E9)
+    # #print("Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+    # ccs, ps = scipy.stats.spearmanr(RoD_arr, MR_arr * 10E9)
+    # #print("Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+    # cck, pk = scipy.stats.kendalltau(RoD_arr, MR_arr * 10E9)
+    # #print("Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
     
     ax.scatter(time_window_arr, median_trajectory, s = 2)
     
