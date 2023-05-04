@@ -638,23 +638,26 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
-<<<<<<< Updated upstream
-    #Parcel4 should be the median trajectory parcel of each emission point
-    median_hor_arr = np.array([])
-
-    for emission_point in range(1,29): #looop over all emission points
-        ########take the median of plon and plat and then plot it for each emission point
-=======
     print('plon',np.shape(plon))
     print('plat', np.shape(plat))
-    for parcel4 in range(0,29):  
->>>>>>> Stashed changes
+    plon_median = np.array([])
+    plat_median = np.array([])
+    airO3_001_median = np.array([])
+    
+    for emission_point in range(0,29):  
         # Plot a Lagrangian air parcel with parcel ID given by "parcel4"
-        sc = ax.scatter(plon[:, parcel4], plat[:, parcel4], s=20, marker='o',
-                        c=airO3_001[:, parcel4]*1E09, cmap=cmap, norm=norm, zorder=2)
+        # sc = ax.scatter(plon[:, parcel4], plat[:, parcel4], s=20, marker='o',
+        #                 c=airO3_001[:, parcel4]*1E09, cmap=cmap, norm=norm, zorder=2)
+
+        # # Plot starting point with an "S", "+4" is added to avoid overlay of letter on point
+        # ax.scatter(plon[0, parcel4]+4, plat[0, parcel4], s=140, marker='$S$', color='black',
+        #         zorder=2)
+        
+        sc = ax.scatter(plon_median[:, emission_point], plat_median[:, emission_point], s=20, marker='o',
+                        c=airO3_001_median[:, emission_point]*1E09, cmap=cmap, norm=norm, zorder=2)
 
         # Plot starting point with an "S", "+4" is added to avoid overlay of letter on point
-        ax.scatter(plon[0, parcel4]+4, plat[0, parcel4], s=140, marker='$S$', color='black',
+        ax.scatter(plon_median[0, emission_point]+4, plat_median[0, emission_point], s=140, marker='$S$', color='black',
                 zorder=2)
 
     # Define colorbar features
