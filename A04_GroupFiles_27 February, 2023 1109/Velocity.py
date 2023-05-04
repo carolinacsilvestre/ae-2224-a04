@@ -30,7 +30,7 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test dat/*'
+    f_string = 'D:/Python safe/all test data/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'E:/all data/Winter 2014 200hpa/*'
 
@@ -439,11 +439,11 @@ ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
 # print('RoD', RoD_arr_for_median)
 
 ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+# print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
 ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+# print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E15)
-print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+# print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # print('2', np.shape(MR_average_arr_median))
 # print('1', np.shape(RoD_arr_for_median))
@@ -638,11 +638,17 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
+<<<<<<< Updated upstream
     #Parcel4 should be the median trajectory parcel of each emission point
     median_hor_arr = np.array([])
 
     for emission_point in range(1,29): #looop over all emission points
         ########take the median of plon and plat and then plot it for each emission point
+=======
+    print('plon',np.shape(plon))
+    print('plat', np.shape(plat))
+    for parcel4 in range(0,29):  
+>>>>>>> Stashed changes
         # Plot a Lagrangian air parcel with parcel ID given by "parcel4"
         sc = ax.scatter(plon[:, parcel4], plat[:, parcel4], s=20, marker='o',
                         c=airO3_001[:, parcel4]*1E09, cmap=cmap, norm=norm, zorder=2)
