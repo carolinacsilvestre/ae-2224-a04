@@ -413,7 +413,6 @@ for emission_point in range(1, 29):
     for k in range(0, number_of_t):
         median_vector = median_trajectory_matrix[k,:]
         median_MR_vector = MR_matrix_for_median[k,:]
-        # print('3', np.shape(median_vector))
         median_MR = np.median(median_MR_vector)
         median_value = np.median(median_vector)
         median_trajectory = np.append(median_trajectory, median_value)
@@ -428,16 +427,14 @@ for emission_point in range(1, 29):
     min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
     if min == 0:
         min = int(np.where(median_trajectory == np.min(median_trajectory))[0])
-    
-    # individual_trajectory = median_trajectory[emission_point]
-    # print('whaaaaat', np.shape(median_trajectory))
-    # print('see', np.shape(individual_trajectory))
+
     RoD = (- median_trajectory[0] + median_trajectory[min]) / time_at_minimum
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
     
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
-print('oh shit', MR_average_arr_median)
+print('Mixing ratio', MR_average_arr_median)
+print('RoD', RoD_arr_for_median)
 
 ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
 print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
@@ -515,10 +512,6 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
     cmap.set_over("crimson")
 
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
-
-    # print('whaaaaaaaat', airO3_001[:, 1])
-    # print(type(airO3_001[:, 1]))
-    # print('min', np.min(airO3_001[:, 1]))
     m = 0
     n = 0
 
