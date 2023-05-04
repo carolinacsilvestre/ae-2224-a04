@@ -30,7 +30,7 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test dat/*'
+    f_string = 'D:/Python safe/all test data/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'E:/all data/Winter 2014 200hpa/*'
 
@@ -203,8 +203,6 @@ if rad_fluxes_switch == True:
 # #Delete unnecessary variables
 # if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_string:
 #     del temp, data
-
-
 
 # =============================================================================
 # PLOT TYPE 1 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS
@@ -594,7 +592,7 @@ activate_plot4 = True  # Activation mixing ratio plot ##
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
      # parcel4 Parcel ID, 0 means first.
-
+    parcel4 = 24
     # Set up axis object for plotting the map
     fig, ax = plt.subplots()  # Subplots are useful for drawing multiple plots together
 
@@ -637,24 +635,50 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
     cmap.set_under("w")
     cmap.set_over("crimson")
+
     norm = matplotlib.colors.Normalize(vmin=0, vmax=75)
 
+
+    #################### Array definitions ########################################
     print('plon',np.shape(plon))
     print('plat', np.shape(plat))
-<<<<<<< Updated upstream
     plon_median = np.array([])
     plat_median = np.array([])
     airO3_001_median = np.array([])
     ##################### Determining the median trajectories #####################
+    # fig, ax = plt.subplots(ncols = 2, nrows = 1)
+    # ax[0].invert_yaxis()
+
+    for emission_point in range(1, 29):
+        median_trajectory = np.array([])
+        MR_arr_for_median = np.array([])
+        
+        plat_median = plat[:, ((emission_point-1) * 50):(emission_point * 50)]
+        plon_median = plon[:, ((emission_point-1) * 50):(emission_point * 50)]
+        MR_matrix_for_median = airO3_001[:, ((emission_point-1) * 50):(emission_point * 50)]
+
+        # print(np.shape(median_trajectory_matrix))
+        for k in range(0, number_of_t):
+            median_vector = median_trajectory_matrix[k,:]
+            median_MR_vector = MR_matrix_for_median[k,:]
+            median_MR = np.median(median_MR_vector)
+            median_value = np.median(median_vector)
+            median_trajectory = np.append(median_trajectory, median_value)
+            MR_arr_for_median = np.append(MR_arr_for_median, median_MR)
+
+        
+        MR_average_median = np.average(MR_arr_for_median)
+
+        MR_average_arr_median = np.append(MR_average_arr_median, MR_average_median)
+        # print('dadasfoa', np.shape(MR_average_arr_median))
+
+        min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
+        if min == 0:
+            min = int(np.where(median_trajectory == np.min(median_trajectory))[0])
 
 
     ##################### Plotting the median trajectories ########################
     for emission_point in range(0,29):  
-=======
-
-    for parcel4 in range(0,29): 
-        
->>>>>>> Stashed changes
         # Plot a Lagrangian air parcel with parcel ID given by "parcel4"
         # sc = ax.scatter(plon[:, parcel4], plat[:, parcel4], s=20, marker='o',
         #                 c=airO3_001[:, parcel4]*1E09, cmap=cmap, norm=norm, zorder=2)
