@@ -363,7 +363,6 @@ for emission_point in range(1, 29):
 
         ppress_temp = ppress[:, i]
         ppress_temp1 = ppress_temp[0: number_of_t]
-        end_point_altitude = ppress_temp[number_of_t]
         # Find where the minimum altitude A.K.A. maximum pressure (that's why the max in the function) ##
         min = int(np.where(ppress_temp1 == np.max(ppress_temp1))[0])
 
@@ -402,6 +401,8 @@ for emission_point in range(1, 29):
 ### loop for finding median ###
 
 median_trajectory_matrix = np.array([])
+RoD_arr_for_median = np.array([])
+MR_arr_for_median = np.array([])
 fig, ax = plt.subplots()
 ax.invert_yaxis()
 for emission_point in range(1, 29):
@@ -414,8 +415,16 @@ for emission_point in range(1, 29):
         median_value = np.median(median_vector)
         median_trajectory = np.append(median_trajectory, median_value)
     
-        # ax.invert_yaxis()
-    ax.scatter(time_window_arr, median_trajectory)
+
+    min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
+    if min == 0:
+        min = int(np.where(median_trajectory == np.min(median_trajectory))[0])
+    RoD = (- median_trajectory[0] + median_trajectory[min]) / time_at_minimum
+    RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
+
+
+    
+    ax.scatter(time_window_arr, median_trajectory, s = 2)
     
 
 plt.show()
