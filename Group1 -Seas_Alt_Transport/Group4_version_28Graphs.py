@@ -214,18 +214,10 @@ def TrendMap(EmissionPoint):
     return TrendMapPlot
 
 #hello
-
-OurTrendMap=TrendMap(0)
-print(OurTrendMap)
+print(TrendMap(0))
 
 
-flattened_arr = []
 
-for row in OurTrendMap:
-    flattened_arr.extend(row)
-
-# Print the flattened array
-print(flattened_arr)
 
 
 ###########

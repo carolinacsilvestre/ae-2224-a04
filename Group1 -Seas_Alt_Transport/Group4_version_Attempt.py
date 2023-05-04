@@ -1,4 +1,4 @@
-#Import libraries
+ #Import libraries
 import glob #Dynamic file name loading
 import numpy as np #Array processing
 from netCDF4 import Dataset #NETCDF file handling
@@ -15,9 +15,8 @@ import matplotlib.colors #To create new colorbar
 
 #USER INPUT - File path
 f_string =r"C:/Users/31683/Desktop/project data/*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
-#Celina foldernamelist = ["C:/Users/31683/Desktop/project data/PreliminaryData/*","C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
-foldernamelist = ["C:/Users/joren/Documents/project data/Winter/*","C:/Users/joren/Documents/project data/Summer/*"]
-#Joren foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
+foldernamelist = ["C:/Users/31683/Desktop/project data/PreliminaryData/*","C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
+print(f_string)
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
