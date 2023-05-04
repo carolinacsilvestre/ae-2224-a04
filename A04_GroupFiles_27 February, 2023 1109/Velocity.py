@@ -585,7 +585,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 # Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = False  # Activation mixing ratio plot ##
+activate_plot4 = True  # Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
