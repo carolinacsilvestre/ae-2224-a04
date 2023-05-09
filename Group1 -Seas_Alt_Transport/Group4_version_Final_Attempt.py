@@ -21,10 +21,11 @@ attila_switch = True
 o3tracer_switch = False
 rad_fluxes_switch = False
 
-graphs28 = True
+graphs28 = False
 graphsperlat = False
 MedianTrajectories = False
 MedianTrajectoriesAll = False
+graphs28RF = True
 
 step = 20
 columns = 360/step
@@ -511,3 +512,9 @@ for f_string in foldernamelist:
             #plt.savefig("air_parcel_ID"+str(parcel2)+"_map.png",format="png",dpi=300)
             plt.show()
             plt.close()
+
+###########################################################################################################################
+#28 graphsRF
+#####################################################################################################
+    if graphs28RF == True:
+        print('hi')
