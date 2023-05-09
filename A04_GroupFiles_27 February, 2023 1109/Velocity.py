@@ -28,11 +28,11 @@ import matplotlib.colors  # To create new colorbar
 import math
 
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
+    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/Summer300/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'D:/Python safe/all test data/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'E:/all data/Winter 2014 200hpa/*'
+    f_string = 'E:/all data/Summer 2014 250hpa/*'
 
 
 # USER INPUT - Switches to determine which data types should be loaded
@@ -402,7 +402,7 @@ MR_arr_for_median = np.array([])
 MR_average_arr_median = np.array([])
 fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
-plot_median_trajectory = False
+plot_median_trajectory = True 
 
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
@@ -434,6 +434,7 @@ for emission_point in range(1, 29):
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
     
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
+    ax[0].set_title('Summer 2014 300 hPa')
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
 # print('Mixing ratio', MR_average_arr_median)
 # print('RoD', RoD_arr_for_median)
@@ -492,7 +493,7 @@ if plot_emission_point == True:
     plt.show()
     plt.close()
 
-activate_plot3 = False  # activation of vertical location plot with colorbar##
+activate_plot3 = True  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
@@ -587,7 +588,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
 # Requires ATTILA air parcel trajectory locatio and O3 data
 
-activate_plot4 = True  # Activation mixing ratio plot ##
+activate_plot4 = False  # Activation mixing ratio plot ##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
 
@@ -644,37 +645,36 @@ if attila_switch == True and o3tracer_switch == True and activate_plot4 == True:
     print('plat', np.shape(plat))
     plon_median = np.array([])
     plat_median = np.array([])
-    airO3_001_median = np.array([])
+    airO3_001_median_arr = np.array([])
     ##################### Determining the median trajectories #####################
     # fig, ax = plt.subplots(ncols = 2, nrows = 1)
     # ax[0].invert_yaxis()
 
     for emission_point in range(1, 29):
         median_trajectory = np.array([])
-        MR_arr_for_median = np.array([])
+        MR_arr_for_median_hor = np.array([])
         
-        plat_median = plat[:, ((emission_point-1) * 50):(emission_point * 50)]
-        plon_median = plon[:, ((emission_point-1) * 50):(emission_point * 50)]
-        MR_matrix_for_median = airO3_001[:, ((emission_point-1) * 50):(emission_point * 50)]
+        plat_median_matrix = plat[:, ((emission_point-1) * 50):(emission_point * 50)]
+        plon_median_matrix = plon[:, ((emission_point-1) * 50):(emission_point * 50)]
+        airO3_001_median_arr = airO3_001[:, ((emission_point-1) * 50):(emission_point * 50)]
 
         # print(np.shape(median_trajectory_matrix))
         for k in range(0, number_of_t):
-            median_vector = median_trajectory_matrix[k,:]
-            median_MR_vector = MR_matrix_for_median[k,:]
-            median_MR = np.median(median_MR_vector)
-            median_value = np.median(median_vector)
-            median_trajectory = np.append(median_trajectory, median_value)
-            MR_arr_for_median = np.append(MR_arr_for_median, median_MR)
+            plon_median_vector = plon_median_matrix[k,:]
+            plat_median_vector = plat_median_matrix[k,:]
+
+            airO3_001_median_vector = airO3_001_median_arr[k,:]
+            airO3_001_median = np.median(airO3_001_median_vector)
+            plon_median_value = np.median(plon_median_vector)
+            plat_median_value = np.median(plat_median_vector)
+            plon_median = np.append(plon_median, plon_median_value)
+            plat_median = np.append(plat_median, plat_median_value)
+            MR_arr_for_median_hor = np.append(MR_arr_for_median_hor, airO3_001_median)
 
         
         MR_average_median = np.average(MR_arr_for_median)
 
         MR_average_arr_median = np.append(MR_average_arr_median, MR_average_median)
-        # print('dadasfoa', np.shape(MR_average_arr_median))
-
-        min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
-        if min == 0:
-            min = int(np.where(median_trajectory == np.min(median_trajectory))[0])
 
 
     ##################### Plotting the median trajectories ########################
