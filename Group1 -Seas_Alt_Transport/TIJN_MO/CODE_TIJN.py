@@ -230,6 +230,7 @@ print(f"st row of emission points, all altitudes [summer]{New_main_trandmap}")
 plt.barh(np.flip(labels), np.flip(New_main_trandmap))
 plt.title("1st row of emission points, all altitudes [summer]")
 plt.xticks(ticks=[n for n in range(0,60,10)], labels=[f'{n}%' for n in range(0,60,10)])
+plt.savefig(f"With O3 filter for points {customrange}")
 plt.show()
 ###########
 #####first ALT (1,8,15, 22)
