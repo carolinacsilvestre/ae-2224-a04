@@ -28,7 +28,7 @@ import matplotlib.colors  # To create new colorbar
 import math
 
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
+    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/Summer300/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'D:/Python safe/all test dat/*'
 if len(sorted(glob.glob(f_string))) == 0:
@@ -403,8 +403,7 @@ MR_arr_for_median = np.array([])
 MR_average_arr_median = np.array([])
 fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
-plot_median_trajectory = True
-# print(np.shape(time_window_arr))
+plot_median_trajectory = True 
 
 for emission_point in range(1, 29):
     median_trajectory = np.array([])

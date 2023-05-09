@@ -151,7 +151,7 @@ if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_stri
 
 #print(plon[0,parcel10],plat[0,parcel10])
 #why  40 not correct????
-step = 20
+step = 10
 columns = 360/step
 rows = 180/step
 
@@ -171,9 +171,9 @@ def TrendMap(EmissionPoint):
     #TrendMapPlot=np.flip(TrendMapPlot,0)
     return TrendMapPlot
 
-print("ghello")
-print(TrendMap(0))
-print(TrendMap(1))
+#print("ghello")
+#print(TrendMap(0))
+#print(TrendMap(1))
 Total_trendmap=np.zeros(TrendMap(0).shape)
 
 #print(TrendMap(0)+TrendMap(1))
@@ -186,7 +186,7 @@ for i in range(28):
 
 New_main_trandmap=np.sum(Total_trendmap,axis=1)
 #print(New_main_trandmap)
-
+print(f"All emission points, all altitudes [summer]{New_main_trandmap}")
 labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
 plt.barh(np.flip(labels), np.flip(New_main_trandmap))
 plt.title("All emission points, all altitudes [summer]")
@@ -202,97 +202,13 @@ for i in (customrange):
 
 New_main_trandmap=np.sum(Total_trendmap,axis=1)
 #print(New_main_trandmap)
-print(f"st row of emission points, all altitudes [summer]{New_main_trandmap}")
+print(f"1st row of emission points, all altitudes [summer]{New_main_trandmap}")
+print(f"lenght of the list{New_main_trandmap}")
+
+
 labels = ["Lat 90 - 70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
 plt.barh(np.flip(labels), np.flip(New_main_trandmap))
 plt.title("1st row of emission points, all altitudes [summer]")
 plt.show()
-###########
-#####first ALT (1,8,15, 22)
-customrange=np.array([1,8,15, 22])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
 
 
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 70 - 50", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("2nd row of emission points, all altitudes [summer]")
-plt.show()
-
-
-
-################
-customrange=np.array([2,9,16, 23])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-
-labels = ["Lat 70 - 50", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("3rd row of emission points, all altitudes [summer]")
-plt.show()
-##################
-customrange=np.array([3,10,17, 24])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("4th row of emission points, all altitudes [summer]")
-plt.show()
-#####################
-customrange=np.array([4,11,18, 25])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("5th row of emission points, all altitudes [summer]")
-plt.show()
-###################
-customrange=np.array([5,12,19, 26])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("6th row of emission points, all altitudes [summer]")
-plt.show()
-###################
-customrange=np.array([6,13,20, 27])
-for i in (customrange):
-    Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
-
-
-New_main_trandmap=np.sum(Total_trendmap,axis=1)
-#print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
-plt.barh(np.flip(labels), np.flip(New_main_trandmap))
-plt.title("7th row of emission points, all altitudes [summer]")
-plt.show()
-
-
-
-print("DONE!")
