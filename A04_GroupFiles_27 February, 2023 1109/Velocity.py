@@ -28,7 +28,7 @@ import matplotlib.colors  # To create new colorbar
 import math
 
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
+    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/Winter300/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'D:/Python safe/all test data/*'
 if len(sorted(glob.glob(f_string))) == 0:
@@ -402,7 +402,7 @@ MR_arr_for_median = np.array([])
 MR_average_arr_median = np.array([])
 fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
-plot_median_trajectory = False
+plot_median_trajectory = True 
 
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
@@ -493,7 +493,7 @@ if plot_emission_point == True:
     plt.show()
     plt.close()
 
-activate_plot3 = False  # activation of vertical location plot with colorbar##
+activate_plot3 = True  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
