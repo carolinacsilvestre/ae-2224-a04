@@ -1,0 +1,139 @@
+EP 1
+Pearson correlation coefficient + p-value:  -0.5834179123192925 ,  8.723429550945243e-06
+Spearman correlation coefficient + p-value:  -0.643985594237695 ,  4.5230592502817247e-07
+Kendall correlation coefficient + p-value:  -0.47102040816326524 ,  1.3893740222401614e-06
+
+EP 2
+Pearson correlation coefficient + p-value:  -0.004395042644960044 ,  0.9653842209949534
+Spearman correlation coefficient + p-value:  -0.021230123012301226 ,  0.8339364084137422
+Kendall correlation coefficient + p-value:  -0.027070707070707075 ,  0.6898433584129195
+
+EP 3
+Pearson correlation coefficient + p-value:  -0.09650727067967348 ,  0.2400648995979136
+Spearman correlation coefficient + p-value:  -0.09636161607182543 ,  0.240778495268475
+Kendall correlation coefficient + p-value:  -0.07149888143176733 ,  0.1941644571864083
+
+EP 4
+Pearson correlation coefficient + p-value:  -0.14798846613899946 ,  0.03650264425250254
+Spearman correlation coefficient + p-value:  -0.2430855771394285 ,  0.000523621291804906
+Kendall correlation coefficient + p-value:  -0.16804020100502512 ,  0.0004097380250942522
+
+EP 5
+Pearson correlation coefficient + p-value:  -0.2105969621698363 ,  0.0008057828369275952
+Spearman correlation coefficient + p-value:  -0.39581625306004886 ,  8.347354264039449e-11
+Kendall correlation coefficient + p-value:  -0.2733172690763052 ,  1.2169378334015674e-10
+
+EP 6
+Pearson correlation coefficient + p-value:  -0.14305236962410933 ,  0.013132174205967465
+Spearman correlation coefficient + p-value:  -0.14066911854576164 ,  0.014751391115353384
+Kendall correlation coefficient + p-value:  -0.10069119286510592 ,  0.009299152830239233
+
+EP 7
+Pearson correlation coefficient + p-value:  -0.0738916593937347 ,  0.16779384139916953
+Spearman correlation coefficient + p-value:  0.060511980855820394 ,  0.25887225523073126
+Kendall correlation coefficient + p-value:  0.03174785100286533 ,  0.3753547206691572
+
+EP 8
+Pearson correlation coefficient + p-value:  -0.06013295015446269 ,  0.23014655423456318
+Spearman correlation coefficient + p-value:  0.006631541447134044 ,  0.8948124856748111
+Kendall correlation coefficient + p-value:  -0.002907268170426066 ,  0.9308002755067262
+
+EP 9
+Pearson correlation coefficient + p-value:  -0.0427496865982964 ,  0.36559827717784027
+Spearman correlation coefficient + p-value:  -0.01999015632999011 ,  0.6723550339763509
+Kendall correlation coefficient + p-value:  -0.019411036872061367 ,  0.5383816745842689
+
+EP 10
+Pearson correlation coefficient + p-value:  -0.051767606740107226 ,  0.24791172630193933
+Spearman correlation coefficient + p-value:  -0.06142123768495073 ,  0.17028828871096552
+Kendall correlation coefficient + p-value:  -0.048448897795591174 ,  0.1053706339067507
+
+EP 11
+Pearson correlation coefficient + p-value:  -0.0639203288728085 ,  0.13434501836151636
+Spearman correlation coefficient + p-value:  -0.0966272044776106 ,  0.02343556889561112
+Kendall correlation coefficient + p-value:  -0.07188607385328696 ,  0.011709029451503124
+
+EP 12
+Pearson correlation coefficient + p-value:  -0.04048655932847337 ,  0.32214868938774355
+Spearman correlation coefficient + p-value:  -0.05012980591612755 ,  0.22014794690500916
+Kendall correlation coefficient + p-value:  -0.037406789092932664 ,  0.1705572965809452
+
+EP 13
+Pearson correlation coefficient + p-value:  -0.04664017417382291 ,  0.23504886506055053
+Spearman correlation coefficient + p-value:  -0.08366887349938198 ,  0.032942694866916394
+Kendall correlation coefficient + p-value:  -0.059570937537039244 ,  0.023084571598793426
+
+EP 14
+Pearson correlation coefficient + p-value:  -0.05348454010865073 ,  0.15749383564498215
+Spearman correlation coefficient + p-value:  -0.10016875253098183 ,  0.007998033509506472
+Kendall correlation coefficient + p-value:  -0.07045166564479868 ,  0.005287268616030524
+
+EP 15
+Pearson correlation coefficient + p-value:  -0.04650909307036588 ,  0.20327790667923723
+Spearman correlation coefficient + p-value:  -0.1237773720486614 ,  0.000680789316778958
+Kendall correlation coefficient + p-value:  -0.08710280373831776 ,  0.00035727857390115
+
+EP 16
+Pearson correlation coefficient + p-value:  -0.03737569463525285 ,  0.29103207092139693
+Spearman correlation coefficient + p-value:  -0.1274977851527893 ,  0.0002999914806166846
+Kendall correlation coefficient + p-value:  -0.08779098873591991 ,  0.0002019816404164118
+
+EP 17
+Pearson correlation coefficient + p-value:  -0.03409181023078125 ,  0.32082475836392466
+Spearman correlation coefficient + p-value:  -0.12126670152932433 ,  0.0003950281945611517
+Kendall correlation coefficient + p-value:  -0.08103374211875564 ,  0.0004054714290501024
+
+EP 18
+Pearson correlation coefficient + p-value:  -0.029193548821136932 ,  0.3816959413056283
+Spearman correlation coefficient + p-value:  -0.11863311765405472 ,  0.0003615745885264154
+Kendall correlation coefficient + p-value:  -0.07846248918551477 ,  0.00042515016946858636
+
+EP 19
+Pearson correlation coefficient + p-value:  -0.026674851667949164 ,  0.41151082202912864
+Spearman correlation coefficient + p-value:  -0.09971951215458412 ,  0.002089634425486497
+Kendall correlation coefficient + p-value:  -0.06649658920747602 ,  0.002149994241466978
+
+EP 20
+Pearson correlation coefficient + p-value:  -0.029649349667570463 ,  0.3489499405406142
+Spearman correlation coefficient + p-value:  -0.12792555192555194 ,  4.971113998811002e-05
+Kendall correlation coefficient + p-value:  -0.08337937937937939 ,  7.87669435326417e-05
+
+EP 21
+Pearson correlation coefficient + p-value:  -0.03217288384403634 ,  0.2976210837419262
+Spearman correlation coefficient + p-value:  -0.14572304762699495 ,  2.119592013742867e-06
+Kendall correlation coefficient + p-value:  -0.09478233238004448 ,  4.2395058160223885e-06
+
+EP 22
+Pearson correlation coefficient + p-value:  -0.03221328610630649 ,  0.2857659081740501
+Spearman correlation coefficient + p-value:  -0.13724109313689142 ,  4.918630840267078e-06
+Kendall correlation coefficient + p-value:  -0.08934072297129621 ,  9.097411876765973e-06
+
+EP 23
+Pearson correlation coefficient + p-value:  -0.02975452310997066 ,  0.3133820411221391
+Spearman correlation coefficient + p-value:  -0.13566080973777017 ,  3.896321779234776e-06
+Kendall correlation coefficient + p-value:  -0.08828395201876867 ,  7.327124411309157e-06
+
+EP 24
+Pearson correlation coefficient + p-value:  -0.02642193674498931 ,  0.3604602127459011
+Spearman correlation coefficient + p-value:  -0.1291557424692656 ,  7.1816053752488e-06
+Kendall correlation coefficient + p-value:  -0.082457603558521 ,  1.8825606448176396e-05
+
+EP 25
+Pearson correlation coefficient + p-value:  -0.03832636754430591 ,  0.17567781180061892
+Spearman correlation coefficient + p-value:  -0.17344298537151068 ,  6.707352247772412e-10
+Kendall correlation coefficient + p-value:  -0.11205764611689352 ,  2.9484105452165828e-09
+
+EP 26
+Pearson correlation coefficient + p-value:  -0.03812039230101063 ,  0.16955738938245565
+Spearman correlation coefficient + p-value:  -0.17674154472644885 ,  1.3902511741883745e-10
+Kendall correlation coefficient + p-value:  -0.11397643157458401 ,  7.463800225773682e-10
+
+EP 27
+Pearson correlation coefficient + p-value:  -0.03782358883385341 ,  0.16485188993946562
+Spearman correlation coefficient + p-value:  -0.18149680557666514 ,  1.838405647405205e-11
+Kendall correlation coefficient + p-value:  -0.11811767289899237 ,  7.954839709981565e-11
+
+EP 28
+Pearson correlation coefficient + p-value:  -0.043690824433718224 ,  0.10224183277504709
+Spearman correlation coefficient + p-value:  -0.21093996913846821 ,  1.5175913625363127e-15
+Kendall correlation coefficient + p-value:  -0.13786582252629426 ,  1.0921573190467976e-14
