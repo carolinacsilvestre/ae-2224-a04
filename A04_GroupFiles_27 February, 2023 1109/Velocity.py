@@ -434,7 +434,7 @@ for emission_point in range(1, 29):
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
     
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
-    ax[0].set_title('Summer 2014 250hpa')
+    ax[0].set_title('Winter 2014 300 hPa')
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
 # print('Mixing ratio', MR_average_arr_median)
 # print('RoD', RoD_arr_for_median)
