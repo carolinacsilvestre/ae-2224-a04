@@ -12,7 +12,9 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string =r"C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
+#f_string =r"C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
+#foldernamelist = ["C:/Users/joren/Documents/project data/Winter/*","C:/Users/joren/Documents/project data/Summer/*"]
+f_string =r"C:/Users/joren/Documents/project data/Winter/*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -20,6 +22,7 @@ o3tracer_switch = False
 rad_fluxes_switch = False
 
 #Read in file names based on f_string variable
+
 filenames_all = sorted(glob.glob(f_string)) #Get all file names in f_string
 print('\n') #Move to next line, improve readability
 print('Files in input folder: ')
