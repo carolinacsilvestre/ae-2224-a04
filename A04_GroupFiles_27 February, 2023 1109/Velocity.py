@@ -30,10 +30,11 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/July 2014/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test data/*'
+    f_string = 'D:/Python safe/all test dat/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'E:/all data/Summer 2014 250hpa/*'
-
+if len(sorted(glob.glob(f_string))) == 0:
+    f_string = 'D:/Python safe/Rest test data/Winter200/*'
 
 # USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -402,7 +403,8 @@ MR_arr_for_median = np.array([])
 MR_average_arr_median = np.array([])
 fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
-plot_median_trajectory = False
+plot_median_trajectory = True
+# print(np.shape(time_window_arr))
 
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
@@ -424,6 +426,8 @@ for emission_point in range(1, 29):
     MR_average_median = np.average(MR_arr_for_median)
 
     MR_average_arr_median = np.append(MR_average_arr_median, MR_average_median)
+    
+    
     # print('dadasfoa', np.shape(MR_average_arr_median))
 
     min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
@@ -432,19 +436,24 @@ for emission_point in range(1, 29):
 
     RoD = (- median_trajectory[0] + median_trajectory[min]) / time_at_minimum
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
-    
+
+    # print(np.shape(time_window_arr), np.shape(MR_average_arr_median))
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
     ax[0].set_title('Summer 2014 250hpa')
+MR_average_arr_median = np.delete(MR_average_arr_median, 0)
+RoD_arr_for_median = np.delete(RoD_arr_for_median, 0)
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
+
+print('here we go', MR_average_arr_median)
 # print('Mixing ratio', MR_average_arr_median)
 # print('RoD', RoD_arr_for_median)
 
 ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-# print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
 ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-# print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E15)
-# print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # print('2', np.shape(MR_average_arr_median))
 # print('1', np.shape(RoD_arr_for_median))
@@ -493,7 +502,7 @@ if plot_emission_point == True:
     plt.show()
     plt.close()
 
-activate_plot3 = False  # activation of vertical location plot with colorbar##
+activate_plot3 = True  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
