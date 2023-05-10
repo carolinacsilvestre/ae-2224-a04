@@ -30,7 +30,7 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/Summer300/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test dat/*'
+    f_string = 'D:/Python safe/all test data/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'E:/all data/Summer 2014 250hpa/*'
 if len(sorted(glob.glob(f_string))) == 0:
@@ -470,7 +470,7 @@ for emission_point in range(1, 29):
     # distance_arr = np.array([])
     trajectory_matrix = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
     median_trajectory = np.array([])
-    distance_arr = np.array([])
+    # distance_arr = np.array([])
 
     for k in range(0, number_of_t):
         median_vector = trajectory_matrix[k,:]
@@ -478,20 +478,48 @@ for emission_point in range(1, 29):
         median_trajectory = np.append(median_trajectory, median_value)
     # print('1', len(median_trajectory))
 
-    for i in range(0, number_of_t):
-        individual_trajectory = ppress[:, i]
-        individual_trajectory_needed = individual_trajectory[0 : number_of_t]
-        # print('2', len(individual_trajectory_needed))
-        # for m in range(0, 50):
-        distance = np.abs(individual_trajectory_needed[i] - median_trajectory[i])
-        # distance_arr = 
-        distance_arr = np.append(distance_arr, distance)
-        # total_distance = np.sum(distance_arr)
-        # total_distance_arr = np.append(total_distance)
-    
-    
-    print('show time', distance_arr)
 
+    traj_matrix_1emission_point = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
+    traj_matrix_1emission_point_needed = np.transpose(traj_matrix_1emission_point[0:number_of_t])
+    # print('1', np.shape(median_trajectory))
+    # print('2', np.shape(traj_matrix_1emission_point_needed))
+    for i in range(0, number_of_t):
+        # print(i)
+        traj_matrix_1emission_point_needed[:, i] = traj_matrix_1emission_point_needed[:, i] - median_trajectory[i]
+    distance_array = np.array([])
+    index_array = np.array([])
+    for i in range(0,50):
+        distance_array = np.append(distance_array, np.sum(traj_matrix_1emission_point_needed[i, :]))
+    index = int(np.where(distance_array == np.min(distance_array))[0])
+    index_array = np.append(index_array, (index + 50* emission_point))
+    print(index_array)
+    print(len(index_array))
+    # print('there', np.shape(distance_array))
+    # print('there', np.shape(traj_matrix_1emission_point_needed))
+    # median_trajectory = np.array([])]
+    # distance_50_traj = np.array([])
+    # for i in range(((emission_point-1) * 50),(emission_point * 50)):
+        
+    #     individual_trajectory = ppress[:, i]
+    #     individual_trajectory_needed = individual_trajectory[0 : number_of_t]
+    #     # print('2', len(individual_trajectory_needed))
+    #     # for m in range(0, 50):
+
+    #     for m in range(0,number_of_t):
+    #         distance_arr_one_traj = np.array([])
+    #         distance = np.abs(individual_trajectory_needed[m] - median_trajectory[m])
+    #         distance_arr_one_traj = np.append(distance_arr_one_traj, distance)
+        
+    #         distance_50_traj = np.append(distance_50_traj, np.sum(distance_arr_one_traj))
+    # print('shitshow', len(distance_50_traj))
+    # closest_traj = np.where(distance_50_traj == np.min(distance_50_traj))
+        # print(closest_traj)
+            # total_distance = np.sum(distance_arr)
+            # total_distance_arr = np.append(total_distance)
+    
+    
+    # print('show time', len(distance_50_traj))
+    # print('verify', emission_point)
 
 # print(len(median_trajectory))
 # print('this is it',median_trajectory)
