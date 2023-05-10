@@ -466,6 +466,7 @@ if plot_median_trajectory == True:
 
 ############################################ The method suggested by tutor ###################################################
 
+index_array = np.array([])
 for emission_point in range(1, 29):
     # distance_arr = np.array([])
     trajectory_matrix = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
@@ -485,15 +486,52 @@ for emission_point in range(1, 29):
     # print('2', np.shape(traj_matrix_1emission_point_needed))
     for i in range(0, number_of_t):
         # print(i)
-        traj_matrix_1emission_point_needed[:, i] = traj_matrix_1emission_point_needed[:, i] - median_trajectory[i]
+        traj_matrix_1emission_point_needed[:, i] = np.abs(traj_matrix_1emission_point_needed[:, i] - median_trajectory[i])
     distance_array = np.array([])
-    index_array = np.array([])
+    
     for i in range(0,50):
         distance_array = np.append(distance_array, np.sum(traj_matrix_1emission_point_needed[i, :]))
+
     index = int(np.where(distance_array == np.min(distance_array))[0])
-    index_array = np.append(index_array, (index + 50* emission_point))
-    print(index_array)
-    print(len(index_array))
+    index_array = np.append(index_array, (index + 50 * emission_point))
+# print(index_array)
+# print(len(index_array))
+
+
+def scatterplot(x,y, nrow, ncol):
+    ax, fig = plt.subplots(nrows = nrow, ncols = ncol)
+
+    if nrow == 1 and ncol == 1:
+
+        plt.scatter(x,y)
+
+    elif nrow > 1 or ncol > 1:
+        r = 0
+        c = 0
+        while c <= ncol:
+            ax[r,c].scatter(x,y)
+            c = c + 1
+            if r == nrow:
+                break
+        if c == ncol:
+            r = r + 1
+            c = 0
+            
+
+    return plt
+
+
+ax, fig = plt.subplots()
+fig.invert_yaxis()
+for i in range(0, len(index_array)):
+    traj = ppress[:, int(index_array[i])]
+    traj_needed = traj[0: number_of_t]
+    # scatterplot(time_window_arr, traj_needed, 1, 1)
+    # ax, fig = plt.subplots()
+    # fig.invert_yaxis()
+    plt.scatter(time_window_arr, traj_needed, s = 2)
+
+plt.show()
     # print('there', np.shape(distance_array))
     # print('there', np.shape(traj_matrix_1emission_point_needed))
     # median_trajectory = np.array([])]
