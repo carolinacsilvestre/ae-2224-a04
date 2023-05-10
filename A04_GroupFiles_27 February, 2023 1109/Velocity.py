@@ -405,6 +405,9 @@ fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
 plot_median_trajectory = True 
 
+
+######################################### Finding median trajectory and doing calculations with them#########################################3
+
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
     MR_arr_for_median = np.array([])
@@ -443,21 +446,52 @@ MR_average_arr_median = np.delete(MR_average_arr_median, 0)
 RoD_arr_for_median = np.delete(RoD_arr_for_median, 0)
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
 
-print('here we go', MR_average_arr_median)
+# print('here we go', MR_average_arr_median)
 # print('Mixing ratio', MR_average_arr_median)
 # print('RoD', RoD_arr_for_median)
 
 ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+# print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
 ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+# print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E15)
-print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+# print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # print('2', np.shape(MR_average_arr_median))
 # print('1', np.shape(RoD_arr_for_median))
 if plot_median_trajectory == True:
     plt.show()
+##############################################################################################################################
+
+
+############################################ The method suggested by tutor ###################################################
+
+for emission_point in range(1, 29):
+    # distance_arr = np.array([])
+    trajectory_matrix = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
+    median_trajectory = np.array([])
+    distance_arr = np.array([])
+
+    for k in range(0, number_of_t):
+        median_vector = trajectory_matrix[k,:]
+        median_value = np.median(median_vector)
+        median_trajectory = np.append(median_trajectory, median_value)
+    # print('1', len(median_trajectory))
+
+    for i in range(0, number_of_t):
+        individual_trajectory = ppress[:, i]
+        individual_trajectory_needed = individual_trajectory[0 : number_of_t]
+        # print('2', len(individual_trajectory_needed))
+        # for m in range(0, 50):
+        distance = np.abs(individual_trajectory_needed[i] - median_trajectory[i])
+        # distance_arr = 
+        distance_arr = np.append(distance_arr, distance)
+        # total_distance = np.sum(distance_arr)
+        # total_distance_arr = np.append(total_distance)
+    
+    
+    print('show time', distance_arr)
+
 
 # print(len(median_trajectory))
 # print('this is it',median_trajectory)
@@ -487,19 +521,19 @@ if plot_median_trajectory == True:
 #     plt.show()
 #     plt.close()
 
-plot_emission_point = False 
-if plot_emission_point == True: 
-    fig, ax = plt.subplots()  # Plot MR W.R.T. RoD ##
-    fig.set_figheight(8)
-    fig.set_figwidth(15)
-    ax.grid(True)
-    ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
-    ax.set_xlabel('Emission point rate of descent [hPa/day]')
-    ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
-    ax.set_title("July 2014, 250hPa, 40 day window")
-    plt.savefig('Mr vs RoD, July 2014 40D')
-    plt.show()
-    plt.close()
+# plot_emission_point = False 
+# if plot_emission_point == True: 
+#     fig, ax = plt.subplots()  # Plot MR W.R.T. RoD ##
+#     fig.set_figheight(8)
+#     fig.set_figwidth(15)
+#     ax.grid(True)
+#     ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
+#     ax.set_xlabel('Emission point rate of descent [hPa/day]')
+#     ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
+#     ax.set_title("July 2014, 250hPa, 40 day window")
+#     plt.savefig('Mr vs RoD, July 2014 40D')
+#     plt.show()
+#     plt.close()
 
 activate_plot3 = True  # activation of vertical location plot with colorbar##
 
