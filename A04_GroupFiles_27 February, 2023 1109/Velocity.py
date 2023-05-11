@@ -30,11 +30,11 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/Summer300/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test data/*'
+    f_string = 'D:/Python safe/all test dat/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'E:/all data/Summer 2014 250hpa/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/Rest test data/Winter200/*'
+    f_string = 'D:/Python safe/Rest test data/Winter300/*'
 
 # USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -211,7 +211,7 @@ if rad_fluxes_switch == True:
 
 # Requires ATTILA air parcel trajectory location data
 
-activate_plot1 = False  # Activation of vertical position plot##
+activate_plot1 = True  # Activation of vertical position plot##
 
 
 if attila_switch == True and activate_plot1 == True:
@@ -223,11 +223,11 @@ if attila_switch == True and activate_plot1 == True:
     fig.set_figheight(8)
     fig.set_figwidth(14)
 
-    parcel = 15  # Parcel ID, 0 means first.
+    parcel = 29  # Parcel ID, 0 means first.
 
     # Scatter plot settings
     plt.scatter(time, ppress[:, parcel], s=30, marker='o', color='green')
-
+    # print('1', ppress[:, parcel])
     # Defining range of axes
     plt.xticks(np.arange(0, 110, 10), np.arange(0, 110, 10), fontsize=20)
     plt.yticks(np.arange(0, 1200, 200), np.arange(0, 1200, 200), fontsize=20)
@@ -465,72 +465,81 @@ if plot_median_trajectory == True:
 
 
 ############################################ The method suggested by tutor ###################################################
+print('1', np.min(ppress[:, 29]))
 
 index_array = np.array([])
 for emission_point in range(1, 29):
     # distance_arr = np.array([])
-    trajectory_matrix = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
+
+    trajectory_matrix = ppress[:,((emission_point-1) * 50):(emission_point * 50)]
+    # print(np.shape(ppress[:,29]))
     median_trajectory = np.array([])
     # distance_arr = np.array([])
-
+    # print(np.shape(trajectory_matrix))
     for k in range(0, number_of_t):
-        median_vector = trajectory_matrix[k,:]
+        median_vector = trajectory_matrix[k, :]
         median_value = np.median(median_vector)
         median_trajectory = np.append(median_trajectory, median_value)
-    # print('1', len(median_trajectory))
+        # print('2', np.min(ppress[:, 29]))
 
+    # print('1', len(median_trajectory))
+    # print(np.shape(median_trajectory))
 
     traj_matrix_1emission_point = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
     traj_matrix_1emission_point_needed = np.transpose(traj_matrix_1emission_point[0:number_of_t])
-    # print('1', np.shape(median_trajectory))
-    # print('2', np.shape(traj_matrix_1emission_point_needed))
+    # print(np.shape(traj_matrix_1emission_point_needed))
     for i in range(0, number_of_t):
         # print(i)
         traj_matrix_1emission_point_needed[:, i] = np.abs(traj_matrix_1emission_point_needed[:, i] - median_trajectory[i])
+        # print('2', np.min(ppress[:, 29]))
+
     distance_array = np.array([])
     
     for i in range(0,50):
         distance_array = np.append(distance_array, np.sum(traj_matrix_1emission_point_needed[i, :]))
+        # print('2', np.min(ppress[:, 29]))
 
+    # print('here', len(distance_array))
     index = int(np.where(distance_array == np.min(distance_array))[0])
-    index_array = np.append(index_array, (index + 50 * emission_point))
+    index_array = np.append(index_array, (index + 50 * (emission_point-1)))
 # print(index_array)
 # print(len(index_array))
+# print(type(index_array))
+print('1', np.min(ppress[:, 29]))
 
+# def scatterplot(x,y, nrow, ncol):
+#     ax, fig = plt.subplots(nrows = nrow, ncols = ncol)
 
-def scatterplot(x,y, nrow, ncol):
-    ax, fig = plt.subplots(nrows = nrow, ncols = ncol)
+#     if nrow == 1 and ncol == 1:
 
-    if nrow == 1 and ncol == 1:
+#         plt.scatter(x,y)
 
-        plt.scatter(x,y)
-
-    elif nrow > 1 or ncol > 1:
-        r = 0
-        c = 0
-        while c <= ncol:
-            ax[r,c].scatter(x,y)
-            c = c + 1
-            if r == nrow:
-                break
-        if c == ncol:
-            r = r + 1
-            c = 0
-            
-
-    return plt
-
+#     elif nrow > 1 or ncol > 1:
+#         r = 0
+#         c = 0
+#         while c <= ncol:
+#             ax[r,c].scatter(x,y)
+#             c = c + 1
+#             if r == nrow:
+#                 break
+#         if c == ncol:
+#             r = r + 1
+#             c = 0
+#     return plt
+print('1', np.min(ppress[:, 29]))
 
 ax, fig = plt.subplots()
 fig.invert_yaxis()
-for i in range(0, len(index_array)):
-    traj = ppress[:, int(index_array[i])]
-    traj_needed = traj[0: number_of_t]
+for i in index_array:
+    traj = ppress[:, int(i)]
+    traj_needed = traj[0 : number_of_t]
+    # print(traj_needed)
+    # print(int(index_array[i]))
     # scatterplot(time_window_arr, traj_needed, 1, 1)
     # ax, fig = plt.subplots()
     # fig.invert_yaxis()
     plt.scatter(time_window_arr, traj_needed, s = 2)
-
+# print('2', ppress[:, 29])
 plt.show()
     # print('there', np.shape(distance_array))
     # print('there', np.shape(traj_matrix_1emission_point_needed))
