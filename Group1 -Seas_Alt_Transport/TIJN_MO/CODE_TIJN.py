@@ -6,18 +6,21 @@ import matplotlib.pyplot as plt #Plotting
 from mpl_toolkits.basemap import Basemap #For map plotting
 from mpl_toolkits.basemap import shiftgrid #For shifting longitudes
 import matplotlib.colors #To create new colorbar
+import matplotlib.ticker as mticker
+
 
 # =============================================================================
 # LOADING DATA FROM NETCDF (.NC) FILES
 # =============================================================================
 
 #USER INPUT - File path
-f_string =r"C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
+f_string =r"C:\Users\twanv\OneDrive - Delft University of Technology\Bsc - 2\Q3\Project\Data\250_july\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
-o3tracer_switch = False
+o3tracer_switch = True
 rad_fluxes_switch = False
+load_03_all_eps = True
 
 #Read in file names based on f_string variable
 filenames_all = sorted(glob.glob(f_string)) #Get all file names in f_string
@@ -32,11 +35,15 @@ plat = [] #Attila
 plon = [] #Attila
 ppress = [] #Attila in Pa
 airO3_001 = [] #O3lg in mol/mol for emission point 1
+airO3_008 = [] #O3lg in mol/mol for emission point 7
+airO3_015 = [] #O3lg in mol/mol for emission point 15
+airO3_022 = [] #O3lg in mol/mol for emission point 22
 rad_flx_SW = [] #Holds 1 specific call for SW radiative fluxes
 rad_flx_LW = [] #Holds 1 specific call for LW radiative fluxes
 rad_flx_SW_02 = [] #SW flux for call 02
 rad_flx_LW_02 = [] #LW flux for call 02
 global_net_flx = [] #Holds all net fluxes for the 28 EPs (3 months)
+labels = [f"{lat+20} <-> {lat}" for lat in range(70,-110,-20)]
 
 #Load relevant variables from NETCDF files
 #Positions of air parcels
@@ -84,7 +91,7 @@ if attila_switch == True:
     lons_18to18 = (lons_18to18 + 180) % 360 -180 #EMAC grid longitudes
 
 #O3 data along air parcel trajectories
-if o3tracer_switch == True:
+if o3tracer_switch == True and load_03_all_eps:
     for file in filenames_all:
         if 'O3lg' in file:
             data = Dataset(file,'r')
@@ -95,11 +102,20 @@ if o3tracer_switch == True:
             #O3 along air parcels for each emission point
             temp = data.variables['airO3_001'][:,:1400] #Only the first 1400 trajectories
             airO3_001.append(temp)
+            temp = data.variables['airO3_008'][:,:1400] #Only the first 1400 trajectories
+            airO3_008.append(temp)
+            temp = data.variables['airO3_015'][:,:1400] #Only the first 1400 trajectories
+            airO3_015.append(temp)
+            temp = data.variables['airO3_022'][:,:1400] #Only the first 1400 trajectories
+            airO3_022.append(temp)
             
             #NOTE: do not forget there are 28 emission points in total!
     
     #Concatenation of variables, lists become multi-dimensional numpy arrays
     airO3_001 = np.concatenate(airO3_001, axis=0)
+    airO3_008 = np.concatenate(airO3_008, axis=0)
+    airO3_015 = np.concatenate(airO3_015, axis=0)
+    airO3_022 = np.concatenate(airO3_022, axis=0)
     
 #Radiative fluxes corresponding to O3 increase, specifically for 250hPa
 if rad_fluxes_switch == True: #and '250' in f_string:
@@ -157,7 +173,7 @@ rows = 180/step
 
 def TrendMap(EmissionPoint):
 
-    parcel2A = np.array(np.arange(EmissionPoint*50,(EmissionPoint+1)*50-1)) #[0]#
+    parcel2A = np.arange(EmissionPoint*50,(EmissionPoint+1)*50) #[0]#
     TrendMapPlot = np.zeros((int(rows),int(columns)))
     
     for parcel2Ai in parcel2A:
@@ -166,16 +182,24 @@ def TrendMap(EmissionPoint):
                 if -180+(Nlong*step) <= plon[point,parcel2Ai] and plon[point,parcel2Ai] <= -180+((Nlong+1)*step):
                     for Nlat in range(int(rows)):
                         if 90-(Nlat*step) >= plat[point,parcel2Ai] and plat[point,parcel2Ai] >= 90-((Nlat+1)*step):
-                            TrendMapPlot[Nlat][Nlong]+=1
+                            if EmissionPoint == 0 and airO3_001[point,parcel2Ai] > 0.2e-9:
+                                TrendMapPlot[Nlat][Nlong]+=1
+                            if EmissionPoint == 7 and airO3_008[point,parcel2Ai] > 0.2e-9:
+                                TrendMapPlot[Nlat][Nlong]+=1
+                            if EmissionPoint == 14 and airO3_015[point,parcel2Ai] > 0.2e-9:
+                                TrendMapPlot[Nlat][Nlong]+=1
+                            if EmissionPoint == 21 and airO3_022[point,parcel2Ai] > 0.2e-9:
+                                TrendMapPlot[Nlat][Nlong]+=1
     #print(np.sum(TrendMapPlot))
     #TrendMapPlot=np.flip(TrendMapPlot,0)
     return TrendMapPlot
 
 print("ghello")
-print(TrendMap(0))
-print(TrendMap(1))
-Total_trendmap=np.zeros(TrendMap(0).shape)
+#print(TrendMap(0))
+#print(TrendMap(1))
+#Total_trendmap=np.zeros(TrendMap(0).shape)
 
+"""
 #print(TrendMap(0)+TrendMap(1))
 for i in range(28):
     Total_trendmap=Total_trendmap+TrendMap(i)
@@ -186,29 +210,32 @@ for i in range(28):
 
 New_main_trandmap=np.sum(Total_trendmap,axis=1)
 #print(New_main_trandmap)
-
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
 plt.barh(np.flip(labels), np.flip(New_main_trandmap))
 plt.title("All emission points, all altitudes [summer]")
 plt.show()
-
+"""
 
 #####first ALT (0,7,14, 21)
 customrange=np.array([0,7,14,21])
+Total_trendmap = np.zeros((9,18))
 for i in (customrange):
     Total_trendmap=Total_trendmap+TrendMap(i)
-#print(Total_trendmap)
+print(Total_trendmap)
+Total_trendmap = 100*Total_trendmap/np.sum(Total_trendmap)
 
 
 New_main_trandmap=np.sum(Total_trendmap,axis=1)
 #print(New_main_trandmap)
 print(f"st row of emission points, all altitudes [summer]{New_main_trandmap}")
-labels = ["Lat 90 - 70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
 plt.barh(np.flip(labels), np.flip(New_main_trandmap))
 plt.title("1st row of emission points, all altitudes [summer]")
+plt.xticks(ticks=[n for n in range(0,60,10)], labels=[f'{n}%' for n in range(0,60,10)])
+plt.savefig(f"With O3 filter for points {customrange}")
 plt.show()
 ###########
 #####first ALT (1,8,15, 22)
+
+"""
 customrange=np.array([1,8,15, 22])
 for i in (customrange):
     Total_trendmap=Total_trendmap+TrendMap(i)
@@ -288,11 +315,11 @@ for i in (customrange):
 New_main_trandmap=np.sum(Total_trendmap,axis=1)
 #print(New_main_trandmap)
 
-labels = ["Lat 90-70", "Lat 70-50", "Lat 50-30", "Lat 30-10", "Lat 10- -10", "Lat -10 - -30","Lat -30- -50","Lat -50- -70","Lat 70-90"]
+labels = ["Lat 90, 70", "Lat 70, 50", "Lat 50, 30", "Lat 30, 10", "Lat 10, -10", "Lat -10, -30","Lat -30, -50","Lat -50, -70","Lat -70, -90"]
 plt.barh(np.flip(labels), np.flip(New_main_trandmap))
 plt.title("7th row of emission points, all altitudes [summer]")
 plt.show()
-
+"""
 
 
 print("DONE!")
