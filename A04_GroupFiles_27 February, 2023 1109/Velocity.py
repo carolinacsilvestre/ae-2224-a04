@@ -381,7 +381,12 @@ RoD_average_arr = np.array([])
 MR_average_arr = np.array([])
 End_point_arr = np.array([])
 
-### average loop ###
+
+
+###########################################################################################################################################
+########################################################### average trajectory method #####################################################
+
+
 
 for emission_point in range(1, 29):
 
@@ -423,16 +428,24 @@ for emission_point in range(1, 29):
 
 ### loop for finding median ###
 
+
+
+#############################################################################################################################################
+#################################################### Median trajectory method ###############################################################
+
+
+
+plot_median_trajectory = True 
+
 median_trajectory_matrix = np.array([])
 RoD_arr_for_median = np.array([])
 MR_arr_for_median = np.array([])
 MR_average_arr_median = np.array([])
+
 fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
-plot_median_trajectory = True 
+plt.suptitle('Median Trajectory Method')
 
-#############################################################################################################################################
-######################################### Finding median trajectory and doing calculations with them#########################################
 
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
@@ -467,31 +480,40 @@ for emission_point in range(1, 29):
 
     # print(np.shape(time_window_arr), np.shape(MR_average_arr_median))
     ax[0].scatter(time_window_arr, median_trajectory, s = 2)
-    ax[0].set_title('Summer 2014 250hpa')
+    ax[0].set_title(load_data_from)
+    ax[0].set_xlabel('Days')
+    ax[0].set_ylabel('Altitude')
 MR_average_arr_median = np.delete(MR_average_arr_median, 0)
 RoD_arr_for_median = np.delete(RoD_arr_for_median, 0)
+ax[1].set_title('RoD vs. Mr')
+ax[1].set_xlabel('RoD')
+ax[1].set_ylabel('Average MR')
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
+fig.subplots_adjust(wspace = 0.3)
 
-# print('here we go', MR_average_arr_median)
-# print('Mixing ratio', MR_average_arr_median)
-# print('RoD', RoD_arr_for_median)
+if plot_median_trajectory == True:
+    ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
+    # print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+    ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_average_arr_median * 10E15)
+    # print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+    cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E15)
+    # print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+    plt.show()
+else: 
+    plt.close()
 
-ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-# print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-# print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E15)
-# print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # print('2', np.shape(MR_average_arr_median))
 # print('1', np.shape(RoD_arr_for_median))
-if plot_median_trajectory == True:
-    plt.show()
+
 
 
 ############################################################################################################################################
-############################################ The method suggested by tutor #################################################################
-# print('1', np.min(ppress[:, 29]))
+################################################ Closest trajectory method #################################################################
+
+
+plot_closest_trajectory = False
+
 
 index_array = np.array([])
 RoD_arr_new_method = np.array([])
@@ -521,7 +543,7 @@ for emission_point in range(1, 29):
     # print(index_array)
     # for i in range(0, len(index_array)):
 
-print(index_array)
+# print(index_array)
 
 MR_avg_new_method_arr = np.array([])
 for i in index_array:
@@ -544,39 +566,45 @@ for i in index_array:
     RoD = (- new_trajectory[0] + new_trajectory[min]) / time_at_minimum
     RoD_arr_new_method = np.append(RoD_arr_new_method, RoD)
 
-airO3_avg_new_method_arr = np.delete(MR_avg_new_method_arr, 0)
+MR_avg_new_method_arr = np.delete(MR_avg_new_method_arr, 0)
 RoD_arr_new_method = np.delete(RoD_arr_new_method, 0)
 
-# print('1', airO3_avg_new_method_arr)
-# print('2', RoD_arr_new_method)
-
-scatterplot(RoD_arr_new_method, MR_avg_new_method_arr, 1, 1)
-
-ccp, pp = scipy.stats.pearsonr(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
-print("New method, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-ccs, ps = scipy.stats.spearmanr(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
-print("New method, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-cck, pk = scipy.stats.kendalltau(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
-print("New method, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+# print('1', np.shape(MR_avg_new_method_arr))
+# print('2', np.shape(RoD_arr_new_method))
 # print(len(index_array))
-
 # print(type(index_array))
-
 # print('1', np.min(ppress[:, 29]))
 
-ax, fig = plt.subplots()
-fig.invert_yaxis()
+fig, ax = plt.subplots(nrows = 1, ncols = 2)
+plt.suptitle('Closest Trajectory Method')
+ax[0].invert_yaxis()
+ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr, s = 2)
+ax[1].set_title('RoD vs. MR')
+ax[1].set_xlabel('RoD')
+ax[1].set_ylabel('Average MR')
+fig.subplots_adjust(wspace = 0.3)
 for i in index_array:
     traj = ppress[:, int(i)]
     traj_needed = traj[0 : number_of_t]
-    # print(traj_needed)
-    # print(int(index_array[i]))
-    # scatterplot(time_window_arr, traj_needed, 1, 1)
     # ax, fig = plt.subplots()
     # fig.invert_yaxis()
-    plt.scatter(time_window_arr, traj_needed, s = 2)
-# print('2', ppress[:, 29])
-plt.show()
+    ax[0].scatter(time_window_arr, traj_needed, s = 2)
+    ax[0].set_title(load_data_from)
+    ax[0].set_xlabel('Days')
+    ax[0].set_ylabel('Altitude')
+
+if plot_closest_trajectory == True:
+    ccp, pp = scipy.stats.pearsonr(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
+    print("New method, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+    ccs, ps = scipy.stats.spearmanr(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
+    print("New method, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+    cck, pk = scipy.stats.kendalltau(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
+    print("New method, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+    plt.show()
+else:
+    plt.close()
+
+
 
 #################################################################################################################################################
 #################################################################################################################################################
@@ -650,7 +678,7 @@ plt.show()
 #     plt.show()
 #     plt.close()
 
-activate_plot3 = True  # activation of vertical location plot with colorbar##
+activate_plot3 = False  # activation of vertical location plot with colorbar##
 
 if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
