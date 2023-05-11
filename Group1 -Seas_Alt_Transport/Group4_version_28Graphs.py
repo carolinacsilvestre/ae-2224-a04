@@ -652,6 +652,8 @@ mp.fillcontinents(color='lightgray')
 plt.title( "2-D Heat Map" )
 plt.show()
 '''
+
+
 ############################################################28 by 28 fig############################################
 fig, axs = plt.subplots(nrows=7, ncols=4, figsize=(32, 32))
 fig.tight_layout()
@@ -706,8 +708,11 @@ for i, ax in enumerate(axs.flat):
     cmap.set_over("red")
         
 
+
+    vmin=0
+    vmax=700
     #Plot the flux on the map
-    sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')
+    sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto',vmin=vmin, vmax=vmax)#,)
         
     ##Define colorbar features
     #cb = fig.colorbar(sc2, extend='both', 
@@ -752,6 +757,7 @@ plt.close()
 
 
 
+'''
 #################################Single Heat Map (airparcel trajectory can be added)####################################### 
 fig, ax = plt.subplots()
 
@@ -789,10 +795,10 @@ cmap= matplotlib.colors.ListedColormap(colors)
 cmap.set_under("w")
 cmap.set_over("red")
     
-#vmin=0
-#vmax=700
+vmin=0
+vmax=300
 #Plot the flux on the map
-sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')#,vmin=vmin, vmax=vmax)
+sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto',vmin=vmin, vmax=vmax)
     
 meridians = mp.drawmeridians(np.arange(-180,200,20), 
                          labels=[False,False,False,True], 
@@ -836,7 +842,7 @@ plt.show()
 plt.close()
 
 ################################# END ####################################### 
-
+'''
 
 
 print("DONE!")
