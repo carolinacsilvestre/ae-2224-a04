@@ -13,7 +13,7 @@ import matplotlib.colors #To create new colorbar
 
 #USER INPUT - File path
 #foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
-foldernamelist = ["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
+foldernamelist = r"C:\Users\moheb\Desktop\DATA_PROJ_Q3\*"#["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
 #Joren foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
 
 #USER INPUT - Switches to determine which data types should be loaded
