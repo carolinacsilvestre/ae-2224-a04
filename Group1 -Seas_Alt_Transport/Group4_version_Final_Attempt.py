@@ -607,11 +607,18 @@ for f_string in foldernamelist:
             #Shift the fluxes from [0,360] to [-180,180]
             net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[EP], 
                                                 lons_0to36,start=False)
+            print(np.shape(net_flx_EP_shft))
+            net_flx_EP_shft = net_flx_EP_shft[:, :9, :18]
+            net_flx_EP_shft = np.squeeze(net_flx_EP_shft)
+            print(np.shape(net_flx_EP_shft))
+            #net_f64lx_EP_shft = net_flx_EP_shft.reshape((9, 18)).sum(axis=(0, 1)) / 64
             
             #Format the lat and lon arrays for map graphing, 
             #makes lat array a lat x lon array and same for lon array
             lon, lat = np.meshgrid(lons_shft, lats)
             x, y = mp(lon, lat)
+            print(len(x))
+            print(x)
             
             #Choose the settings for the coastlines, countries, meridians...
             mp.drawcoastlines(linewidth=0.2)
