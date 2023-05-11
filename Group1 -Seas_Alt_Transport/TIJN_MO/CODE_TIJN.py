@@ -14,7 +14,7 @@ import matplotlib.ticker as mticker
 # =============================================================================
 
 #USER INPUT - File path
-f_string =r"C:\Users\twanv\OneDrive - Delft University of Technology\Bsc - 2\Q3\Project\Data\250_july\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
+f_string =r"C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*"#""C:\Users\twanv\OneDrive - Delft University of Technology\Bsc - 2\Q3\Project\Data\250_july\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
