@@ -426,8 +426,6 @@ for emission_point in range(1, 29):
     RoD_average_arr = np.append(RoD_average_arr, RoD_average)
     MR_average_arr = np.append(MR_average_arr, MR_average)
 
-### loop for finding median ###
-
 
 
 #############################################################################################################################################
@@ -435,7 +433,7 @@ for emission_point in range(1, 29):
 
 
 
-plot_median_trajectory = True 
+plot_median_trajectory = False 
 
 median_trajectory_matrix = np.array([])
 RoD_arr_for_median = np.array([])
@@ -443,6 +441,8 @@ MR_arr_for_median = np.array([])
 MR_average_arr_median = np.array([])
 
 fig, ax = plt.subplots(ncols = 2, nrows = 1)
+colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
+cmap = matplotlib.colors.ListedColormap(colors)
 ax[0].invert_yaxis()
 plt.suptitle('Median Trajectory Method')
 
@@ -479,10 +479,11 @@ for emission_point in range(1, 29):
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
 
     # print(np.shape(time_window_arr), np.shape(MR_average_arr_median))
-    ax[0].scatter(time_window_arr, median_trajectory, s = 2)
+    ax[0].scatter(time_window_arr, median_trajectory)
     ax[0].set_title(load_data_from)
     ax[0].set_xlabel('Days')
     ax[0].set_ylabel('Altitude')
+# plt.colorbar()
 MR_average_arr_median = np.delete(MR_average_arr_median, 0)
 RoD_arr_for_median = np.delete(RoD_arr_for_median, 0)
 ax[1].set_title('RoD vs. Mr')
@@ -512,7 +513,7 @@ else:
 ################################################ Closest trajectory method #################################################################
 
 
-plot_closest_trajectory = False
+plot_closest_trajectory = True
 
 
 index_array = np.array([])
@@ -578,20 +579,23 @@ RoD_arr_new_method = np.delete(RoD_arr_new_method, 0)
 fig, ax = plt.subplots(nrows = 1, ncols = 2)
 plt.suptitle('Closest Trajectory Method')
 ax[0].invert_yaxis()
+colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
+cmap = matplotlib.colors.ListedColormap(colors)
 ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr, s = 2)
 ax[1].set_title('RoD vs. MR')
 ax[1].set_xlabel('RoD')
 ax[1].set_ylabel('Average MR')
-fig.subplots_adjust(wspace = 0.3)
+fig.subplots_adjust(wspace = 0.4)
 for i in index_array:
     traj = ppress[:, int(i)]
     traj_needed = traj[0 : number_of_t]
     # ax, fig = plt.subplots()
     # fig.invert_yaxis()
-    ax[0].scatter(time_window_arr, traj_needed, s = 2)
+    sc = ax[0].scatter(time_window_arr, traj_needed, s = 2, c = airO3_001[:,int(i)][0:number_of_t] * 10E12, cmap = cmap)
     ax[0].set_title(load_data_from)
     ax[0].set_xlabel('Days')
     ax[0].set_ylabel('Altitude')
+fig.colorbar(sc)
 
 if plot_closest_trajectory == True:
     ccp, pp = scipy.stats.pearsonr(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
