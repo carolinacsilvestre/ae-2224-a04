@@ -30,7 +30,7 @@ import math
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/Summer300/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test dat/*'
+    f_string = 'D:/Python safe/all test data/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'E:/all data/Summer 2014 250hpa/*'
 if len(sorted(glob.glob(f_string))) == 0:
@@ -405,6 +405,9 @@ fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
 plot_median_trajectory = True 
 
+
+######################################### Finding median trajectory and doing calculations with them#########################################3
+
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
     MR_arr_for_median = np.array([])
@@ -443,21 +446,118 @@ MR_average_arr_median = np.delete(MR_average_arr_median, 0)
 RoD_arr_for_median = np.delete(RoD_arr_for_median, 0)
 ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
 
-print('here we go', MR_average_arr_median)
+# print('here we go', MR_average_arr_median)
 # print('Mixing ratio', MR_average_arr_median)
 # print('RoD', RoD_arr_for_median)
 
 ccp, pp = scipy.stats.pearsonr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+# print("Median, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
 ccs, ps = scipy.stats.spearmanr(RoD_arr_for_median, MR_average_arr_median * 10E15)
-print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+# print("Median, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
 cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E15)
-print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
+# print("Median, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 
 # print('2', np.shape(MR_average_arr_median))
 # print('1', np.shape(RoD_arr_for_median))
 if plot_median_trajectory == True:
     plt.show()
+##############################################################################################################################
+
+
+############################################ The method suggested by tutor ###################################################
+
+index_array = np.array([])
+for emission_point in range(1, 29):
+    # distance_arr = np.array([])
+    trajectory_matrix = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
+    median_trajectory = np.array([])
+    # distance_arr = np.array([])
+
+    for k in range(0, number_of_t):
+        median_vector = trajectory_matrix[k,:]
+        median_value = np.median(median_vector)
+        median_trajectory = np.append(median_trajectory, median_value)
+    # print('1', len(median_trajectory))
+
+
+    traj_matrix_1emission_point = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
+    traj_matrix_1emission_point_needed = np.transpose(traj_matrix_1emission_point[0:number_of_t])
+    # print('1', np.shape(median_trajectory))
+    # print('2', np.shape(traj_matrix_1emission_point_needed))
+    for i in range(0, number_of_t):
+        # print(i)
+        traj_matrix_1emission_point_needed[:, i] = np.abs(traj_matrix_1emission_point_needed[:, i] - median_trajectory[i])
+    distance_array = np.array([])
+    
+    for i in range(0,50):
+        distance_array = np.append(distance_array, np.sum(traj_matrix_1emission_point_needed[i, :]))
+
+    index = int(np.where(distance_array == np.min(distance_array))[0])
+    index_array = np.append(index_array, (index + 50 * emission_point))
+# print(index_array)
+# print(len(index_array))
+
+
+def scatterplot(x,y, nrow, ncol):
+    ax, fig = plt.subplots(nrows = nrow, ncols = ncol)
+
+    if nrow == 1 and ncol == 1:
+
+        plt.scatter(x,y)
+
+    elif nrow > 1 or ncol > 1:
+        r = 0
+        c = 0
+        while c <= ncol:
+            ax[r,c].scatter(x,y)
+            c = c + 1
+            if r == nrow:
+                break
+        if c == ncol:
+            r = r + 1
+            c = 0
+            
+
+    return plt
+
+
+ax, fig = plt.subplots()
+fig.invert_yaxis()
+for i in range(0, len(index_array)):
+    traj = ppress[:, int(index_array[i])]
+    traj_needed = traj[0: number_of_t]
+    # scatterplot(time_window_arr, traj_needed, 1, 1)
+    # ax, fig = plt.subplots()
+    # fig.invert_yaxis()
+    plt.scatter(time_window_arr, traj_needed, s = 2)
+
+plt.show()
+    # print('there', np.shape(distance_array))
+    # print('there', np.shape(traj_matrix_1emission_point_needed))
+    # median_trajectory = np.array([])]
+    # distance_50_traj = np.array([])
+    # for i in range(((emission_point-1) * 50),(emission_point * 50)):
+        
+    #     individual_trajectory = ppress[:, i]
+    #     individual_trajectory_needed = individual_trajectory[0 : number_of_t]
+    #     # print('2', len(individual_trajectory_needed))
+    #     # for m in range(0, 50):
+
+    #     for m in range(0,number_of_t):
+    #         distance_arr_one_traj = np.array([])
+    #         distance = np.abs(individual_trajectory_needed[m] - median_trajectory[m])
+    #         distance_arr_one_traj = np.append(distance_arr_one_traj, distance)
+        
+    #         distance_50_traj = np.append(distance_50_traj, np.sum(distance_arr_one_traj))
+    # print('shitshow', len(distance_50_traj))
+    # closest_traj = np.where(distance_50_traj == np.min(distance_50_traj))
+        # print(closest_traj)
+            # total_distance = np.sum(distance_arr)
+            # total_distance_arr = np.append(total_distance)
+    
+    
+    # print('show time', len(distance_50_traj))
+    # print('verify', emission_point)
 
 # print(len(median_trajectory))
 # print('this is it',median_trajectory)
@@ -487,19 +587,19 @@ if plot_median_trajectory == True:
 #     plt.show()
 #     plt.close()
 
-plot_emission_point = False 
-if plot_emission_point == True: 
-    fig, ax = plt.subplots()  # Plot MR W.R.T. RoD ##
-    fig.set_figheight(8)
-    fig.set_figwidth(15)
-    ax.grid(True)
-    ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
-    ax.set_xlabel('Emission point rate of descent [hPa/day]')
-    ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
-    ax.set_title("July 2014, 250hPa, 40 day window")
-    plt.savefig('Mr vs RoD, July 2014 40D')
-    plt.show()
-    plt.close()
+# plot_emission_point = False 
+# if plot_emission_point == True: 
+#     fig, ax = plt.subplots()  # Plot MR W.R.T. RoD ##
+#     fig.set_figheight(8)
+#     fig.set_figwidth(15)
+#     ax.grid(True)
+#     ax.scatter(RoD_average_arr, MR_average_arr * 10E9)
+#     ax.set_xlabel('Emission point rate of descent [hPa/day]')
+#     ax.set_ylabel('Emission point ozone mixing ratio [nmol/mol]')
+#     ax.set_title("July 2014, 250hPa, 40 day window")
+#     plt.savefig('Mr vs RoD, July 2014 40D')
+#     plt.show()
+#     plt.close()
 
 activate_plot3 = True  # activation of vertical location plot with colorbar##
 
