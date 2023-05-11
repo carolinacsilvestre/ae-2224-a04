@@ -12,7 +12,7 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string =r"C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
+f_string =r"C:\Users\moheb\Desktop\DATA_PROJ_Q3\Summer\300hpa\*"#C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -42,7 +42,8 @@ global_net_flx = [] #Holds all net fluxes for the 28 EPs (3 months)
 #Positions of air parcels
 if attila_switch == True:
     for file in filenames_all:
-        if 'attila.nc' in file:
+        if 'attila' in file:
+
             print("HIIIIIIIII")
             data = Dataset(file,'r')
             print('\n')
@@ -652,6 +653,8 @@ mp.fillcontinents(color='lightgray')
 plt.title( "2-D Heat Map" )
 plt.show()
 '''
+
+
 ############################################################28 by 28 fig############################################
 fig, axs = plt.subplots(nrows=7, ncols=4, figsize=(32, 32))
 fig.tight_layout()
@@ -706,8 +709,11 @@ for i, ax in enumerate(axs.flat):
     cmap.set_over("red")
         
 
+
+    vmin=0
+    vmax=700
     #Plot the flux on the map
-    sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')
+    sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto',vmin=vmin, vmax=vmax)#,)
         
     ##Define colorbar features
     #cb = fig.colorbar(sc2, extend='both', 
@@ -752,6 +758,7 @@ plt.close()
 
 
 
+'''
 #################################Single Heat Map (airparcel trajectory can be added)####################################### 
 fig, ax = plt.subplots()
 
@@ -789,9 +796,10 @@ cmap= matplotlib.colors.ListedColormap(colors)
 cmap.set_under("w")
 cmap.set_over("red")
     
-
+vmin=0
+vmax=300
 #Plot the flux on the map
-sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')
+sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto',vmin=vmin, vmax=vmax)
     
 meridians = mp.drawmeridians(np.arange(-180,200,20), 
                          labels=[False,False,False,True], 
@@ -835,7 +843,7 @@ plt.show()
 plt.close()
 
 ################################# END ####################################### 
-
+'''
 
 
 print("DONE!")
