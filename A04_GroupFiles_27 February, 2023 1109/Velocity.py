@@ -27,14 +27,16 @@ from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
 import math
 
+load_data_from = str('Winter300')
+
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/Summer300/*'
+    f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/' + load_data_from + '/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'D:/Python safe/all test dat/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'E:/all data/Summer 2014 250hpa/*'
+    f_string = 'E:/all data/' + load_data_from + '/*'
 if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/Rest test data/Winter300/*'
+    f_string = 'D:/Python safe/Rest test data/'+ load_data_from +'/*'
 
 # USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -205,13 +207,37 @@ if rad_fluxes_switch == True:
 # if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_string:
 #     del temp, data
 
+
+def scatterplot(x,y, nrow, ncol):
+    ax, fig = plt.subplots(nrows = nrow, ncols = ncol)
+
+    if nrow == 1 and ncol == 1:
+
+        plt.scatter(x,y)
+
+    elif nrow > 1 or ncol > 1:
+        r = 0
+        c = 0
+        while c <= ncol:
+            ax[r,c].scatter(x,y)
+            c = c + 1
+            if r == nrow:
+                break
+        if c == ncol:
+            r = r + 1
+            c = 0
+
+    plt.show()
+
+    return 0
+
 # =============================================================================
 # PLOT TYPE 1 - VERTICAL EVOLUTION OF LAGRANGIAN AIR PARCELS
 # =============================================================================
 
 # Requires ATTILA air parcel trajectory location data
 
-activate_plot1 = True  # Activation of vertical position plot##
+activate_plot1 = False  # Activation of vertical position plot##
 
 
 if attila_switch == True and activate_plot1 == True:
@@ -405,8 +431,8 @@ fig, ax = plt.subplots(ncols = 2, nrows = 1)
 ax[0].invert_yaxis()
 plot_median_trajectory = True 
 
-
-######################################### Finding median trajectory and doing calculations with them#########################################3
+#############################################################################################################################################
+######################################### Finding median trajectory and doing calculations with them#########################################
 
 for emission_point in range(1, 29):
     median_trajectory = np.array([])
@@ -435,7 +461,7 @@ for emission_point in range(1, 29):
     min = int(np.where(median_trajectory == np.max(median_trajectory))[0])
     if min == 0:
         min = int(np.where(median_trajectory == np.min(median_trajectory))[0])
-
+    time_at_minimum = time_window_arr[min]
     RoD = (- median_trajectory[0] + median_trajectory[min]) / time_at_minimum
     RoD_arr_for_median = np.append(RoD_arr_for_median, RoD)
 
@@ -461,16 +487,21 @@ cck, pk = scipy.stats.kendalltau(RoD_arr_for_median, MR_average_arr_median * 10E
 # print('1', np.shape(RoD_arr_for_median))
 if plot_median_trajectory == True:
     plt.show()
-##############################################################################################################################
 
 
-############################################ The method suggested by tutor ###################################################
+############################################################################################################################################
+############################################ The method suggested by tutor #################################################################
 # print('1', np.min(ppress[:, 29]))
 
 index_array = np.array([])
+RoD_arr_new_method = np.array([])
+
 for emission_point in range(1, 29):
 
+    
     trajectory_matrix = np.copy(ppress[:,((emission_point-1) * 50):(emission_point * 50)])
+    trajectory_matrix_needed = np.transpose(trajectory_matrix[0: number_of_t])
+    # print('shape of trajectory matrix needed', np.shape(trajectory_matrix_needed))
     traj_matrix_1emission_point_needed = np.transpose(trajectory_matrix[0:number_of_t])
     # print('2',np.min(ppress[:,29]))
     median_trajectory = np.array([])
@@ -480,37 +511,57 @@ for emission_point in range(1, 29):
         median_value = np.median(median_vector)
         median_trajectory = np.append(median_trajectory, median_value)
         traj_matrix_1emission_point_needed[:, k] = np.abs(traj_matrix_1emission_point_needed[:, k] - median_trajectory[k])
-    
+
     distance_array = np.array([])
 
     for i in range(0,50):
         distance_array = np.append(distance_array, np.sum(traj_matrix_1emission_point_needed[i, :]))
     index = int(np.where(distance_array == np.min(distance_array))[0])
-    index_array = np.append(index_array, (index + 50 * (emission_point-1)))
+    index_array = np.append(index_array, int((index + 50 * (emission_point-1))))
+    # print(index_array)
+    # for i in range(0, len(index_array)):
 
 print(index_array)
+
+MR_avg_new_method_arr = np.array([])
+for i in index_array:
+    MR_new_method = np.copy(airO3_001[:, 0:1400])
+    MR_new_method_needed = np.transpose(MR_new_method[0:number_of_t])
+    MR_avg_new_method = np.average(MR_new_method_needed[int(i),:])
+    MR_avg_new_method_arr = np.append(MR_avg_new_method_arr, MR_avg_new_method)
+
+
+    new_trajectory_matrix = np.transpose(np.copy(ppress[:, 0:1400])[0: number_of_t])
+    new_trajectory = new_trajectory_matrix[int(i), :]
+    # new_trajectory_matrix_needed = new_trajectory_matrix[0: number_of_t]
+    # print('gdsfas', len(new_trajectory))
+
+    min = int(np.where(new_trajectory == np.max(new_trajectory))[0])
+    if min == 0:
+        min = int(np.where(new_trajectory == np.min(new_trajectory))[0])
+
+    time_at_minimum = time_window_arr[min]
+    RoD = (- new_trajectory[0] + new_trajectory[min]) / time_at_minimum
+    RoD_arr_new_method = np.append(RoD_arr_new_method, RoD)
+
+airO3_avg_new_method_arr = np.delete(MR_avg_new_method_arr, 0)
+RoD_arr_new_method = np.delete(RoD_arr_new_method, 0)
+
+# print('1', airO3_avg_new_method_arr)
+# print('2', RoD_arr_new_method)
+
+scatterplot(RoD_arr_new_method, MR_avg_new_method_arr, 1, 1)
+
+ccp, pp = scipy.stats.pearsonr(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
+print("New method, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
+ccs, ps = scipy.stats.spearmanr(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
+print("New method, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
+cck, pk = scipy.stats.kendalltau(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
+print("New method, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
 # print(len(index_array))
+
 # print(type(index_array))
 
-# def scatterplot(x,y, nrow, ncol):
-#     ax, fig = plt.subplots(nrows = nrow, ncols = ncol)
-
-#     if nrow == 1 and ncol == 1:
-
-#         plt.scatter(x,y)
-
-#     elif nrow > 1 or ncol > 1:
-#         r = 0
-#         c = 0
-#         while c <= ncol:
-#             ax[r,c].scatter(x,y)
-#             c = c + 1
-#             if r == nrow:
-#                 break
-#         if c == ncol:
-#             r = r + 1
-#             c = 0
-#     return plt
 # print('1', np.min(ppress[:, 29]))
 
 ax, fig = plt.subplots()
@@ -526,6 +577,10 @@ for i in index_array:
     plt.scatter(time_window_arr, traj_needed, s = 2)
 # print('2', ppress[:, 29])
 plt.show()
+
+#################################################################################################################################################
+#################################################################################################################################################
+
     # print('there', np.shape(distance_array))
     # print('there', np.shape(traj_matrix_1emission_point_needed))
     # median_trajectory = np.array([])]
