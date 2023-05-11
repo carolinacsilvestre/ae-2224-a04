@@ -465,47 +465,32 @@ if plot_median_trajectory == True:
 
 
 ############################################ The method suggested by tutor ###################################################
-print('1', np.min(ppress[:, 29]))
+# print('1', np.min(ppress[:, 29]))
 
 index_array = np.array([])
 for emission_point in range(1, 29):
-    # distance_arr = np.array([])
 
-    trajectory_matrix = ppress[:,((emission_point-1) * 50):(emission_point * 50)]
-    # print(np.shape(ppress[:,29]))
+    trajectory_matrix = np.copy(ppress[:,((emission_point-1) * 50):(emission_point * 50)])
+    traj_matrix_1emission_point_needed = np.transpose(trajectory_matrix[0:number_of_t])
+    # print('2',np.min(ppress[:,29]))
     median_trajectory = np.array([])
-    # distance_arr = np.array([])
-    # print(np.shape(trajectory_matrix))
+
     for k in range(0, number_of_t):
         median_vector = trajectory_matrix[k, :]
         median_value = np.median(median_vector)
         median_trajectory = np.append(median_trajectory, median_value)
-        # print('2', np.min(ppress[:, 29]))
-
-    # print('1', len(median_trajectory))
-    # print(np.shape(median_trajectory))
-
-    traj_matrix_1emission_point = ppress[:, ((emission_point-1) * 50):(emission_point * 50)]
-    traj_matrix_1emission_point_needed = np.transpose(traj_matrix_1emission_point[0:number_of_t])
-    # print(np.shape(traj_matrix_1emission_point_needed))
-    for i in range(0, number_of_t):
-        # print(i)
-        traj_matrix_1emission_point_needed[:, i] = np.abs(traj_matrix_1emission_point_needed[:, i] - median_trajectory[i])
-        # print('2', np.min(ppress[:, 29]))
-
-    distance_array = np.array([])
+        traj_matrix_1emission_point_needed[:, k] = np.abs(traj_matrix_1emission_point_needed[:, k] - median_trajectory[k])
     
+    distance_array = np.array([])
+
     for i in range(0,50):
         distance_array = np.append(distance_array, np.sum(traj_matrix_1emission_point_needed[i, :]))
-        # print('2', np.min(ppress[:, 29]))
-
-    # print('here', len(distance_array))
     index = int(np.where(distance_array == np.min(distance_array))[0])
     index_array = np.append(index_array, (index + 50 * (emission_point-1)))
-# print(index_array)
+
+print(index_array)
 # print(len(index_array))
 # print(type(index_array))
-print('1', np.min(ppress[:, 29]))
 
 # def scatterplot(x,y, nrow, ncol):
 #     ax, fig = plt.subplots(nrows = nrow, ncols = ncol)
@@ -526,7 +511,7 @@ print('1', np.min(ppress[:, 29]))
 #             r = r + 1
 #             c = 0
 #     return plt
-print('1', np.min(ppress[:, 29]))
+# print('1', np.min(ppress[:, 29]))
 
 ax, fig = plt.subplots()
 fig.invert_yaxis()
