@@ -12,7 +12,7 @@ import matplotlib.colors #To create new colorbar
 # =============================================================================
 
 #USER INPUT - File path
-f_string =r"C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
+f_string =r"C:\Users\moheb\Desktop\DATA_PROJ_Q3\Summer\300hpa\*"#C:\Users\moheb\Desktop\Q3_Proj (Group Git)\*" #'P:/AE2224I_GroupA4/250hPa/NAmerica/201407/*' #Insert file path to input data, do not forget wildcard
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
@@ -42,7 +42,8 @@ global_net_flx = [] #Holds all net fluxes for the 28 EPs (3 months)
 #Positions of air parcels
 if attila_switch == True:
     for file in filenames_all:
-        if 'attila.nc' in file:
+        if 'attila' in file:
+
             print("HIIIIIIIII")
             data = Dataset(file,'r')
             print('\n')
