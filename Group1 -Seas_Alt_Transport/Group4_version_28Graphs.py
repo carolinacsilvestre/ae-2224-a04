@@ -789,9 +789,10 @@ cmap= matplotlib.colors.ListedColormap(colors)
 cmap.set_under("w")
 cmap.set_over("red")
     
-
+#vmin=0
+#vmax=700
 #Plot the flux on the map
-sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')
+sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')#,vmin=vmin, vmax=vmax)
     
 meridians = mp.drawmeridians(np.arange(-180,200,20), 
                          labels=[False,False,False,True], 
