@@ -13,7 +13,7 @@ import matplotlib.colors #To create new colorbar
 
 #USER INPUT - File path
 #foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
-foldernamelist = r"C:\Users\moheb\Desktop\DATA_PROJ_Q3\*"#["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
+foldernamelist = ["C:\Users\moheb\Desktop\DATA_PROJ_Q3\Summer\250hpa\*"] #["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
 #Joren foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
 
 #USER INPUT - Switches to determine which data types should be loaded
@@ -74,6 +74,7 @@ for f_string in foldernamelist:
     #Positions of air parcels
     if attila_switch == True:
         for file in filenames_all:
+            print(file)
             if 'attila' in file:
                 data = Dataset(file,'r')
                 print('\n')
