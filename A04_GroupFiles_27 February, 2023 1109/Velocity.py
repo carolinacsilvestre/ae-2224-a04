@@ -14,13 +14,9 @@ arising from a short-term increase in ozone.'''
 # USER INPUT - File path
 # f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 
-<<<<<<< Updated upstream
-
-=======
-load_data_from = str('Summer250')
+load_data_from = str('Winter250')
 
 f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/' + load_data_from + '/*'
->>>>>>> Stashed changes
 
 import scipy.stats
 from matplotlib.animation import FuncAnimation
@@ -591,18 +587,11 @@ ax[0].invert_yaxis()
 
 colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
 cmap = matplotlib.colors.ListedColormap(colors)
-<<<<<<< Updated upstream
-ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr, s = 2)
-#ax[1].set_title('RoD vs. MR', fontweight = 'bold')
-ax[1].set_xlabel('RoD [hPa/D]', fontweight = 'bold')
-ax[1].set_ylabel('Mean O3 Mixing Ratio [mol*mol^-1]', fontweight = 'bold')
-=======
 ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr * 10E9, s = 2)
 ax[1].set_title('RoD vs. MR', fontweight = 'bold')
 ax[1].set_xlabel('RoD', fontweight = 'bold')
 ax[1].set_ylabel('Average MR', fontweight = 'bold')
 norm = matplotlib.colors.Normalize(vmin=0, vmax=0.2)
->>>>>>> Stashed changes
 fig.subplots_adjust(wspace = 0.4)
 for i in index_array:
     traj = ppress[:, int(i)]
@@ -814,7 +803,7 @@ if attila_switch == True and o3tracer_switch == True and original_plot == True:
     norm= matplotlib.colors.Normalize(vmin=0,vmax=75)
     
     #Scatter plot command
-    for parcel3 in range(0, 50):
+    for parcel3 in range(1350, 1400):
         sc = ax.scatter(time, ppress[:,parcel3], s=30, marker='o', 
                     c=airO3_001[:,parcel3]*1E09,
                     cmap=cmap,norm=norm ,linewidth=1)
@@ -845,7 +834,7 @@ if attila_switch == True and o3tracer_switch == True and original_plot == True:
     
     #Save and close the map plot
     plt.tight_layout() #Ensure all parts of the plot will show after saving
-    plt.savefig("air_parcel_ID_0-50_vertical_colorbar.png",
+    plt.savefig("air_parcel_ID_0-50A_vertical_colorbar.png",
                 format="png",dpi=300)
     plt.show()
     plt.close()
