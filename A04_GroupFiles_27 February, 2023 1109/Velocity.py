@@ -569,6 +569,7 @@ for i in index_array:
     RoD = (- new_trajectory[0] + new_trajectory[min]) / time_at_minimum
     RoD_arr_new_method = np.append(RoD_arr_new_method, RoD)
 
+print('Rate of descent of 28 trajectories', RoD_arr_new_method)
 MR_avg_new_method_arr = np.delete(MR_avg_new_method_arr, 0)
 RoD_arr_new_method = np.delete(RoD_arr_new_method, 0)
 
@@ -774,7 +775,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 ####################################################################################################################################################
 ####################################################################################################################################################
 
-original_plot = True 
+original_plot = False 
 
 if attila_switch == True and o3tracer_switch == True and original_plot == True:
 
