@@ -14,7 +14,11 @@ arising from a short-term increase in ozone.'''
 # USER INPUT - File path
 # f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 
-f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/*'
+load_data_from = str('Winter200')
+
+
+
+f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/' + load_data_from + '/*'
 
 import scipy.stats
 from matplotlib.animation import FuncAnimation
@@ -27,12 +31,10 @@ from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
 import math
 
-load_data_from = str('Winter300')
-
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/' + load_data_from + '/*'
-if len(sorted(glob.glob(f_string))) == 0:
-    f_string = 'D:/Python safe/all test dat/*'
+# if len(sorted(glob.glob(f_string))) == 0:
+#     f_string = 'D:/Python safe/all test dat/*'
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'E:/all data/' + load_data_from + '/*'
 if len(sorted(glob.glob(f_string))) == 0:
