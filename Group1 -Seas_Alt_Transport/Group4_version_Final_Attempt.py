@@ -14,7 +14,7 @@ import matplotlib.colors #To create new colorbar
 #USER INPUT - File path
 #foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
 #Mo foldernamelist = r"C:\Users\moheb\Desktop\DATA_PROJ_Q3\*"#["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
-#Joren foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
+foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
 
 foldernamelist = ["C:/Users/joren/Documents/project data/Winter/*","C:/Users/joren/Documents/project data/Summer/*"]
 
@@ -234,7 +234,7 @@ for f_string in foldernamelist:
             cmap.set_over("red")
 
             vmin=0
-            vmax=700
+            vmax=700 * 3
             #Plot the flux on the map
             sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto',vmin=vmin, vmax=vmax)#,)
         
@@ -339,9 +339,10 @@ for f_string in foldernamelist:
             cmap.set_under("w")
             cmap.set_over("red")
                 
-
+            vmin = 0
+            vmax = 700
             #Plot the flux on the map
-            sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')
+            sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto',vmin = vmin, vmax = vmax)
                 
             ##Define colorbar features
             #cb = fig.colorbar(sc2, extend='both', 
