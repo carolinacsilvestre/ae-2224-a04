@@ -13,19 +13,26 @@ import matplotlib.colors #To create new colorbar
 
 #USER INPUT - File path
 #foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
+<<<<<<< HEAD
 foldernamelist = ["C:\Users\moheb\Desktop\DATA_PROJ_Q3\Summer\250hpa\*"] #["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
 #Joren foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
+=======
+#Mo foldernamelist = r"C:\Users\moheb\Desktop\DATA_PROJ_Q3\*"#["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
+foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
+
+foldernamelist = ["C:/Users/joren/Documents/project data/Winter/*","C:/Users/joren/Documents/project data/Summer/*"]
+>>>>>>> 9bdddf9588cf765b61fdac44e0263804c8300e36
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
 o3tracer_switch = False
-rad_fluxes_switch = True
+rad_fluxes_switch = False
 
-graphs28 = False
+graphs28 = True
 graphsperlat = False
 MedianTrajectories = False
 MedianTrajectoriesAll = False
-graphs28RF = True
+graphs28RF = False
 
 step = 20
 columns = 360/step
@@ -57,6 +64,7 @@ for f_string in foldernamelist:
     print('Files in input folder: ')
     print('\n') #Check that all files present in folder are being printed
     print(filenames_all)
+    print("hiiiiiiiiiiiiiiiiii")
 
     #Variables declaration
     time = [] #Attila
@@ -230,10 +238,13 @@ for f_string in foldernamelist:
                 
             cmap.set_under("w")
             cmap.set_over("red")
-                
 
+            vmin=0
+            vmax=700 * 3
             #Plot the flux on the map
-            sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')
+            sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto',vmin=vmin, vmax=vmax)#,)
+        
+                
                 
             ##Define colorbar features
             #cb = fig.colorbar(sc2, extend='both', 
@@ -334,9 +345,10 @@ for f_string in foldernamelist:
             cmap.set_under("w")
             cmap.set_over("red")
                 
-
+            vmin = 0
+            vmax = 700
             #Plot the flux on the map
-            sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto')
+            sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto',vmin = vmin, vmax = vmax)
                 
             ##Define colorbar features
             #cb = fig.colorbar(sc2, extend='both', 

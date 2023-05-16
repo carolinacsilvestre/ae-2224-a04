@@ -545,25 +545,6 @@ if attila_switch == True and rad_fluxes_switch == True:
 
  #####   print(new_time_avg_flux_flipped)
 
-    #def find_largest_element(arr):
-     #   max_element = float('-inf')  # Initialize with the smallest possible value
-#
- ##       # Iterate over each element in the array
-   #     for sublist in arr:
-    #        for element in sublist:
-     #           if element > max_element:
-      #              max_element = element
-
-       # return max_element
-
-    #largest_element = find_largest_element(array)
-    #print("The largest element is:", largest_element)
-
-    #print(f"this is the max{np.maximum(new_time_avg_flux)}")
-###########################
-
-
-
    # print(f"shape of time_avg_flux{print(time_avg_flux.shape)}")
     #Plot the flux on the map
 
