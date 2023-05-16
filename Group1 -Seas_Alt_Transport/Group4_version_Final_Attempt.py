@@ -19,13 +19,14 @@ foldernamelist = ["C:/Users/joren/Documents/project data/Winter250/*","C:/Users/
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
 o3tracer_switch = False
-rad_fluxes_switch = True
+rad_fluxes_switch = False
 
+graph1 = True
 graphs28 = False
 graphsperlat = False
 MedianTrajectories = False
 MedianTrajectoriesAll = False
-graphs28RF = True
+graphs28RF = False
 
 step = 20
 columns = 360/step
@@ -175,6 +176,111 @@ for f_string in foldernamelist:
         #Delete unnecessary variables
     if attila_switch or o3tracer_switch or rad_fluxes_switch and not '250' in f_string:
         del temp, data
+
+
+    #####################################################################################################################
+    # MAKE  1 Heatmap PLOT #
+    
+    #################################################################################################################
+    if graph1:
+        fig, ax = plt.subplots()
+        #Adjust dimensions of map plot
+        fig.set_figheight(8)
+        fig.set_figwidth(14)
+
+        flux_list=TrendMap(0)
+        lat = np.linspace(-90,90,int(rows)+1)  # define x as an array with 4 elementss
+        lon = np.linspace(-180,180,int(columns)+1)
+        #Set up axis object for plotting the map
+        #fig, ax = plt.subplots(7, ncols=4, figsize=(16, 16)) #Subplots are useful for drawing multiple plots together=nrows= 7, ncols=4, figsize=(16, 16)
+        
+        #Adjust dimensions of map plot
+        fig.set_figheight(8)
+        fig.set_figwidth(14)
+            
+        #Define map projection and settings
+        #For more info: https://matplotlib.org/basemap/users/cyl.html
+        mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                                llcrnrlon = -180,
+                                llcrnrlat = -90,
+                                urcrnrlon = 180,
+                                urcrnrlat = 90,
+                                resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+            
+        #Shift the fluxes from [0,360] to [-180,180]
+        #net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[1], lons_0to36,start=False)
+            
+        #Format the lat and lon arrays for map graphing, 
+        #makes lat array a lat x lon array and same for lon array
+        #lon, lat = np.meshgrid(lons_shft, lats)
+        x, y = mp(lon, lat)
+            
+        #Choose the settings for the coastlines, countries, meridians...
+        mp.drawcoastlines(linewidth=0.2)
+        mp.drawcountries(linewidth=0.2)
+            
+
+        #space between numbers
+    ## meridians = mp.drawmeridians(np.arange(-180,200,45), 
+        ##                        labels=[False,False,False,True], 
+        ##                       linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+            
+        ##mp.drawparallels(np.arange(-90,110,20), 
+        ##                        labels=[True,False,False,True], 
+        ##                        linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+            
+        #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+        colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
+        cmap= matplotlib.colors.ListedColormap(colors)
+            
+        cmap.set_under("w")
+        cmap.set_over("red")
+
+        vmin=0
+        vmax=700
+        #Plot the flux on the map
+        sc2 = mp.pcolor(x, y, flux_list, cmap='hot_r',shading='auto',vmin=vmin, vmax=vmax)#,)
+    
+            
+            
+        ##Define colorbar features
+        #cb = fig.colorbar(sc2, extend='both', 
+        #                   orientation='horizontal',fraction=0.052, 
+        #                  pad=0.065)
+            
+        ##Adjust colorbar tickmark size
+        #cb.ax.tick_params(labelsize=14)
+            
+        ##Label the colorbar
+        #cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold')
+            
+            #Save and close the map plot
+
+
+
+
+        #ax.set_xlabel('XLabel', loc='left')
+        #cbar = fig.colorbar(sc)
+        #cbar.set_label("ZLabel", loc='top')
+
+
+
+
+
+    #Define colorbar features
+    ##cb = fig.colorbar(sc2, extend='both', 
+                        #  orientation='horizontal',fraction=0.052, 
+                        #  pad=0.065)
+            
+    #Adjust colorbar tickmark size
+    ##cb.ax.tick_params(labelsize=14)
+            
+    #Label the colorbar
+    ##cb.set_label(label="Heat map of all airparcels from the first emission point",size=14,weight='bold',loc='right')
+
+        plt.show()
+        plt.close()
+
 
 
     #####################################################################################################################
