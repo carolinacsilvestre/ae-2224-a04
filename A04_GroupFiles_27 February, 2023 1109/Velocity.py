@@ -14,7 +14,7 @@ arising from a short-term increase in ozone.'''
 # USER INPUT - File path
 # f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 
-f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/January 200/*'
+
 
 import scipy.stats
 from matplotlib.animation import FuncAnimation
@@ -27,7 +27,9 @@ from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
 import math
 
-load_data_from = str('Winter300')
+load_data_from = str('Winter200')
+
+f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/' + load_data_from + '/*' 
 
 if len(sorted(glob.glob(f_string))) == 0:
     f_string = 'C:/Users/Carolina Silvestre/Desktop/dataproject/' + load_data_from + '/*'
@@ -583,9 +585,9 @@ ax[0].invert_yaxis()
 colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
 cmap = matplotlib.colors.ListedColormap(colors)
 ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr, s = 2)
-ax[1].set_title('RoD vs. MR', fontweight = 'bold')
-ax[1].set_xlabel('RoD', fontweight = 'bold')
-ax[1].set_ylabel('Average MR', fontweight = 'bold')
+#ax[1].set_title('RoD vs. MR', fontweight = 'bold')
+ax[1].set_xlabel('RoD [hpa/day]', fontweight = 'bold')
+ax[1].set_ylabel('Mean O3 Mixing Ratio [mol*mol^-1]', fontweight = 'bold')
 fig.subplots_adjust(wspace = 0.4)
 for i in index_array:
     traj = ppress[:, int(i)]
