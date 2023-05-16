@@ -580,14 +580,14 @@ RoD_arr_new_method = np.delete(RoD_arr_new_method, 0)
 # print('1', np.min(ppress[:, 29]))
 
 fig, ax = plt.subplots(nrows = 1, ncols = 2)
-plt.suptitle('Closest Trajectory Method')
+plt.suptitle('Closest Trajectory Method', fontweight = 'bold')
 ax[0].invert_yaxis()
 colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
 cmap = matplotlib.colors.ListedColormap(colors)
 ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr, s = 2)
-ax[1].set_title('RoD vs. MR')
-ax[1].set_xlabel('RoD')
-ax[1].set_ylabel('Average MR')
+ax[1].set_title('RoD vs. MR', fontweight = 'bold')
+ax[1].set_xlabel('RoD', fontweight = 'bold')
+ax[1].set_ylabel('Average MR', fontweight = 'bold')
 fig.subplots_adjust(wspace = 0.4)
 for i in index_array:
     traj = ppress[:, int(i)]
@@ -596,8 +596,8 @@ for i in index_array:
     # fig.invert_yaxis()
     sc = ax[0].scatter(time_window_arr, traj_needed, s = 2, c = airO3_001[:,int(i)][0:number_of_t] * 10E13, cmap = cmap)
     ax[0].set_title(load_data_from)
-    ax[0].set_xlabel('Days')
-    ax[0].set_ylabel('Altitude')
+    ax[0].set_xlabel('Days', fontweight = 'bold')
+    ax[0].set_ylabel('Altitude', fontweight = 'bold')
 fig.colorbar(sc)
 
 if plot_closest_trajectory == True:
