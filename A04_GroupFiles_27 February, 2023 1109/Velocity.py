@@ -14,8 +14,6 @@ arising from a short-term increase in ozone.'''
 # USER INPUT - File path
 # f_string = 'C:/Users/Carolina Silvestre\Desktop\dataproject*' #Insert file path to input data, do not forget wildcard
 
-
-
 import scipy.stats
 from matplotlib.animation import FuncAnimation
 import glob  # Dynamic file name loading
@@ -363,7 +361,7 @@ if attila_switch == True and activate_plot2 == True:
 
 ############# INPUT SECTION ############
 
-time_window = 89.75  # Time window (days) for calculating the RoD ##
+time_window = 40  # Time window (days) for calculating the RoD ##
 # emission_point = 25                                                          ## The number of emission point (choose from 1 to 28) ##
 
 #########################################
@@ -491,7 +489,7 @@ RoD_arr_for_median = np.delete(RoD_arr_for_median, 0)
 ax[1].set_title('RoD vs. Mr')
 ax[1].set_xlabel('RoD')
 ax[1].set_ylabel('Average MR')
-ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E15), s = 2)
+ax[1].scatter(RoD_arr_for_median, (MR_average_arr_median * 10E9), s = 2)
 fig.subplots_adjust(wspace = 0.3)
 
 if plot_median_trajectory == True:
@@ -585,28 +583,29 @@ ax[0].invert_yaxis()
 
 colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
 cmap = matplotlib.colors.ListedColormap(colors)
-ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr, s = 2)
-#ax[1].set_title('RoD vs. MR', fontweight = 'bold')
-ax[1].set_xlabel('RoD [hPa/D]', fontweight = 'bold')
-ax[1].set_ylabel('Mean O3 Mixing Ratio [mol*mol^-1]', fontweight = 'bold')
+ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr * 10E9, s = 2)
+ax[1].set_title('RoD vs. MR', fontweight = 'bold')
+ax[1].set_xlabel('RoD', fontweight = 'bold')
+ax[1].set_ylabel('Average MR', fontweight = 'bold')
+norm = matplotlib.colors.Normalize(vmin=0, vmax=0.2)
 fig.subplots_adjust(wspace = 0.4)
 for i in index_array:
     traj = ppress[:, int(i)]
     traj_needed = traj[0 : number_of_t]
     # ax, fig = plt.subplots()
     # fig.invert_yaxis()
-    sc = ax[0].scatter(time_window_arr, traj_needed, s = 2, c = airO3_001[:,int(i)][0:number_of_t] * 10E13, cmap = cmap)
-    ax[0].set_title(load_data_from)
+    sc = ax[0].scatter(time_window_arr, traj_needed, s = 2, c = airO3_001[:,int(i)][0:number_of_t] * 10E9, cmap = cmap, norm = norm)
+    ax[0].set_title(load_data_from, fontweight = 'bold')
     ax[0].set_xlabel('Days', fontweight = 'bold')
     ax[0].set_ylabel('Altitude', fontweight = 'bold')
 fig.colorbar(sc)
 
 if plot_closest_trajectory == True:
-    ccp, pp = scipy.stats.pearsonr(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
+    ccp, pp = scipy.stats.pearsonr(RoD_arr_new_method, MR_avg_new_method_arr * 10E9)
     print("New method, Pearson correlation coefficient + p-value: ", str(ccp), ", ", str(pp))
-    ccs, ps = scipy.stats.spearmanr(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
+    ccs, ps = scipy.stats.spearmanr(RoD_arr_new_method, MR_avg_new_method_arr * 10E9)
     print("New method, Spearman correlation coefficient + p-value: ", str(ccs), ", ", str(ps))
-    cck, pk = scipy.stats.kendalltau(RoD_arr_new_method, MR_avg_new_method_arr * 10E15)
+    cck, pk = scipy.stats.kendalltau(RoD_arr_new_method, MR_avg_new_method_arr * 10E9)
     print("New method, Kendall correlation coefficient + p-value: ", str(cck), ", ", str(pk))
     plt.show()
 else:
@@ -776,7 +775,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 ####################################################################################################################################################
 ####################################################################################################################################################
 
-original_plot = False 
+original_plot = True 
 
 if attila_switch == True and o3tracer_switch == True and original_plot == True:
 
@@ -787,7 +786,7 @@ if attila_switch == True and o3tracer_switch == True and original_plot == True:
     fig.set_figheight(8)
     fig.set_figwidth(14)
     
-    parcel3 = 1378 #Parcel ID, 0 means first.
+    # parcel3 = 1378 #Parcel ID, 0 means first.
     
     #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
     colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
@@ -800,7 +799,8 @@ if attila_switch == True and o3tracer_switch == True and original_plot == True:
     norm= matplotlib.colors.Normalize(vmin=0,vmax=75)
     
     #Scatter plot command
-    sc = ax.scatter(time, ppress[:,parcel3], s=30, marker='o', 
+    for parcel3 in range(1350, 1400):
+        sc = ax.scatter(time, ppress[:,parcel3], s=30, marker='o', 
                     c=airO3_001[:,parcel3]*1E09,
                     cmap=cmap,norm=norm ,linewidth=1)
     
@@ -817,7 +817,7 @@ if attila_switch == True and o3tracer_switch == True and original_plot == True:
     #Labeling of axes and plot title
     ax.set_xlabel("Time elapsed since emission \n [Days]" , fontsize=22, weight='bold')
     ax.set_ylabel("Air parcel pressure altitude \n [hPa]", fontsize=22, weight='bold')
-    ax.set_title("Air parcel with colorbar - vertical", fontsize=24, weight='bold')
+    # ax.set_title("Emission point 1 parcels with colorbar, t=90 days", fontsize=24, weight='bold')
     
     #Define colorbar features
     cb = fig.colorbar(sc, ticks=bounds, extend='both')
@@ -830,7 +830,7 @@ if attila_switch == True and o3tracer_switch == True and original_plot == True:
     
     #Save and close the map plot
     plt.tight_layout() #Ensure all parts of the plot will show after saving
-    plt.savefig("air_parcel_ID"+str(parcel3)+"_vertical_colorbar.png",
+    plt.savefig("air_parcel_ID_0-50A_vertical_colorbar.png",
                 format="png",dpi=300)
     plt.show()
     plt.close()
