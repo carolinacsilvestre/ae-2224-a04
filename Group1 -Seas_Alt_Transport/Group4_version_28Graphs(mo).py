@@ -230,47 +230,47 @@ print(TrendMap(0))
 if attila_switch == True:
 
     #Set up axis object for plotting the map
-    fig, ax = plt.subplots()
+  #  fig, ax = plt.subplots()
     
     #Adjust dimensions of map plot
-    fig.set_figheight(8)
-    fig.set_figwidth(14)
+#    fig.set_figheight(8)
+#    fig.set_figwidth(14)
     
-    parcel = 25 #Parcel ID, 0 means first.
+ #   parcel = 25 #Parcel ID, 0 means first.
     
 
-    setOFcolor=np.array(range(len(ppress[:,parcel])))
-    print(setOFcolor)
+#    setOFcolor=np.array(range(len(ppress[:,parcel])))
+#    print(setOFcolor)
     #Scatter plot settings
 
     #ADDED
-    plt.scatter(time, ppress[:,parcel], s=30, marker='o', c=ppress[:,parcel]) #color='green')
+ #   plt.scatter(time, ppress[:,parcel], s=30, marker='o', c=ppress[:,parcel]) #color='green')
    
   
    #BEFORE ADDED plt.scatter(time, ppress[:,parcel], s=30, marker='o', color='green')
     #END ADDED
 
     #Defining range of axes
-    plt.xticks(np.arange(0,110,10), np.arange(0,110,10), fontsize=20)
-    plt.yticks(np.arange(0,1200,200), np.arange(0,1200,200), fontsize=20)
+#    plt.xticks(np.arange(0,110,10), np.arange(0,110,10), fontsize=20)
+#    plt.yticks(np.arange(0,1200,200), np.arange(0,1200,200), fontsize=20)
     
     #Inversion of vertical axis
-    plt.gca().invert_yaxis() #The higher the pressure, the closer to the surface
+ #   plt.gca().invert_yaxis() #The higher the pressure, the closer to the surface
     
     #Labeling of axes
-    plt.xlabel('Time elapsed since emission \n [Days]', fontsize=22, weight='bold')
-    plt.ylabel('Air parcel pressure altitude \n [hPa]', fontsize=22, weight='bold')
+#    plt.xlabel('Time elapsed since emission \n [Days]', fontsize=22, weight='bold')
+#    plt.ylabel('Air parcel pressure altitude \n [hPa]', fontsize=22, weight='bold')
     
     #Add plot title
-    plt.title('Air Parcel ID='+str(parcel), fontsize=26, weight='bold')
+#    plt.title('Air Parcel ID='+str(parcel), fontsize=26, weight='bold')
     
     #To save the plot, give it a name, format and dpi represents the resolution.
     #Typically, for publications, dpi=300.
-    plt.tight_layout() #Ensure all parts of the plot will show after saving
-    plt.savefig("air_parcel_ID"+str(parcel)+".png",format="png",dpi=300)
-    
-    plt.show()
-    plt.close() 
+#    plt.tight_layout() #Ensure all parts of the plot will show after saving
+#    plt.savefig("air_parcel_ID"+str(parcel)+".png",format="png",dpi=300)
+#    
+#    plt.show()
+#    plt.close() 
 
 # =============================================================================
 # PLOT TYPE 2 - HORIZONTAL EVOLUTION OF LAGRANGIAN AIR PARCELS (ON MAP)
@@ -380,7 +380,82 @@ if attila_switch == True:
 
 
 
+# =============================================================================
+# PLOT TYPE 5 - Net radiative fluxes from short-term ozone increase (Single EP)
+# =============================================================================
 
+#Requires lat,lon from ATTILA data files and fluxes
+if attila_switch == True and rad_fluxes_switch == True:
+    
+    #Set up axis object for plotting the map
+    fig, ax = plt.subplots() #Subplots are useful for drawing multiple plots together
+    
+    #Adjust dimensions of map plot
+    fig.set_figheight(8)
+    fig.set_figwidth(14)
+    
+    #Define map projection and settings
+    #For more info: https://matplotlib.org/basemap/users/cyl.html
+    mp = Basemap(projection = 'cyl', #equidistant cylindrical projection
+                         llcrnrlon = -180,
+                         llcrnrlat = -90,
+                         urcrnrlon = 180,
+                         urcrnrlat = 90,
+                         resolution = 'i', ax=ax) #h=high, f=full, i=intermediate, c=crude
+    
+    #Shift the fluxes from [0,360] to [-180,180]
+    net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[0], 
+                                           lons_0to36,start=False)
+    
+    #Format the lat and lon arrays for map graphing, 
+    #makes lat array a lat x lon array and same for lon array
+    lon, lat = np.meshgrid(lons_shft, lats)
+    x, y = mp(lon, lat)
+    
+    #Choose the settings for the coastlines, countries, meridians...
+    mp.drawcoastlines(linewidth=0.2)
+    mp.drawcountries(linewidth=0.2)
+    
+    meridians = mp.drawmeridians(np.arange(-180,200,20), 
+                         labels=[False,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lon lines every 20º
+    
+    mp.drawparallels(np.arange(-90,110,20), 
+                         labels=[True,False,False,True], 
+                         linewidth=0.2, fontsize=10) #Draw lat lines every 20º
+    
+    #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+    colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
+    cmap= matplotlib.colors.ListedColormap(colors)
+    bounds = [0, 0.5, 1, 1.5, 2, 2.5]
+    
+    cmap.set_under("w")
+    cmap.set_over("red")
+    
+    norm= matplotlib.colors.Normalize(vmin=0,vmax=2.5)
+    
+    #Time-average for the first emission point
+    time_avg_flux = np.mean(net_flx_EP_shft, axis=0)
+    
+    #Plot the flux on the map
+    sc2 = mp.pcolor(x, y, time_avg_flux*1000,
+                    cmap=cmap, norm=norm, shading='auto')
+    
+    #Define colorbar features
+    cb = fig.colorbar(sc2, ticks=bounds, extend='both', 
+                      orientation='horizontal',fraction=0.052, 
+                      pad=0.065)
+    
+    #Adjust colorbar tickmark size
+    cb.ax.tick_params(labelsize=14)
+    
+    #Label the colorbar
+    cb.set_label(label="Radiative Forcing from Short-term O$_3$ [mW·m$^{-2}$]",size=14,weight='bold')
+    
+    #Save and close the map plot
+    plt.savefig("rad_fluxes_map_example.png",format="png",dpi=300)
+    plt.show()
+    plt.close()
 
 
     
@@ -414,10 +489,11 @@ if attila_switch == True and rad_fluxes_switch == True:
     #Format the lat and lon arrays for map graphing, 
     #makes lat array a lat x lon array and same for lon array
     lon, lat = np.meshgrid(lons_shft, lats)
-    x = np.linspace(0,360,18)
-    y = np.linspace(0,180,9)
+    x = np.linspace(-180,180,19)
+    print(x)
+    y = np.linspace(-90,90,10)
     #mp(lon, lat) #changed!!!!!!
-    print(f"x isss{x.shape}")
+  ####  print(f"x isss{x.shape}")
     #print(f"shape of x and y{print(x.shape)}")
     #print(f"this is x{len(x)}")
     #print(f"this is x{y}")
@@ -445,10 +521,10 @@ if attila_switch == True and rad_fluxes_switch == True:
     
     #Time-average for the first emission point
     time_avg_flux = np.mean(net_flx_EP_shft, axis=0)
-
+  #####  print(time_avg_flux)
 ###########################
     #changed!!!!!!
-    print(f"this is shape of {time_avg_flux.shape}")
+  #####  print(f"this is shape of {time_avg_flux.shape}")
     new_time_avg_flux=np.zeros((9,18))#changed!!!!!!
    #64,128 
    #to
@@ -457,21 +533,44 @@ if attila_switch == True and rad_fluxes_switch == True:
         for j in range(9):
             # for i1 in range(64):
                # for j1 in range(128):
-          new_time_avg_flux[j,i]= time_avg_flux[j*7:(j+1)*7,i*7:(i+1)*7].sum()
-    print(f"this is the shape of the one generate:{new_time_avg_flux.shape}")
-    print(f"this is the shape of x:{x.shape,y.shape}")
+          time_avg_flux_copy=time_avg_flux.copy()
+          new_time_avg_flux[j,i]= sum(map(sum, time_avg_flux_copy[j*7:(j+1)*7,i*7:(i+1)*7]))#time_avg_flux[j*7:(j+1)*7,i*7:(i+1)*7].sum()
+ #####   print(f"this is the shape of the one generate:{new_time_avg_flux.shape}")
+ #####   print(f"this is the shape of x:{x.shape,y.shape}")
     #print(f"this is the length of x:{len(x)}")
     #time_avg_flux=new_time_avg_flux#changed!!!!!!
 #changed!!!!!!
+    new_time_avg_flux_flipped=np.flip(new_time_avg_flux,0)
+
+
+ #####   print(new_time_avg_flux_flipped)
+
+    #def find_largest_element(arr):
+     #   max_element = float('-inf')  # Initialize with the smallest possible value
+#
+ ##       # Iterate over each element in the array
+   #     for sublist in arr:
+    #        for element in sublist:
+     #           if element > max_element:
+      #              max_element = element
+
+       # return max_element
+
+    #largest_element = find_largest_element(array)
+    #print("The largest element is:", largest_element)
+
+    #print(f"this is the max{np.maximum(new_time_avg_flux)}")
 ###########################
 
 
 
    # print(f"shape of time_avg_flux{print(time_avg_flux.shape)}")
     #Plot the flux on the map
-    sc2 = mp.pcolor(x, y, new_time_avg_flux*1000,
-                    cmap=cmap, norm=norm, shading='auto')
-    
+
+    norm= matplotlib.colors.Normalize(vmin=0,vmax=50)
+    sc2 = mp.pcolor(x, y, new_time_avg_flux_flipped*1000,
+                    cmap='hot_r',shading='auto',norm=norm)
+    # cmap='hot_r',shading='auto',vmin=vmin, vmax=vmax
     #Define colorbar features
     cb = fig.colorbar(sc2, ticks=bounds, extend='both', 
                       orientation='horizontal',fraction=0.052, 
