@@ -361,7 +361,7 @@ if attila_switch == True and activate_plot2 == True:
 
 ############# INPUT SECTION ############
 
-time_window = 40  # Time window (days) for calculating the RoD ##
+time_window = 89.75  # Time window (days) for calculating the RoD ##
 # emission_point = 25                                                          ## The number of emission point (choose from 1 to 28) ##
 
 #########################################
@@ -567,6 +567,7 @@ for i in index_array:
     RoD = (- new_trajectory[0] + new_trajectory[min]) / time_at_minimum
     RoD_arr_new_method = np.append(RoD_arr_new_method, RoD)
 
+print('Rate of descent of 28 trajectories', RoD_arr_new_method)
 MR_avg_new_method_arr = np.delete(MR_avg_new_method_arr, 0)
 RoD_arr_new_method = np.delete(RoD_arr_new_method, 0)
 
@@ -577,24 +578,24 @@ RoD_arr_new_method = np.delete(RoD_arr_new_method, 0)
 # print('1', np.min(ppress[:, 29]))
 
 fig, ax = plt.subplots(nrows = 1, ncols = 2)
-plt.suptitle('Closest Trajectory Method')
+plt.suptitle('Closest Trajectory Method', fontweight = 'bold')
 ax[0].invert_yaxis()
 colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
 cmap = matplotlib.colors.ListedColormap(colors)
 ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr, s = 2)
-ax[1].set_title('RoD vs. MR')
-ax[1].set_xlabel('RoD')
-ax[1].set_ylabel('Average MR')
+ax[1].set_title('RoD vs. MR', fontweight = 'bold')
+ax[1].set_xlabel('RoD', fontweight = 'bold')
+ax[1].set_ylabel('Average MR', fontweight = 'bold')
 fig.subplots_adjust(wspace = 0.4)
 for i in index_array:
     traj = ppress[:, int(i)]
     traj_needed = traj[0 : number_of_t]
     # ax, fig = plt.subplots()
     # fig.invert_yaxis()
-    sc = ax[0].scatter(time_window_arr, traj_needed, s = 2, c = airO3_001[:,int(i)][0:number_of_t] * 10E12, cmap = cmap)
+    sc = ax[0].scatter(time_window_arr, traj_needed, s = 2, c = airO3_001[:,int(i)][0:number_of_t] * 10E13, cmap = cmap)
     ax[0].set_title(load_data_from)
-    ax[0].set_xlabel('Days')
-    ax[0].set_ylabel('Altitude')
+    ax[0].set_xlabel('Days', fontweight = 'bold')
+    ax[0].set_ylabel('Altitude', fontweight = 'bold')
 fig.colorbar(sc)
 
 if plot_closest_trajectory == True:
@@ -709,7 +710,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Scatter plot command
 
-    plot_vertical_trajectory = False
+    plot_vertical_trajectory = True
     if plot_vertical_trajectory == True: 
         for emission_points in range(1,29): 
             for parcel3 in range((emission_points - 1) * 50,emission_points * 50): 
@@ -767,6 +768,69 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
         # plt.savefig("air_parcel_ID"+str(parcel3)+"_vertical_colorbar.png",format="png", dpi=300)
         plt.show()
         plt.close()
+
+
+####################################################################################################################################################
+####################################################################################################################################################
+
+original_plot = False 
+
+if attila_switch == True and o3tracer_switch == True and original_plot == True:
+
+    #Set up axis object for plotting the map
+    fig, ax = plt.subplots()
+    
+    #Adjust dimensions of map plot
+    fig.set_figheight(8)
+    fig.set_figwidth(14)
+    
+    parcel3 = 1378 #Parcel ID, 0 means first.
+    
+    #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
+    colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
+    cmap= matplotlib.colors.ListedColormap(colors)
+    bounds = [0, 15, 30, 45, 60, 75]
+    
+    cmap.set_under("w")
+    cmap.set_over("crimson")
+    
+    norm= matplotlib.colors.Normalize(vmin=0,vmax=75)
+    
+    #Scatter plot command
+    sc = ax.scatter(time, ppress[:,parcel3], s=30, marker='o', 
+                    c=airO3_001[:,parcel3]*1E09,
+                    cmap=cmap,norm=norm ,linewidth=1)
+    
+    #Pressure altitude increases towards the surface, reading convention
+    ax.invert_yaxis()
+    
+    #Set spacing and sizing of axes tickmarks
+    ax.set_xticks(np.arange(0,110,10))
+    ax.set_yticks(np.arange(0,1200,200))
+    
+    ax.xaxis.set_tick_params(labelsize=20)
+    ax.yaxis.set_tick_params(labelsize=20)
+    
+    #Labeling of axes and plot title
+    ax.set_xlabel("Time elapsed since emission \n [Days]" , fontsize=22, weight='bold')
+    ax.set_ylabel("Air parcel pressure altitude \n [hPa]", fontsize=22, weight='bold')
+    ax.set_title("Air parcel with colorbar - vertical", fontsize=24, weight='bold')
+    
+    #Define colorbar features
+    cb = fig.colorbar(sc, ticks=bounds, extend='both')
+    
+    #Adjust colorbar tickmark size
+    cb.ax.tick_params(labelsize=18)
+    
+    #Label the colorbar
+    cb.set_label(label="O$_3$ Mixing Ratio [nmol·mol$^{-1}$]",size=18,weight='bold')
+    
+    #Save and close the map plot
+    plt.tight_layout() #Ensure all parts of the plot will show after saving
+    plt.savefig("air_parcel_ID"+str(parcel3)+"_vertical_colorbar.png",
+                format="png",dpi=300)
+    plt.show()
+    plt.close()
 
     # plt.show()
     # plt.close()
