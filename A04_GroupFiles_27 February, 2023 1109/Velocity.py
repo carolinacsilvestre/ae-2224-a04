@@ -27,7 +27,7 @@ from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
 import math
 
-load_data_from = str('Winter200')
+load_data_from = str('Winter250')
 
 f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/' + load_data_from + '/*' 
 
@@ -580,13 +580,14 @@ RoD_arr_new_method = np.delete(RoD_arr_new_method, 0)
 # print('1', np.min(ppress[:, 29]))
 
 fig, ax = plt.subplots(nrows = 1, ncols = 2)
-plt.suptitle('Closest Trajectory Method', fontweight = 'bold')
+#plt.suptitle('Closest Trajectory Method', fontweight = 'bold')
 ax[0].invert_yaxis()
+
 colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
 cmap = matplotlib.colors.ListedColormap(colors)
 ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr, s = 2)
 #ax[1].set_title('RoD vs. MR', fontweight = 'bold')
-ax[1].set_xlabel('RoD [hpa/day]', fontweight = 'bold')
+ax[1].set_xlabel('RoD [hPa/D]', fontweight = 'bold')
 ax[1].set_ylabel('Mean O3 Mixing Ratio [mol*mol^-1]', fontweight = 'bold')
 fig.subplots_adjust(wspace = 0.4)
 for i in index_array:
