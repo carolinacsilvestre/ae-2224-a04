@@ -535,8 +535,8 @@ if attila_switch == True and rad_fluxes_switch == True:
                # for j1 in range(128):
           time_avg_flux_copy=time_avg_flux.copy()
           new_time_avg_flux[j,i]= sum(map(sum, time_avg_flux_copy[j*7:(j+1)*7,i*7:(i+1)*7]))#time_avg_flux[j*7:(j+1)*7,i*7:(i+1)*7].sum()
- #####   print(f"this is the shape of the one generate:{new_time_avg_flux.shape}")
- #####   print(f"this is the shape of x:{x.shape,y.shape}")
+            #####   print(f"this is the shape of the one generate:{new_time_avg_flux.shape}")
+            #####   print(f"this is the shape of x:{x.shape,y.shape}")
     #print(f"this is the length of x:{len(x)}")
     #time_avg_flux=new_time_avg_flux#changed!!!!!!
 #changed!!!!!!

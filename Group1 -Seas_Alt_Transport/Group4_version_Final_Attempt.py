@@ -13,26 +13,19 @@ import matplotlib.colors #To create new colorbar
 
 #USER INPUT - File path
 #foldernamelist = ["C:/Users/31683/Desktop/project data/Summer200/*","C:/Users/31683/Desktop/project data/Summer250/*","C:/Users/31683/Desktop/project data/Summer300/*","C:/Users/31683/Desktop/project data/Winter200/*","C:/Users/31683/Desktop/project data/Winter250/*","C:/Users/31683/Desktop/project data/Winter300/*"]
-<<<<<<< HEAD
-foldernamelist = ["C:\Users\moheb\Desktop\DATA_PROJ_Q3\Summer\250hpa\*"] #["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
-#Joren foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
-=======
-#Mo foldernamelist = r"C:\Users\moheb\Desktop\DATA_PROJ_Q3\*"#["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
-foldernamelist = ["C:/Users/joren/Documents/project data/Winter","C:/Users/joren/Documents/project data/Summer"]
-
-foldernamelist = ["C:/Users/joren/Documents/project data/Winter/*","C:/Users/joren/Documents/project data/Summer/*"]
->>>>>>> 9bdddf9588cf765b61fdac44e0263804c8300e36
+#foldernamelist = ["C:\Users\moheb\Desktop\DATA_PROJ_Q3\Summer\250hpa\*"] #["C:/Users/joren/Documents/project data/Summer250/*","C:/Users/joren/Documents/project data/Summer/*"]
+foldernamelist = ["C:/Users/joren/Documents/project data/Winter250/*","C:/Users/joren/Documents/project data/Summer"]
 
 #USER INPUT - Switches to determine which data types should be loaded
 attila_switch = True
 o3tracer_switch = False
-rad_fluxes_switch = False
+rad_fluxes_switch = True
 
-graphs28 = True
+graphs28 = False
 graphsperlat = False
 MedianTrajectories = False
 MedianTrajectoriesAll = False
-graphs28RF = False
+graphs28RF = True
 
 step = 20
 columns = 360/step
@@ -144,7 +137,7 @@ for f_string in foldernamelist:
     #Radiative fluxes corresponding to O3 increase, specifically for 250hPa
     if rad_fluxes_switch == True: #and '250' in f_string:
         for file in filenames_all:
-            
+            print("hi")
             #Get call 2 separately, which will be subtracted from calls 3-30
             if file.find('fluxes_tp') != -1 and file.find('EP02') != -1:
                 #fluxes_tp_NAmerica_July2014_EP02
@@ -159,6 +152,7 @@ for f_string in foldernamelist:
             
             #Start at 3 since first two calls are not emission points
             for ep in range(3,31):
+                print("hi")
                 #If there is no match, output is -1.
                 if file.find('fluxes_tp') != -1 and file.find('EP'+str(ep).zfill(2)) != -1:
                     data = Dataset(file,'r')
@@ -171,6 +165,7 @@ for f_string in foldernamelist:
                     rad_flx_LW = data.variables['flxt_tp'][:]
                     
                     #Calculate net flux and append
+                    print("hi")
                     global_net_flx.append((rad_flx_LW+rad_flx_SW)- \
                                         (rad_flx_LW_02+rad_flx_SW_02))
                     
@@ -536,6 +531,7 @@ for f_string in foldernamelist:
         axs = axs.transpose()
         EP = 0 
         for i, ax in enumerate(axs.flat):
+            print(EP)
             
             #Define map projection and settings
             #For more info: https://matplotlib.org/basemap/users/cyl.html
@@ -549,36 +545,27 @@ for f_string in foldernamelist:
             #Shift the fluxes from [0,360] to [-180,180]
             net_flx_EP_shft, lons_shft = shiftgrid(180.,global_net_flx[EP], 
                                                 lons_0to36,start=False)
-            print(np.shape(net_flx_EP_shft))
-            net_flx_EP_shft = net_flx_EP_shft[:, :9, :18]
-            net_flx_EP_shft = np.squeeze(net_flx_EP_shft)
-            print(np.shape(net_flx_EP_shft))
-            #net_f64lx_EP_shft = net_flx_EP_shft.reshape((9, 18)).sum(axis=(0, 1)) / 64
             
             #Format the lat and lon arrays for map graphing, 
             #makes lat array a lat x lon array and same for lon array
             lon, lat = np.meshgrid(lons_shft, lats)
-            x, y = mp(lon, lat)
-            print(len(x))
+            x = np.linspace(-180,180,19)
             print(x)
-            
+            y = np.linspace(-90,90,10)
+            #mp(lon, lat) #changed!!!!!!
+        ####  print(f"x isss{x.shape}")
+            #print(f"shape of x and y{print(x.shape)}")
+            #print(f"this is x{len(x)}")
+            #print(f"this is x{y}")
             #Choose the settings for the coastlines, countries, meridians...
             mp.drawcoastlines(linewidth=0.2)
             mp.drawcountries(linewidth=0.2)
-            
-            '''meridians = mp.drawmeridians(np.arange(-180,200,20), 
-                                labels=[False,False,False,True], 
-                                linewidth=0.2, fontsize=10) #Draw lon lines every 20º
-            
-            mp.drawparallels(np.arange(-90,110,20), 
-                                labels=[True,False,False,True], 
-                                linewidth=0.2, fontsize=10) #Draw lat lines every 20º
-            '''
+
+
             #Set up custom colorbar, colors may be chosen with the help from colorbrewer2.org
-            colors = ["#ffffff", "#fec44f", "#d95f0e", "#e34a33", "#b30000"]
+            colors = ["#ffffff", "#fdcc8a", "#fc8d59", "#e34a33", "#b30000"]
+            cmap= matplotlib.colors.ListedColormap(colors)
             bounds = [0, 0.5, 1, 1.5, 2, 2.5]
-            cmap= matplotlib.colors.LinearSegmentedColormap.from_list(bounds,colors)
-            
             
             cmap.set_under("w")
             cmap.set_over("red")
@@ -587,12 +574,44 @@ for f_string in foldernamelist:
             
             #Time-average for the first emission point
             time_avg_flux = np.mean(net_flx_EP_shft, axis=0)
-            
+        #####  print(time_avg_flux)
+        ###########################
+            #changed!!!!!!
+        #####  print(f"this is shape of {time_avg_flux.shape}")
+            new_time_avg_flux=np.zeros((9,18))#changed!!!!!!
+        #64,128 
+        #to
+        #9,18#changed!!!!!!
+            for i in range(18):
+                for j in range(9):
+                    # for i1 in range(64):
+                    # for j1 in range(128):
+                    time_avg_flux_copy=time_avg_flux.copy()
+                    new_time_avg_flux[j,i]= sum(map(sum, time_avg_flux_copy[j*7:(j+1)*7,i*7:(i+1)*7]))#time_avg_flux[j*7:(j+1)*7,i*7:(i+1)*7].sum()
+                    #####   print(f"this is the shape of the one generate:{new_time_avg_flux.shape}")
+                    #####   print(f"this is the shape of x:{x.shape,y.shape}")
+            #print(f"this is the length of x:{len(x)}")
+            #time_avg_flux=new_time_avg_flux#changed!!!!!!
+        #changed!!!!!!
+            new_time_avg_flux_flipped=np.flip(new_time_avg_flux,0)
+
+
+        #####   print(new_time_avg_flux_flipped)
+
+        # print(f"shape of time_avg_flux{print(time_avg_flux.shape)}")
             #Plot the flux on the map
-            sc2 = mp.pcolor(x, y, time_avg_flux*1000,
-                            cmap=cmap, norm=norm, shading='auto')
-            ax.set_ylabel(f'E. P. {EP +1}', loc='top')
+
+            norm= matplotlib.colors.Normalize(vmin=0,vmax=50)
+            sc2 = mp.pcolor(x, y, new_time_avg_flux_flipped*1000,
+                            cmap='hot_r',shading='auto',norm=norm)
+            # cmap='hot_r',shading='auto',vmin=vmin, vmax=vmax
+            #Define colorbar features
             EP += 1
+        
+        
+        
+        
+        
             
             
         plt.show()
