@@ -25,7 +25,7 @@ from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
 import math
 
-load_data_from = str('Winter250')
+load_data_from = str('Summer300')
 
 f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/' + load_data_from + '/*' 
 
@@ -612,6 +612,18 @@ else:
     plt.close()
 
 
+fig, ax = plt.subplots()
+plt.scatter(RoD_arr_new_method, MR_avg_new_method_arr * 10E9, s = 8)
+# ax.set_title('RoD vs. MR[hPa/D]', fontweight = 'bold')
+ax.set_xlabel('RoD [hPa/D]', fontweight = 'bold')
+dot_multiply = '\u00B7'
+superscript_minus_one = '\u207B\u00B9'
+subscript_three = '\u2083'
+ax.set_ylabel('Mean O' + subscript_three + ' Mixing Ratio [nmol' + dot_multiply + 'mol' + superscript_minus_one + ']', fontweight = 'bold')
+plt.savefig('RoD vs MR' + load_data_from)
+plt.show()
+
+
 
 #################################################################################################################################################
 #################################################################################################################################################
@@ -712,7 +724,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 
     # Scatter plot command
 
-    plot_vertical_trajectory = True
+    plot_vertical_trajectory = False
     if plot_vertical_trajectory == True: 
         for emission_points in range(1,29): 
             for parcel3 in range((emission_points - 1) * 50,emission_points * 50): 
@@ -775,7 +787,7 @@ if attila_switch == True and o3tracer_switch == True and activate_plot3 == True:
 ####################################################################################################################################################
 ####################################################################################################################################################
 
-original_plot = True 
+original_plot = False 
 
 if attila_switch == True and o3tracer_switch == True and original_plot == True:
 
