@@ -25,7 +25,7 @@ from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
 import math
 
-load_data_from = str('Summer300')
+load_data_from = str('Summer200')
 
 f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/' + load_data_from + '/*' 
 
@@ -613,14 +613,14 @@ else:
 
 
 fig, ax = plt.subplots()
-plt.scatter(RoD_arr_new_method, MR_avg_new_method_arr * 10E9, s = 8)
+plt.scatter(RoD_arr_new_method, MR_avg_new_method_arr * 10E9, s = 9)
 # ax.set_title('RoD vs. MR[hPa/D]', fontweight = 'bold')
-ax.set_xlabel('RoD [hPa/D]', fontweight = 'bold')
+ax.set_xlabel('RoD [hPa/D]', fontweight = 'bold', fontsize = 12)
 dot_multiply = '\u00B7'
 superscript_minus_one = '\u207B\u00B9'
 subscript_three = '\u2083'
-ax.set_ylabel('Mean O' + subscript_three + ' Mixing Ratio [nmol' + dot_multiply + 'mol' + superscript_minus_one + ']', fontweight = 'bold')
-plt.savefig('RoD vs MR' + load_data_from)
+ax.set_ylabel('Mean O' + subscript_three + ' Volume Mixing Ratio [nmol' + dot_multiply + 'mol' + superscript_minus_one + ']', fontweight = 'bold', fontsize = 11)
+plt.savefig('RoD vs MR ' + load_data_from)
 plt.show()
 
 
