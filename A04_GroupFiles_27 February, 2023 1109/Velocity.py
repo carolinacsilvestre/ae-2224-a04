@@ -25,7 +25,7 @@ from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
 import math
 
-load_data_from = str('Summer300')
+load_data_from = str('Winter300')
 
 f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/' + load_data_from + '/*' 
 
@@ -601,7 +601,7 @@ for i in index_array:
     ax.set_xlabel('Time Elapsed Since Emission [Days]', fontweight = 'bold', fontsize = 12)
     ax.set_ylabel('Air Paarcel Pressure Altitude [hPa]', fontweight = 'bold', fontsize = 12)
 # fig.colorbar(sc, ticks=bounds, extend='both')
-plt.savefig('28 Closest trajectory from ' + load_data_from)
+plt.savefig('28 Closest trajectory from ' + load_data_from, dpi = 512)
 
 
 if plot_closest_trajectory == True:
@@ -617,14 +617,14 @@ else:
 
 
 fig, ax = plt.subplots()
-plt.scatter(RoD_arr_new_method, MR_avg_new_method_arr * 10E9, s = 9)
+plt.scatter(RoD_arr_new_method, MR_avg_new_method_arr * 10E9, s = 10)
 # ax.set_title('RoD vs. MR[hPa/D]', fontweight = 'bold')
 ax.set_xlabel('RoD [hPa/D]', fontweight = 'bold', fontsize = 12)
 dot_multiply = '\u00B7'
 superscript_minus_one = '\u207B\u00B9'
 subscript_three = '\u2083'
 ax.set_ylabel('Mean O' + subscript_three + ' Volume Mixing Ratio [nmol' + dot_multiply + 'mol' + superscript_minus_one + ']', fontweight = 'bold', fontsize = 11)
-plt.savefig('RoD vs MR ' + load_data_from)
+plt.savefig('RoD vs MR ' + load_data_from, dpi = 512)
 plt.show()
 
 
