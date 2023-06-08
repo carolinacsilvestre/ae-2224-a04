@@ -25,7 +25,7 @@ from mpl_toolkits.basemap import shiftgrid  # For shifting longitudes
 import matplotlib.colors  # To create new colorbar
 import math
 
-load_data_from = str('Summer200')
+load_data_from = str('Summer300')
 
 f_string = 'C:/Users/alexm/AE2224/DATA_ANALYSIS/' + load_data_from + '/*' 
 
@@ -577,16 +577,18 @@ RoD_arr_new_method = np.delete(RoD_arr_new_method, 0)
 # print(type(index_array))
 # print('1', np.min(ppress[:, 29]))
 
-fig, ax = plt.subplots(nrows = 1, ncols = 2)
+fig, ax = plt.subplots(nrows = 1, ncols = 1)
 #plt.suptitle('Closest Trajectory Method', fontweight = 'bold')
-ax[0].invert_yaxis()
+ax.invert_yaxis()
 
 colors = ["#2c7bb6", "#abd9e9", "#ffffbf", "#fdae61", "#d7191c"]
+# plot_colors = 
 cmap = matplotlib.colors.ListedColormap(colors)
-ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr * 10E9, s = 2)
-ax[1].set_title('RoD vs. MR', fontweight = 'bold')
-ax[1].set_xlabel('RoD', fontweight = 'bold')
-ax[1].set_ylabel('Average MR', fontweight = 'bold')
+bounds = [0, 15, 30, 45, 60, 75]
+# ax[1].scatter(RoD_arr_new_method, MR_avg_new_method_arr * 10E9, s = 2)
+# ax[1].set_title('RoD vs. MR', fontweight = 'bold')
+# ax[1].set_xlabel('RoD', fontweight = 'bold')
+# ax[1].set_ylabel('Average MR', fontweight = 'bold')
 norm = matplotlib.colors.Normalize(vmin=0, vmax=0.2)
 fig.subplots_adjust(wspace = 0.4)
 for i in index_array:
@@ -594,11 +596,13 @@ for i in index_array:
     traj_needed = traj[0 : number_of_t]
     # ax, fig = plt.subplots()
     # fig.invert_yaxis()
-    sc = ax[0].scatter(time_window_arr, traj_needed, s = 2, c = airO3_001[:,int(i)][0:number_of_t] * 10E9, cmap = cmap, norm = norm)
-    ax[0].set_title(load_data_from, fontweight = 'bold')
-    ax[0].set_xlabel('Days', fontweight = 'bold')
-    ax[0].set_ylabel('Altitude', fontweight = 'bold')
-fig.colorbar(sc)
+    sc = ax.scatter(time_window_arr, traj_needed, s = 3, cmap = 'viridis', norm = norm)
+    # ax.set_title(load_data_from, fontweight = 'bold')
+    ax.set_xlabel('Time Elapsed Since Emission [Days]', fontweight = 'bold', fontsize = 12)
+    ax.set_ylabel('Air Paarcel Pressure Altitude [hPa]', fontweight = 'bold', fontsize = 12)
+# fig.colorbar(sc, ticks=bounds, extend='both')
+plt.savefig('28 Closest trajectory from ' + load_data_from)
+
 
 if plot_closest_trajectory == True:
     ccp, pp = scipy.stats.pearsonr(RoD_arr_new_method, MR_avg_new_method_arr * 10E9)
@@ -622,6 +626,8 @@ subscript_three = '\u2083'
 ax.set_ylabel('Mean O' + subscript_three + ' Volume Mixing Ratio [nmol' + dot_multiply + 'mol' + superscript_minus_one + ']', fontweight = 'bold', fontsize = 11)
 plt.savefig('RoD vs MR ' + load_data_from)
 plt.show()
+
+
 
 
 
